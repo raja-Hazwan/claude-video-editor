@@ -23,6 +23,8 @@ CLAUDE.md                       project instructions: workspace layout, which to
     session_start.py            lists what's waiting in the Inbox when a session starts
     protect_originals.py        blocks deleting/overwriting files in Inbox, Sources, Footage
     no_claude_in_commits.py     blocks Claude attribution trailers in commit messages
+Video/                          local drop folder for source videos (contents gitignored)
+  Subtitles/                    .srt / .vtt files for those videos (contents gitignored)
 tools/
   download.py                   yt-dlp wrapper → 00_Inbox
   make_srt.py                   faster-whisper (large-v3) → subtitle-ready SRT

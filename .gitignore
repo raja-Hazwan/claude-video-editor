@@ -7,7 +7,12 @@
 .claude/settings.local.json
 
 # Media never goes in git — it lives in the video workspace (D:\Davinci Vids)
-Video/
+#   Video/ and Video/Subtitles/ stay in the repo (README + .gitkeep); their contents don't.
+Video/*
+!Video/README.md
+!Video/Subtitles/
+Video/Subtitles/*
+!Video/Subtitles/.gitkeep
 *.mp4
 *.mov
 *.MOV

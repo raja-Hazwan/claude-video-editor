@@ -2,7 +2,8 @@
 
 This repo is the toolkit; the media lives in the **video workspace** `D:\Davinci Vids` (added as an extra working
 directory in `.claude/settings.json`). Never copy media into the repo — the `Video/` folder here is a gitignored drop
-folder, treat it like `00_Inbox`.
+folder, treat it like `00_Inbox`. Its `Video/Subtitles/` subfolder holds the
+matching `.srt`/`.vtt` files (`Video/Talk.mp4` → `Video/Subtitles/Talk.srt`); both are gitignored apart from their placeholders.
 
 ## Workspace layout (`D:\Davinci Vids`)
 | Folder | Holds | Rule |
