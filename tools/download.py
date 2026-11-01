@@ -38,6 +38,8 @@ cmd = [
 ]
 if args.subs:
     cmd += ["--write-subs", "--write-auto-subs", "--sub-langs", args.subs, "--convert-subs", "srt"]
+    # A rate-limited subtitle language (YouTube 429 on "en") must not abort the video download.
+    cmd += ["--ignore-errors"]
 
 print(">", " ".join(cmd))
 sys.exit(subprocess.call(cmd))
