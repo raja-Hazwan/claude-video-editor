@@ -29,6 +29,7 @@ tools/
   contact_sheet.py              frame grid with timestamps, so Claude can see the video
   elevenlabs.py                 sfx / tts / music / voices (stdlib only)
   doctor.py                     checks every dependency
+workspace/                      media + projects (gitignored): 00_Inbox, 01_Sources, 02_Projects, 03_Exports, 04_Footage
 ```
 
 ## Setup
@@ -38,8 +39,9 @@ tools/
 4. Open Claude Code here, trust the folder, and approve the Remotion + HyperFrames plugins when prompted.
    For HyperFrames' own authoring skills also run `npx hyperframes skills update` once.
 
-The media workspace defaults to `D:\Davinci Vids` (`00_Inbox → 01_Sources / 02_Projects → 03_Exports`, plus `04_Footage`).
-Change it in `.claude/settings.json` (`permissions.additionalDirectories`) and the `VIDEO_WORKSPACE` env var.
+The media workspace is `workspace/` inside this repo (`00_Inbox → 01_Sources / 02_Projects → 03_Exports`, plus
+`04_Footage`). It is gitignored. To keep media elsewhere, set the `VIDEO_WORKSPACE` env var and add that folder to
+`permissions.additionalDirectories` in `.claude/settings.json`.
 
 ## Typical session
 ```

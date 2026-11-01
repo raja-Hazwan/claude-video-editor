@@ -8,9 +8,9 @@ description: Use when turning a long horizontal talk, lecture, ceramah, podcast 
 ## Overview
 Pick the strongest 4–6 moments from a long talk, crop to 9:16 following the speaker's face, and dress it with
 TikTok-style captions, punch-in zooms, key-idea cards and timed SFX. Reference build:
-`D:\Davinci Vids\02_Projects\rozaimi-short` (all components + `scripts/config.json`).
+`workspace\02_Projects\rozaimi-short` (all components + `scripts/config.json`).
 
-## Folder layout (`D:\Davinci Vids`)
+## Folder layout (`workspace/`)
 `00_Inbox\` new downloads (+ .srt) not yet edited · `01_Sources\` originals of finished videos (move from Inbox when done) ·
 `02_Projects\<name>\` Remotion projects · `03_Exports\` finals + covers ready to post · `04_Footage\` own camera footage · `_Tools\` scripts.
 
@@ -21,15 +21,25 @@ Scripts: `.claude/skills/talk-to-vertical-short/scripts/` (in the claude-video-e
 2. **Word timings**: prefer `D:\subtitle engine\.venv\Scripts\python scripts/words_engine.py <video> <words.json>` — uses the Subtitle Engine's tuned settings (Islamic-term prompt, VAD pad 600/500, romanized Arabic, user's auto-corrections). Fallback: `scripts/transcribe_words.py`. Prints timed lines.
 3. **Choose highlights (~50–60s total)**: hook first (most provocative line, often the opening), then the key term → core point → religious/authority reference → strongest closing line. Cut 0.15–0.3s outside word boundaries; never mid-word. Present the table (source time + line) to the user.
 4. **Check frames**: contact sheet per clip (`ffmpeg -vf "fps=1,scale=320:-1,tile=6x3"`). Look for on-screen overlays (venue name bars, donation banners, bank account numbers, QR codes). Measure their top edge on a gridded full frame. Overlays in the bottom ~15% are hidden by the bottom fade in `Grade` (template). Only zoom (`zoomFloor` + `maxBottom`) for overlays that reach higher, and keep zoom ≤1.2 — more makes the face fill the frame.
-5. **Scaffold** (in `D:\Davinci Vids\02_Projects`): `npx create-video@latest --yes --blank --no-tailwind <name>`, `npx remotion add @remotion/media @remotion/transitions @remotion/captions @remotion/google-fonts`. Copy the video to `public/source.mp4` (ASCII name — OpenCV can't open fullwidth/unicode paths).
+5. **Scaffold** (in `workspace\02_Projects`): `npx create-video@latest --yes --blank --no-tailwind <name>`, `npx remotion add @remotion/media @remotion/transitions @remotion/captions @remotion/google-fonts`. Copy the video to `public/source.mp4` (ASCII name — OpenCV can't open fullwidth/unicode paths).
 6. **config.json** (see reference project): `keywords`, `merge` (e.g. `"what aboutism": "whataboutism"`), `clips[]` with `id,start,end,punchWords`, optional `extend` (seconds of extra picture for end card), `zoomFloor`, `maxBottom`.
 6a. **Speakers who pause a lot** (MAZA taat: 33s of dead air in 4:33): write *coarse* keep-ranges (one per argument step), then `python scripts/split_pauses.py <src> config_coarse.json config_long.json 1.0` splits each at every real pause ≥1s into `<id>_2`, `<id>_3`… parts (treat ids containing `_` as jump cuts). Then **re-caption per part**: `"D:\subtitle engine\.venv\Scripts\python" scripts/words_per_clip.py <src> config_long.json words.json` — whole-file Whisper timings drift by seconds in pause-heavy talks, so words fall into removed gaps and vanish from captions (lost "Sebab", "golongan", "agnostik"; "tidak faham" placed 6s early). Fix spellings in its printed text.
 6b. **CUT CHECK — mandatory, before tracking/rendering**: `python scripts/check_cuts.py public/source.mp4 config.json` must print `all boundaries clean`. It measures real audio loudness at every clip start/end. **Never trust Whisper word end times for cuts**: Whisper ends the last word early and stretches the next word's start back over the pause (MAZA short: "salah" really ended 46.45 but Whisper said 46.25; "operation" ended 206.4, Whisper said 205.98 → both words got chopped and the user caught it at 0:29 and 0:48). Apply its suggested times, re-run until clean. Also fix that word's `e` in words.json so captions match. Re-run after ANY config change.
 7. **Face track**: `python scripts/track_faces.py public/source.mp4 config.json track.json` (needs `pip install "opencv-python==4.10.0.84"`; 5.x lacks CascadeClassifier).
 8. **Data**: `python scripts/gen_data.py config.json track.json words.json src/data/clips.ts` → prints each clip's start frame and every word's absolute frame. Use those to hardcode Sequence `from` values.
 8b. **Timing comes from data, not hardcoded frames**: use `template/src/timeline.ts` — `START.<clip>`, `at(clip, local)`, `end(clip, offset)`, `word(clip, "text")` — and build the TransitionSeries by mapping `ORDER` (see `template/src/Composition.timeline-example.tsx` / `Sfx.timeline-example.tsx`; SFX take `hit` + `peak`). Then changing a cut = edit config → gen_data → render; cards/SFX follow automatically. Never hand-shift frame numbers.
-9. **Components**: copy `template/src/*` into `src/` (or copy the latest project, e.g. `D:\Davinci Vids\02_Projects\pecah-amanah-short`, minus `out/`, `src/data`, `public/source.mp4`). Edit `Composition.tsx`: TransitionSeries durations, TOTAL_FRAMES, card frames; texts are props: `HookTitle label/title/size`, `NameTag name`, `KeyCard label/title/sub`, `EndCard message/sub/speaker/source`; edit `Sfx.tsx` frames. Remove the bottom fade in `Grade` if the source has no lower overlays.
-10. **Verify**: `npx tsc --noEmit`, render stills at hook/cards/closer/end (`npx remotion still ... --frame=N`), contact-sheet them and look. Then `npx remotion render <id> out/x.mp4 --codec=h264 --crf=18`; check 1fps contact sheet + `silencedetect`. Copy final (and cover) to `D:\Davinci Vids\03_Exports\` as `<name> - Short (Vertical).mp4` / `<name> - Short (Vertical) - Cover.png`, and move the source + .srt from `00_Inbox\` to `01_Sources\`.
+9. **Components**: copy `template/src/*` into `src/` (or copy the latest project, e.g. `workspace\02_Projects\pecah-amanah-short`, minus `out/`, `src/data`, `public/source.mp4`). Edit `Composition.tsx`: TransitionSeries durations, TOTAL_FRAMES, card frames; texts are props: `HookTitle label/title/size`, `NameTag name`, `KeyCard label/title/sub`, `EndCard message/sub/speaker/source`; edit `Sfx.tsx` frames. Remove the bottom fade in `Grade` if the source has no lower overlays.
+9b. **STORYBOARD — mandatory, stop for approval before rendering the video** (user rule): once the composition is
+    wired (after gen_data), show the user one table of the whole edit in output order — per row: output time (mm:ss) ·
+    source clip (time + line) · on-screen text (hook title / name tag / KeyCard label+title+sub / end-card message) ·
+    zoom (punch words, overlay zoom) · SFX (file + vol) · transition into the next clip (flash / jump cut). Add total
+    length, what was dropped, and trim options if it runs long. **It must have pictures** (user asked to see the parts
+    before rendering): write `scripts/storyboard.json` (one row per clip + end card, 3–4 frames each: flash-in, every
+    card, every punch-in, the closer word, end card/logo) and run `python scripts/storyboard.py . scripts/storyboard.json`
+    → `out/storyboard.html` (real stills from the composition, self-contained). Send that page with the table, and
+    look at its frames yourself first. Wait for the user's OK or changes; re-show it after big changes. Stills are fine
+    before approval; `npx remotion render` of the full video is not.
+10. **Verify**: `npx tsc --noEmit`, render stills at hook/cards/closer/end (`npx remotion still ... --frame=N`), contact-sheet them and look. Then `npx remotion render <id> out/x.mp4 --codec=h264 --crf=18`; check 1fps contact sheet + `silencedetect`. Copy final (and cover) to `workspace\03_Exports\` as `<name> - Short (Vertical).mp4` / `<name> - Short (Vertical) - Cover.png`, and move the source + .srt from `00_Inbox\` to `01_Sources\`.
 
 ## House style (user approved)
 | Element | Spec |
@@ -61,7 +71,7 @@ Avoid beep/charge/multi flicker on religious talks (too techy). Keep SFX under t
 
 ## Long-form "full context" variant (< 2 min)
 Use when the user says 50–60s doesn't do the talk justice (a fiqh answer whose reasoning is a chain). Reference:
-`D:\Davinci Vids\02_Projects\pecah-amanah-short` → `src/Long.tsx` (copy in `template/src/Long.tsx`, config `template/config_long.example.json`).
+`workspace\02_Projects\pecah-amanah-short` → `src/Long.tsx` (copy in `template/src/Long.tsx`, config `template/config_long.example.json`).
 Register it next to the short in `Root.tsx`; keep the short too and save as `<name> - Full Context (Vertical).mp4`.
 
 1. **Keep the argument chain, drop illustrations.** Map his answer as steps (question → principle → key term → purpose → test → danger → Quran → ruling → "you decide") and keep one clip per step. Drop jokes, side examples, scholar side-debates, disclaimers. Tell the user what was dropped.

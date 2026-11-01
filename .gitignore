@@ -6,7 +6,8 @@
 # Personal Claude Code overrides
 .claude/settings.local.json
 
-# Media never goes in git — it lives in the video workspace (D:\Davinci Vids)
+# Media never goes in git — the whole video workspace is ignored
+workspace/
 Video/
 *.mp4
 *.mov

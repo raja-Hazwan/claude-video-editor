@@ -35,7 +35,7 @@ row("node >= 22 (HyperFrames)", node_major.isdigit() and int(node_major) >= 22, 
 for mod, pip in [("faster_whisper", "faster-whisper"), ("cv2", "opencv-python==4.10.0.84"), ("numpy", "numpy")]:
     row(f"python: {mod}", importlib.util.find_spec(mod) is not None, "" if importlib.util.find_spec(mod) else f"pip install {pip}")
 
-workspace = os.environ.get("VIDEO_WORKSPACE", r"D:\Davinci Vids")
+workspace = os.environ.get("VIDEO_WORKSPACE", os.path.join(REPO, "workspace"))
 for label, path in [("video workspace", workspace),
                     ("subtitle engine", os.environ.get("SUBTITLE_ENGINE_DIR", r"D:\subtitle engine")),
                     ("SFX library", os.environ.get("SFX_LIBRARY", r"D:\sfx")),

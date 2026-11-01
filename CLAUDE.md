@@ -1,10 +1,9 @@
 # Claude Video Editor
 
-This repo is the toolkit; the media lives in the **video workspace** `D:\Davinci Vids` (added as an extra working
-directory in `.claude/settings.json`). Never copy media into the repo — the `Video/` folder here is a gitignored drop
-folder, treat it like `00_Inbox`.
+Everything lives in this folder: the toolkit (`tools/`, `.claude/`) and the media in the **video workspace**
+`workspace/` (gitignored — nothing in it is ever committed). New downloads go straight to `workspace/00_Inbox`.
 
-## Workspace layout (`D:\Davinci Vids`)
+## Workspace layout (`workspace/`)
 | Folder | Holds | Rule |
 |---|---|---|
 | `00_Inbox` | new downloads (+ .srt) waiting to be edited | read-only originals |
@@ -38,5 +37,5 @@ Pipeline: link → `/new-video` (download, transcribe, propose highlights, **wai
 - Never commit media, `.env`, renders or `node_modules` (see `.gitignore`).
 
 ## Machine paths (override with env vars)
-`VIDEO_WORKSPACE`=`D:\Davinci Vids` · `SUBTITLE_ENGINE_DIR`=`D:\subtitle engine` (Whisper tuned for Malay/Arabic, has its own `.venv`) · `SFX_LIBRARY`=`D:\sfx` · `BRANDING_DIR`=`D:\branding`.
+`VIDEO_WORKSPACE`=`<repo>\workspace` · `SUBTITLE_ENGINE_DIR`=`D:\subtitle engine` (Whisper tuned for Malay/Arabic, has its own `.venv`) · `SFX_LIBRARY`=`D:\sfx` · `BRANDING_DIR`=`D:\branding`.
 Run `python tools/doctor.py` to check everything is installed.

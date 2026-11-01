@@ -6,9 +6,6 @@
     "sessionUrl": false
   },
   "permissions": {
-    "additionalDirectories": [
-      "D:\\Davinci Vids"
-    ],
     "allow": [
       "Bash(ffmpeg *)",
       "Bash(ffprobe *)",

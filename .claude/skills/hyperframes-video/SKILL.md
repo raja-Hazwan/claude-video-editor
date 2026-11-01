@@ -17,7 +17,7 @@ repo: https://github.com/heygen-com/hyperframes. For full authoring rules instal
 
 ## Workflow
 ```bash
-cd "D:/Davinci Vids/02_Projects"
+cd "workspace/02_Projects"
 npx hyperframes init <name>          # scaffold
 cd <name>
 npx hyperframes preview              # studio with live reload (leave running for the user)

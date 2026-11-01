@@ -14,7 +14,8 @@ import sys
 
 sys.stdout.reconfigure(encoding="utf-8")
 
-WORKSPACE = os.environ.get("VIDEO_WORKSPACE", r"D:\Davinci Vids")
+REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+WORKSPACE = os.environ.get("VIDEO_WORKSPACE", os.path.join(REPO, "workspace"))
 
 ap = argparse.ArgumentParser()
 ap.add_argument("url")
