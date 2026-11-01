@@ -6,8 +6,8 @@ description: Use when turning a long horizontal talk, lecture, ceramah, podcast 
 # Talk → Vertical Short (Remotion)
 
 ## Overview
-Pick the strongest 4–6 moments from a long talk, crop to 9:16 following the speaker's face, and dress it with
-TikTok-style captions, punch-in zooms, key-idea cards and timed SFX. Reference build:
+Pick the strongest 4–6 moments from a long talk, crop to 9:16 (locked on the speaker, face-tracked only where the
+`video-style` skill says), and dress it with captions, camera moves, key-idea cards and timed SFX. Reference build:
 `workspace\02_Projects\rozaimi-short` (all components + `scripts/config.json`).
 
 ## Folder layout (`workspace/`)
@@ -22,7 +22,7 @@ Scripts: `.claude/skills/talk-to-vertical-short/scripts/` (in the claude-video-e
 3. **Choose highlights (~50–60s total)**: hook first (most provocative line, often the opening), then the key term → core point → religious/authority reference → strongest closing line. Cut 0.15–0.3s outside word boundaries; never mid-word. Present the table (source time + line) to the user.
 4. **Check frames**: contact sheet per clip (`ffmpeg -vf "fps=1,scale=320:-1,tile=6x3"`). Look for on-screen overlays (venue name bars, donation banners, bank account numbers, QR codes). Measure their top edge on a gridded full frame. Overlays in the bottom ~15% are hidden by the bottom fade in `Grade` (template). Only zoom (`zoomFloor` + `maxBottom`) for overlays that reach higher, and keep zoom ≤1.2 — more makes the face fill the frame.
 5. **Scaffold** (in `workspace\02_Projects`): `npx create-video@latest --yes --blank --no-tailwind <name>`, `npx remotion add @remotion/media @remotion/transitions @remotion/captions @remotion/google-fonts`. Copy the video to `public/source.mp4` (ASCII name — OpenCV can't open fullwidth/unicode paths).
-6. **config.json** (see reference project): `keywords`, `merge` (e.g. `"what aboutism": "whataboutism"`), `clips[]` with `id,start,end,punchWords`, optional `extend` (seconds of extra picture for end card), `zoomFloor`, `maxBottom`.
+6. **config.json** (see reference project): `keywords`, `merge` (e.g. `"what aboutism": "whataboutism"`), `clips[]` with `id,start,end,framing,move,punchWords` (framing/move/one emphasis word per clip: see `video-style`), optional `extend` (seconds of extra picture for end card), `zoomFloor`, `maxBottom`.
 6a. **Speakers who pause a lot** (MAZA taat: 33s of dead air in 4:33): write *coarse* keep-ranges (one per argument step), then `python scripts/split_pauses.py <src> config_coarse.json config_long.json 1.0` splits each at every real pause ≥1s into `<id>_2`, `<id>_3`… parts (treat ids containing `_` as jump cuts). Then **re-caption per part**: `"D:\subtitle engine\.venv\Scripts\python" scripts/words_per_clip.py <src> config_long.json words.json` — whole-file Whisper timings drift by seconds in pause-heavy talks, so words fall into removed gaps and vanish from captions (lost "Sebab", "golongan", "agnostik"; "tidak faham" placed 6s early). Fix spellings in its printed text.
 6b. **CUT CHECK — mandatory, before tracking/rendering**: `python scripts/check_cuts.py public/source.mp4 config.json` must print `all boundaries clean`. It measures real audio loudness at every clip start/end. **Never trust Whisper word end times for cuts**: Whisper ends the last word early and stretches the next word's start back over the pause (MAZA short: "salah" really ended 46.45 but Whisper said 46.25; "operation" ended 206.4, Whisper said 205.98 → both words got chopped and the user caught it at 0:29 and 0:48). Apply its suggested times, re-run until clean. Also fix that word's `e` in words.json so captions match. Re-run after ANY config change.
 7. **Face track**: `python scripts/track_faces.py public/source.mp4 config.json track.json` (needs `pip install "opencv-python==4.10.0.84"`; 5.x lacks CascadeClassifier).
@@ -32,42 +32,18 @@ Scripts: `.claude/skills/talk-to-vertical-short/scripts/` (in the claude-video-e
 9b. **STORYBOARD — mandatory, stop for approval before rendering the video** (user rule): once the composition is
     wired (after gen_data), show the user one table of the whole edit in output order — per row: output time (mm:ss) ·
     source clip (time + line) · on-screen text (hook title / name tag / KeyCard label+title+sub / end-card message) ·
-    zoom (punch words, overlay zoom) · SFX (file + vol) · transition into the next clip (flash / jump cut). Add total
+    framing (track / lock, any LOCK->TRACK) + move + emphasis word · SFX (file + vol) · transition into the next clip (flash / jump cut). Add total
     length, what was dropped, and trim options if it runs long. **It must have pictures** (user asked to see the parts
     before rendering): write `scripts/storyboard.json` (one row per clip + end card, 3–4 frames each: flash-in, every
     card, every punch-in, the closer word, end card/logo) and run `python scripts/storyboard.py . scripts/storyboard.json`
     → `out/storyboard.html` (real stills from the composition, self-contained). Send that page with the table, and
     look at its frames yourself first. Wait for the user's OK or changes; re-show it after big changes. Stills are fine
     before approval; `npx remotion render` of the full video is not.
-10. **Verify**: `npx tsc --noEmit`, render stills at hook/cards/closer/end (`npx remotion still ... --frame=N`), contact-sheet them and look. Then `npx remotion render <id> out/x.mp4 --codec=h264 --crf=18`; check 1fps contact sheet + `silencedetect`. Copy final (and cover) to `workspace\03_Exports\` as `<name> - Short (Vertical).mp4` / `<name> - Short (Vertical) - Cover.png`, and move the source + .srt from `00_Inbox\` to `01_Sources\`.
+10. **Verify**: `npx tsc --noEmit`, render stills at hook/cards/closer/end (`npx remotion still ... --frame=N`), contact-sheet them and look. Then `npx remotion render <id> out/x.mp4 --codec=h264 --crf=18`; check 1fps contact sheet + `silencedetect`. Copy final (and cover) to a numbered folder in `workspace\03_Exports\` (`NN - <name> - Short (Vertical)/` with `NN - <name> - Short (Vertical).mp4` + `… - Cover.png`; NN = next free number — see `/publish`), and move the source + .srt from `00_Inbox\` into `01_Sources\NN - <original name>\` (same NN as the export, files prefixed `NN - `).
 
-## House style (user approved)
-| Element | Spec |
-|---|---|
-| Format | 1080×1920, 30fps, full-bleed face-tracked crop, `contrast(1.06) saturate(1.12)` grade + vignette + top gradient |
-| Zoom | base 1.0; entry kick +0.10 over 14f; slow push +0.05/clip; punch +0.13 on punch words (in 7f, hold ~40f, out 12f) |
-| Captions | Montserrat 900, 82px, uppercase, 14px black stroke, at y≈1180; ~1s pages; active word yellow `#FFD60A`; active keyword = white on red `#E63946` pill; NO scale on active word (eats spaces) — lift 4px instead |
-| Top band (y 110+) | Hook title (red pill "Ditegur, terus kata:" + yellow quote headline), name tag, KeyCards (yellow label pill + big headline + sub-line) |
-| Cuts | white flash overlay 10f (`TransitionSeries.Overlay`), never crossfade speech |
-| End | last ~3s (`extend: 3.0`): blur + dark, yellow message headline, speaker name, "Sumber: <channel>" credit, then **"EDITED BY" (gold #CCB375, letterspaced) + The Returning Soul logo** fading up at +20f; speech volume fades out |
-| Branding | `D:/branding` → crop `logo with text no bg.png` to its alpha bbox → `public/brand/logo-lockup.png`, 400px wide. Branding only on the end card (user wants it subtle) |
-| Language | captions/cards in the talk's language (Malay); write "SAW" not ﷺ (font lacks glyph) |
-
-## SFX (library `D:\sfx`) — align the **peak**, not the file start
-`from = targetFrame − peakFrames`. Peaks @30fps: Woosh 17f · woosh2 14f · woosh3 9f · fastwoosh 3f · drop 26f · Riser 50f · old cam 6f · Hi-Tech Click 8f · Camera Click 4f · flick 3f · Mouse Click 2f · ding 4f · Music Box 12f. (woosh4 = duplicate of woosh2.) For a new file, measure the envelope peak with numpy first.
-
-| Moment | SFX | vol |
-|---|---|---|
-| Hook title slam | drop (trimBefore so peak hits ~f8), fade out | 0.22 |
-| Name tag | Mouse Click | 0.6 |
-| Punch-ins | flick | 0.5 |
-| Flash cuts | **vary**: woosh2 → fastwoosh (short clips) → woosh3 → Woosh (biggest, into closer) | 0.35–0.5 |
-| Key cards | old cam / Camera Click / Hi-Tech Click (different per card) | 0.45–0.9 |
-| Main message punch | drop | 0.28 |
-| Into final word | Riser peaking on the word | 0.35 |
-| Brand logo reveal | Music Box (peak 12f on logo landing), fade | 1.0 |
-| Permission / ruling word ("dibenarkan", "boleh") | ding (peak 4f), layered on the Riser peak | 0.5 |
-Avoid beep/charge/multi flicker on religious talks (too techy). Keep SFX under the voice.
+## Style
+The look — framing (track vs lock), camera moves, captions, cards, end card, SFX levels, loudness, cover —
+lives in the **`video-style`** skill. Read it before step 6 and follow it; change the style there, not here.
 
 ## Long-form "full context" variant (< 2 min)
 Use when the user says 50–60s doesn't do the talk justice (a fiqh answer whose reasoning is a chain). Reference:

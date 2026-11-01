@@ -7,10 +7,11 @@ storyboard.json:
    "notes": ["Dropped: ...", "..."],
    "rows": [{"out": "0:00", "clip": "hook", "source": "0:02.6–0:15.9", "line": "...",
              "frames": [[60, "Hook title"], [240, "Name tag"]],
-             "text": "...", "zoom": "...", "sfx": "...", "next": "flash + woosh2"}]}
+             "framing": "track · quick zoom in", "text": "...", "zoom": "...", "sfx": "...", "next": "flash + woosh2"}]}
 
-Stills are rendered from a fresh bundle (out/bundle) into out/storyboard/ at 0.4 scale. Run it after gen_data and
-before any full render; show the HTML to the user and wait for approval.
+Stills are rendered from a fresh bundle (out/bundle) into out/storyboard/ at 0.4 scale. Also writes out/storyboard.jpg
+(every frame, labelled, one row per part) — send that too: it shows inline even where the HTML doesn't. Run it after
+gen_data and before any full render; wait for the user's approval.
 """
 import base64
 import html
@@ -50,7 +51,7 @@ for i, r in enumerate(sb["rows"], 1):
         f'<figure><img src="{img(f)}" alt="{e(cap)}"><figcaption><b>{tc(f)}</b> {e(cap)}</figcaption></figure>'
         for f, cap in r["frames"])
     facts = "".join(f"<dt>{k}</dt><dd>{e(r[key])}</dd>" for k, key in
-                    [("On screen", "text"), ("Zoom", "zoom"), ("SFX", "sfx"), ("Into next", "next")] if r.get(key))
+                    [("Framing", "framing"), ("On screen", "text"), ("Zoom", "zoom"), ("SFX", "sfx"), ("Into next", "next")] if r.get(key))
     rows_html.append(f"""
 <section class="row">
   <header><span class="num">{i}</span><span class="out">{e(r['out'])}</span>
@@ -88,3 +89,31 @@ dl{{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:12px 
 with open(out_html, "w", encoding="utf-8") as fh:
     fh.write(page)
 print("wrote", out_html)
+
+# Contact sheet: one row per part, frames labelled "<part>. <clip> <time> <caption>".
+cols = max(len(r["frames"]) for r in sb["rows"])
+inputs, chains, rows_out = [], [], []
+k = 0
+for i, r in enumerate(sb["rows"], 1):
+    row = []
+    for j in range(cols):
+        if j < len(r["frames"]):
+            f, cap = r["frames"][j]
+            inputs += ["-i", os.path.join(still_dir, f"f{f:05d}.jpg")]
+            esc = lambda t: t.replace("\\", "").replace("'", "").replace("%", "").replace(":", "\\:")
+            top, bottom = esc(f"{i}. {r['clip']}  {tc(f)}"), esc(cap[:30])
+            font = "fontfile='C\\:/Windows/Fonts/arialbd.ttf'"
+            chains.append(f"[{k}]scale=270:480,drawtext={font}:text='{top}':x=6:y=h-48:fontsize=14:fontcolor=#FFD60A"
+                          f":box=1:boxcolor=black@0.75:boxborderw=4,drawtext={font}:text='{bottom}':x=6:y=h-24"
+                          f":fontsize=14:fontcolor=white:box=1:boxcolor=black@0.75:boxborderw=4[v{k}]")
+        else:
+            inputs += ["-f", "lavfi", "-i", "color=c=black:s=270x480:d=1"]
+            chains.append(f"[{k}]null[v{k}]")
+        row.append(f"[v{k}]"); k += 1
+    chains.append("".join(row) + f"hstack=inputs={cols}[r{i}]" if cols > 1 else f"{row[0]}null[r{i}]")
+    rows_out.append(f"[r{i}]")
+chains.append("".join(rows_out) + f"vstack=inputs={len(rows_out)}" if len(rows_out) > 1 else f"{rows_out[0]}null")
+sheet = os.path.splitext(out_html)[0] + ".jpg"
+subprocess.run(["ffmpeg", "-v", "error", "-y", *inputs, "-filter_complex", ";".join(chains), "-frames:v", "1",
+                "-q:v", "3", sheet], check=True)
+print("wrote", sheet)

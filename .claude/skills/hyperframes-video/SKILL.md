@@ -50,4 +50,4 @@ Useful extras: `npx hyperframes catalog` / `add <block>` (prebuilt blocks: trans
 - 9:16 = 1080×1920. Keep text inside y 240–1680 for TikTok's profile-grid crop; reuse the house style
   (Montserrat 900, yellow `#FFD60A` emphasis, red `#E63946` pill labels, gold `#CCB375` "EDITED BY")
   from the talk-to-vertical-short skill.
-- Finished render → copy to `03_Exports` with the house naming.
+- Finished render → copy to a new numbered folder in `03_Exports` with the house naming (see `/publish`).

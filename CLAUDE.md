@@ -7,15 +7,16 @@ Everything lives in this folder: the toolkit (`tools/`, `.claude/`) and the medi
 | Folder | Holds | Rule |
 |---|---|---|
 | `00_Inbox` | new downloads (+ .srt) waiting to be edited | read-only originals |
-| `01_Sources` | originals of finished videos | read-only originals |
+| `01_Sources` | originals of finished videos | read-only originals; one numbered folder per source, `NN - <original name>/` with `NN - <original name>.mp4` + `.srt` — same NN as its export |
 | `02_Projects/<name>` | one Remotion or HyperFrames project per video (`public/source.mp4`, `out/`) | all work happens here |
-| `03_Exports` | finals + covers ready to post | `<Speaker> - <Topic> - Short (Vertical).mp4`, `… - Full Context (Vertical).mp4`, `… - Cover.png` |
+| `03_Exports` | finals + covers ready to post | one numbered folder per video: `NN - <Speaker> - <Topic> - Short (Vertical)/` holding `NN - … - Short (Vertical).mp4` + `NN - … - Short (Vertical) - Cover.png` (or `Full Context (Vertical)`); NN = next free number |
 | `04_Footage` | own camera footage (e.g. Yogyakarta) | read-only originals |
 
 Pipeline: link → `/new-video` (download, transcribe, propose highlights, **wait for approval**) → build in `02_Projects`
 → render → `/publish` (verify, copy to `03_Exports`, move source Inbox → Sources).
 
 ## Which tool
+- **The look** (framing: track vs lock, camera moves, captions, cards, end card, SFX levels, loudness): `video-style` skill — the single source of the house style; change it there.
 - **Talk → vertical short / full-context cut** (face-tracked 9:16, word captions, punch-ins, cards, SFX): Remotion, `talk-to-vertical-short` skill. It holds the house style and the cut rules the user has flagged — follow them exactly.
 - **Graphic-first pieces** (quote cards, intros, explainers, overlays): HyperFrames, `hyperframes-video` skill.
 - **Quick jobs** (probe, trim, crop, mix, loudness, verify): ffmpeg, `ffmpeg-toolkit` skill.

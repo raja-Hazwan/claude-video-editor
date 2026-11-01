@@ -6,7 +6,7 @@ import {
   staticFile,
   useCurrentFrame,
 } from "remotion";
-import type { ClipData } from "./data/clips";
+import type { ClipData, Move } from "./data/clips";
 
 const SRC_W = 1920;
 const SRC_H = 1080;
@@ -26,9 +26,32 @@ const ease = {
   easing: Easing.inOut(Easing.cubic),
 } as const;
 
+const quick = {
+  extrapolateLeft: "clamp",
+  extrapolateRight: "clamp",
+  easing: Easing.out(Easing.cubic),
+} as const;
+const slow = { ...ease, easing: Easing.inOut(Easing.sin) } as const;
+
+// One camera move per clip (video-style skill): very slow push/pull over the whole clip, or a quick zoom at the start.
+const moveZoom = (move: Move, frame: number, frames: number) => {
+  switch (move) {
+    case "pushIn":
+      return interpolate(frame, [0, frames], [0, 0.06], slow);
+    case "pullOut":
+      return interpolate(frame, [0, frames], [0.06, 0], slow);
+    case "zoomIn":
+      return interpolate(frame, [0, 18], [0, 0.08], quick);
+    case "zoomOut":
+      return interpolate(frame, [0, 18], [0.1, 0], quick);
+    default:
+      return 0;
+  }
+};
+
 /**
- * Crops the 16:9 source to 9:16, following the speaker's face (pre-computed per frame),
- * with an entry zoom kick, a slow push-in and punch-in zooms on key words.
+ * Crops the 16:9 source to 9:16 — locked on the speaker or gently following him (`clip.framing`, pre-computed
+ * per frame) — with the clip's camera move and one emphasis zoom on its key word.
  */
 export const TrackedVideo: React.FC<{
   clip: ClipData;
@@ -37,18 +60,12 @@ export const TrackedVideo: React.FC<{
   const frame = useCurrentFrame();
   const i = Math.min(Math.max(frame, 0), clip.frames - 1);
 
-  const entry = interpolate(frame, [0, 14], [0.1, 0], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-    easing: Easing.out(Easing.cubic),
-  });
-  const push = interpolate(frame, [0, clip.frames], [0, 0.05]);
   const punch = clip.punches.reduce(
     (acc, p) =>
-      acc + interpolate(frame, [p - 4, p + 3, p + 42, p + 54], [0, 0.13, 0.13, 0], ease),
+      acc + interpolate(frame, [p - 3, p + 4, p + 40, p + 52], [0, 0.1, 0.1, 0], ease),
     0,
   );
-  const zoom = Math.max(BASE_ZOOM, clip.zoomFloor) + entry + push + punch;
+  const zoom = Math.max(BASE_ZOOM, clip.zoomFloor) + moveZoom(clip.move, frame, clip.frames) + punch;
 
   const visH = SRC_H / zoom;
   const visW = (visH * OUT_W) / OUT_H;
