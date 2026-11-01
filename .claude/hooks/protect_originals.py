@@ -1,7 +1,7 @@
 """PreToolUse(Bash) hook: never write to, move or delete original media.
 
 Blocks a Bash command when it would delete or overwrite files in the source folders
-(00_Inbox, 01_Sources, 04_Footage, Video/). Reading them (ffmpeg -i, ffprobe) is fine,
+(00_Inbox, 01_Sources, 04_Footage, Video/ except Video/Subtitles/). Reading them (ffmpeg -i, ffprobe) is fine,
 and so is moving a file from one of these folders to another (Inbox -> Sources).
 Exit code 2 blocks the call and shows stderr to Claude.
 """
@@ -13,7 +13,8 @@ import sys
 sys.stdout.reconfigure(encoding="utf-8")
 sys.stderr.reconfigure(encoding="utf-8")
 
-PROTECTED = re.compile(r"(00_Inbox|01_Sources|04_Footage)([\\/]|$)|(^|[\\/])Video[\\/]", re.I)
+# Video/Subtitles/ is excluded: subtitles are generated files and get rewritten.
+PROTECTED = re.compile(r"(00_Inbox|01_Sources|04_Footage)([\\/]|$)|(^|[\\/])Video[\\/](?!Subtitles([\\/]|$))", re.I)
 DESTRUCTIVE = {"rm", "del", "rmdir", "mv", "move", "Remove-Item", "Move-Item", "ren", "rename"}
 
 cmd = json.load(sys.stdin).get("tool_input", {}).get("command", "")
