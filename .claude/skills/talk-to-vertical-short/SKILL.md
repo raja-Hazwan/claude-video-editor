@@ -39,7 +39,7 @@ Scripts: `.claude/skills/talk-to-vertical-short/scripts/` (in the claude-video-e
     → `out/storyboard.html` (real stills from the composition, self-contained). Send that page with the table, and
     look at its frames yourself first. Wait for the user's OK or changes; re-show it after big changes. Stills are fine
     before approval; `npx remotion render` of the full video is not.
-10. **Verify**: `npx tsc --noEmit`, render stills at hook/cards/closer/end (`npx remotion still ... --frame=N`), contact-sheet them and look. Then `npx remotion render <id> out/x.mp4 --codec=h264 --crf=18`; check 1fps contact sheet + `silencedetect`. Copy final (and cover) to a numbered folder in `workspace\03_Exports\` (`NN - <name> - Short (Vertical)/` with `NN - <name> - Short (Vertical).mp4` + `… - Cover.png`; NN = next free number — see `/publish`), and move the source + .srt from `00_Inbox\` into `01_Sources\NN - <original name>\` (same NN as the export, files prefixed `NN - `).
+10. **Verify**: `npx tsc --noEmit`, render stills at hook/cards/closer/end (`npx remotion still ... --frame=N`), contact-sheet them and look. Then `npx remotion render <id> out/x.mp4 --codec=h264 --crf=18`; check 1fps contact sheet + `silencedetect`. Copy final (and cover) to a numbered folder in `workspace\03_Exports\` (`NN - <name> - Short (Vertical)/` with `NN - <name> - Short (Vertical).mp4` + `… - Cover.png` + `… - Post.txt` for YT Shorts/TikTok; NN = next free number — see `/publish`), and move the source + .srt from `00_Inbox\` into `01_Sources\NN - <original name>\` (same NN as the export, files prefixed `NN - `).
 
 ## Style
 The look — framing (track vs lock), camera moves, captions, cards, end card, SFX levels, loudness, cover —
