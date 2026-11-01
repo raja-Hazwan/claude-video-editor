@@ -8,8 +8,8 @@ Open Claude Code in this folder and it picks up the project instructions (`CLAUD
 ## What's inside
 ```
 CLAUDE.md                       project instructions: workspace layout, which tool when, house rules
-setup/settings.json             → copy to .claude/settings.json: hooks, permissions, plugins, attribution off
 .claude/
+  settings.json                 hooks, permissions, plugins (Remotion, HyperFrames), attribution off
   skills/
     talk-to-vertical-short/     Remotion pipeline: face-tracked 9:16 crop, captions, cards, SFX, cut checker
     hyperframes-video/          HTML + GSAP motion graphics rendered with HyperFrames
@@ -34,10 +34,8 @@ tools/
 ## Setup
 1. Install: ffmpeg, Node ≥ 22, Python 3.12, `pip install -U yt-dlp faster-whisper numpy "opencv-python==4.10.0.84"`.
 2. `cp .env.example .env` and add your ElevenLabs key (optional — only for generated audio).
-3. Install the project settings (hooks, permissions, plugins, attribution off) — review them first:
-   `cp setup/settings.json .claude/settings.json`
-4. `python tools/doctor.py`
-5. Open Claude Code here, trust the folder, and approve the Remotion + HyperFrames plugins when prompted.
+3. `python tools/doctor.py`
+4. Open Claude Code here, trust the folder, and approve the Remotion + HyperFrames plugins when prompted.
    For HyperFrames' own authoring skills also run `npx hyperframes skills update` once.
 
 The media workspace defaults to `D:\Davinci Vids` (`00_Inbox → 01_Sources / 02_Projects → 03_Exports`, plus `04_Footage`).
