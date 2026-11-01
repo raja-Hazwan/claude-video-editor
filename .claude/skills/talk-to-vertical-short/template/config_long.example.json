@@ -1,0 +1,109 @@
+{
+  "keywords": [
+    "dahsyat",
+    "pecah",
+    "amanah",
+    "pesalah",
+    "dana",
+    "maqasid",
+    "objektif",
+    "hudud",
+    "ta'zir",
+    "fix",
+    "penjara",
+    "denda",
+    "insaf",
+    "bantu",
+    "infak",
+    "quran",
+    "dosa",
+    "permusuhan",
+    "mampu",
+    "dibenarkan",
+    "jangan",
+    "nilai"
+  ],
+  "merge": {
+    "what aboutism": "whataboutism"
+  },
+  "clips": [
+    {
+      "id": "hook",
+      "start": 0.0,
+      "end": 3.98,
+      "punchWords": [
+        "dahsyat"
+      ]
+    },
+    {
+      "id": "question",
+      "start": 7.15,
+      "end": 12.1,
+      "punchWords": [
+        "amanah"
+      ]
+    },
+    {
+      "id": "principle",
+      "start": 35.75,
+      "end": 59.03,
+      "punchWords": [
+        "maqasid",
+        "hudud"
+      ]
+    },
+    {
+      "id": "tazir",
+      "start": 65.9,
+      "end": 84.6,
+      "punchWords": [
+        "ta'zir",
+        "duit"
+      ]
+    },
+    {
+      "id": "test",
+      "start": 200.4,
+      "end": 216.75,
+      "punchWords": [
+        "insaf"
+      ]
+    },
+    {
+      "id": "test2",
+      "start": 218.45,
+      "end": 230.1,
+      "punchWords": [
+        "insaf"
+      ]
+    },
+    {
+      "id": "danger",
+      "start": 235.15,
+      "end": 242.45,
+      "punchWords": [
+        "infak"
+      ]
+    },
+    {
+      "id": "quran",
+      "start": 243.95,
+      "end": 254.4,
+      "punchWords": [
+        "dosa"
+      ]
+    },
+    {
+      "id": "ruling",
+      "start": 254.55,
+      "end": 273.5,
+      "extend": 3.0,
+      "zoomFloor": 1.2,
+      "maxBottom": 0.85,
+      "punchWords": [
+        "dibenarkan",
+        "jawab"
+      ]
+    }
+  ]
+}

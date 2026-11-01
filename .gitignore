@@ -1,0 +1,36 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Personal Claude Code overrides
+.claude/settings.local.json
+
+# Media never goes in git — it lives in the video workspace (D:\Davinci Vids)
+Video/
+*.mp4
+*.mov
+*.MOV
+*.mkv
+*.webm
+*.m4a
+*.mp3
+*.wav
+*.aac
+*.heic
+*.HEIC
+*.jpg
+*.JPG
+*.jpeg
+*.png
+*.srt
+*.vtt
+out/
+renders/
+
+# Build / caches
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+*.stackdump
