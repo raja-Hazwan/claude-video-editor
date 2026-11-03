@@ -23,7 +23,7 @@ SKILL_DIR="<base directory of this skill>"   # the path Claude Code printed as "
 KIT=$(python -c 'import os,sys;print(os.path.realpath(os.path.join(sys.argv[1],"..","..","kit")))' "$SKILL_DIR")
 PY="$KIT/.venv/Scripts/python.exe"; [ -x "$PY" ] || bash "$KIT/setup.sh" --cutout   # Windows venv; macOS/Linux: .venv/bin/python
 ```
-`GROQ_API_KEY` must be set to transcribe. Needs ffmpeg and Node.
+Transcription is local (the Subtitle Engine); no API key. Needs ffmpeg and Node.
 
 ## Steps
 1. **Clip.** The user's 9:16 talking head. The cutout works best on one person, waist up, on a plain background.

@@ -12,8 +12,8 @@ via `parents[1]` / `parents[2]` of the skill folder, so no path changes were nee
 Local changes (re-apply after pulling a new upstream version):
 - `reel.py`, `style_template.py`: every `read_text`/`write_text` uses utf-8 (Windows default cp1252 breaks the
   templates); `npx` resolved with `shutil.which` (Windows has `npx.cmd`).
-- `transcribe.py`: uses the local Subtitle Engine (`words_engine.py`, Whisper tuned for Malay/Arabic) when it is
-  installed; Groq only as a fallback (`--groq`).
+- `transcribe.py`: rewritten to use only the local Subtitle Engine (`words_engine.py`, Whisper tuned for
+  Malay/Arabic). Groq (cloud) removed entirely, and `groq` is no longer installed by `setup.sh`.
 - `setup.sh`: Windows venv path (`.venv/Scripts/python.exe`), `python` instead of the `python3` Store stub.
 - SKILL.md files: Windows first-use commands, plus the "In this repo" block at the end.
 - `fetch_samples.sh`, this file: new.

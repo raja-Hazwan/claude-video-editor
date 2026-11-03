@@ -20,7 +20,7 @@ if [ ! -x "$VPY" ]; then
   VPY="$KIT/.venv/bin/python"; [ -d "$KIT/.venv/Scripts" ] && VPY="$KIT/.venv/Scripts/python.exe"
 fi
 "$VPY" -m pip install -q --upgrade pip
-"$VPY" -m pip install -q groq numpy pillow onnxruntime
+"$VPY" -m pip install -q numpy pillow onnxruntime
 
 mkdir -p "$KIT/vendor"
 if [ ! -s "$KIT/vendor/gsap.min.js" ]; then
@@ -36,6 +36,6 @@ if [ "${1:-}" = "--cutout" ]; then
   (cd "$KIT" && "$VPY" -c "import cutout; cutout.model_path('mobilenetv3')")
 fi
 
-# this repo transcribes with the local Subtitle Engine; Groq is only the fallback
-[ -n "${GROQ_API_KEY:-}" ] || [ -x "${SUBTITLE_ENGINE_DIR:-D:/subtitle engine}/.venv/Scripts/python.exe" ] || echo "note: no Subtitle Engine found and GROQ_API_KEY is not set, so clips cannot be transcribed"
+# transcription is the local Subtitle Engine only
+[ -x "${SUBTITLE_ENGINE_DIR:-D:/subtitle engine}/.venv/Scripts/python.exe" ] || echo "note: Subtitle Engine not found, so clips cannot be transcribed (set SUBTITLE_ENGINE_DIR)"
 say "ready: $VPY"

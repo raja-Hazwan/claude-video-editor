@@ -20,7 +20,7 @@ python skills/orbit-reel/build.py skills/orbit-reel/example.json
 python skills/orbit-reel/build.py skills/orbit-reel/example.json --prepare-only
 ```
 
-Output is `.work/orbit-reel.mp4`, with editable HTML in `.work/orbit-reel.composition/`. The sample renderer needs Python 3.9+, ffmpeg/ffprobe and Node.js 22+/npm; it does not need Groq or transcription. On first use it fetches GSAP 3.15.0 to `kit/vendor/`; HyperFrames 0.8.214 is fetched by npx. To reuse an installed renderer, set `HYPERFRAMES_CLI` to its CLI JavaScript file. The original six skills retain their existing renderer and setup.
+Output is `.work/orbit-reel.mp4`, with editable HTML in `.work/orbit-reel.composition/`. The sample renderer needs Python 3.9+, ffmpeg/ffprobe and Node.js 22+/npm; it does not need transcription. On first use it fetches GSAP 3.15.0 to `kit/vendor/`; HyperFrames 0.8.214 is fetched by npx. To reuse an installed renderer, set `HYPERFRAMES_CLI` to its CLI JavaScript file. The original six skills retain their existing renderer and setup.
 
 ## Your footage and images
 
