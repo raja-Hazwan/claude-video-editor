@@ -61,6 +61,23 @@ Register it next to the short in `Root.tsx`; keep the short too and save as `<na
 9. Use `makeTimeline(CLIPS)` from `timeline.ts` for the long composition too (example `template/src/Long.timeline-example.tsx`) — jump cuts are a `JUMP_CUT` set, everything else gets a flash.
 10. Verify with `silencedetect=n=-35dB:d=1.0` and a 1fps contact sheet across every changed boundary.
 
+## Popups (optional — pictures of the things he names)
+Look and rules: `video-style` → "Popups". Reference: `workspace\02_Projects\maza-blindbox-long` (10 popups).
+1. **Propose slots** from the approved storyboard: one table row per slot — output time · the line ("…dapat
+   KERETA…") · what to show · still or clip · why. Only concrete nouns; skip recitation.
+2. **Make `assets_to_insert/`** in the project, one folder per scene (`scene04_mainan/`), and a `README.txt` that says,
+   per slot, the exact filename, output time, his line, what to show, search terms, what to avoid, and the format;
+   plus the general "good popup picture" rules. Mark each slot `✅ RECEIVED (as <file>)` as it arrives.
+3. **Ask for one asset at a time**; when the user says "slot N added", look at the file (Read it), say how it will be
+   cropped, flag problems (brand logo, watermark, pale), and only then ask for the next. The user may supply a
+   different filename or a ready cut-out — accept it, don't install background removers unasked. For a clip from a
+   link: `download-source`, then cut 2–3 s and mute with ffmpeg.
+4. `scripts/popups.json` (see `template/popups.example.json`) → `python <skill>/scripts/prep_popups.py` writes
+   `public/popups/`. Copy `template/src/Popups.tsx`, list a `POPUPS: PopupSpec[]` in the composition with
+   `at: word(clip, "kereta") - 3`, render `<PopupLayer popups={POPUPS} />` before `<ProgressBar/>`.
+5. **Preview before the final render**: stills at each popup's frame + a short `--frames` render around the busiest
+   stretch; send a grid; wait for approval. Then render, loudnorm, verify every popup in the final file.
+
 ## TikTok cover (thumbnail)
 `template/src/Thumbnail.tsx` (a `<Still id="Thumbnail">`, register in Root). Pick the most intense face frame from the clips (contact sheet at 2fps, then 10fps around the best moment), crop 9:16 with ffmpeg (`crop=608:1080:X:0,scale=1080:1920:flags=lanczos`) → `public/cover-frame.png`. Layout: face in the upper half; red pill hook label + yellow two-line quote (Montserrat 900, ~112px, nowrap, 16px stroke) + name tag, all inside y 1100–1600 (the profile grid shows only the centre 3:4, y 240–1680). Dark gradient behind the text, no branding. **Check the eyes** on a close-up strip (crop around the face at 15fps): reject blinks/squints — prefer a frame where he faces the camera mid-word on the key line (MAZA: 0:38.4 "tidak *benar*"). Centre the face horizontally. One cover can serve both short and full-context versions (save one copy per video name). `npx remotion still Thumbnail out/cover.png`; save as `<video name> - Cover.png`.
 

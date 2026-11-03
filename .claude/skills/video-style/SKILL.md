@@ -54,6 +54,25 @@ to black (hides source name bars / social icons — remove it if the source has 
 - **KeyCard**: yellow label pill + big white headline + grey sub-line; one per idea; text in Malay, short.
 - Write "SAW", not ﷺ (font lacks the glyph). Quote his words; don't invent claims for him.
 
+## Popups — pictures of the things he names (user, 2026-11-03, Dr MAZA blind box)
+Optional, for talks built on concrete examples (toys, a ball, a bicycle, a lottery card). Only when he names a thing
+a picture makes clearer; never for abstract terms (gharar, haram) — those stay KeyCards. ~6–10 per 2 min.
+- **Look** (`template/src/Popups.tsx`): white card, padding 12, radius 30 (picture radius 20), shadow
+  `0 18px 50px rgba(0,0,0,.45)`, tilt ±3–4° alternating per popup. Default width 320 px; wide pictures 360–440.
+- **Place**: centred, top at **y 1350** — the strip under the captions (his robe / the bottom fade). Not beside his
+  face (the first try at y 560 on the right covered his eyes and sat under TikTok's side buttons).
+- **Motion**: pops in over 10f (scale 0.55→1, `Easing.back(1.8)` overshoot, fade in 4f), floats ±4 px, shrinks
+  20% + fades + drops 20 px over the last 7f.
+- **Timing**: lands **3f before** the word it illustrates; 50–66f for stills, ~80f for a clip. Never overlapping
+  each other. Fine over KeyCards (different band).
+- **Clips**: 2–3 s, muted, shown square (`objectFit: cover`). No faces of real people.
+- **Pictures**: one clear object, transparent cut-out best (crop to its alpha bounds), else plain background cropped
+  tight. No watermarks; keep a consistent kind (all illustrations or all photos) where possible. Brand logos are
+  the user's call — ask. Nothing un-Islamic (casino imagery, instruments, immodest dolls). A pale picture reads
+  faint on the white card (the blind-box doll) — prefer saturated pictures.
+- **SFX**: Mouse Click at 0.35 on a popup that doesn't share its word with a card sound or flick; otherwise none.
+- Same exclusions as SFX: no popups over Quran/hadith recitation.
+
 ## Cuts
 White flash overlay 10f where content is skipped (with a woosh); jump cut (no flash) inside a continuous thought.
 Never crossfade speech.
