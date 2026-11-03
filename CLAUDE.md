@@ -19,6 +19,10 @@ Pipeline: link → `/new-video` (download, transcribe, propose highlights, **wai
 - **The look** (framing: track vs lock, camera moves, captions, cards, end card, SFX levels, loudness): `video-style` skill — the single source of the house style; change it there.
 - **Talk → vertical short / full-context cut** (face-tracked 9:16, word captions, punch-ins, cards, SFX): Remotion, `talk-to-vertical-short` skill. It holds the house style and the cut rules the user has flagged — follow them exactly.
 - **Graphic-first pieces** (quote cards, intros, explainers, overlays): HyperFrames, `hyperframes-video` skill.
+- **Alternative reel looks** for a 9:16 talking head, only when the user asks for one: `trial-reels`, `explainer`,
+  `split-screen`, `storytelling`, `ranking-list`, `behind-the-person` (spec → HyperFrames, captions from the local
+  Whisper) and the photographic templates `shape-shift`, `picture-stack`, `scene-switch`, `visual-notes`, `orbit-reel`.
+  Shared kit in `.claude/kit/` (from claude-editing-skills; see `UPSTREAM.md`). House rules still apply.
 - **Quick jobs** (probe, trim, crop, mix, loudness, verify): ffmpeg, `ffmpeg-toolkit` skill.
 - **Downloading**: yt-dlp via `download-source` skill.
 - **Missing SFX / voice-over / music**: ElevenLabs, `elevenlabs-audio` skill — check `D:\sfx` first; calls cost credits.
