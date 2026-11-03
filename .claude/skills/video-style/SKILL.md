@@ -56,8 +56,11 @@ asterisk marks (they read as the Claude logo): badges carry a plain yellow dot. 
 (matched to the wall), not warm cream.
 Fonts: no slim or serif faces (Instrument Serif, DM Serif were removed). Headlines, badges, list items and stressed
 words use **Montserrat 700–900**, upright; a stressed word differs by colour (red on light, yellow on dark), not italic.
-Reel looks the user likes: **behind-the-person** and **split-screen**. Not wanted: orbit-reel (the "carousel") and
-the explainer panel (the "phone frame"). Over any look, keep the **house word captions** (`Captions`, `top` per look:
+Reel looks the user likes: **split-screen**, and **stickers** (`looks/Stickers.tsx`: the popup cut-outs with a white
+die-cut outline popping in over the wide framing, in the wall above his head, `pop.mp3` 0.4 on each) for the parts
+where he names things. For a story beat ("ingat dapat basikal, dapat bola je") a small sticker scene works: cursor
+clicks the box, a drawn avatar dreams of the prize, the box opens on the let-down (project `BikeWish.tsx`). Not
+wanted: orbit-reel (the "carousel"), the explainer panel (the "phone frame"), and behind-the-person's post panel. Over any look, keep the **house word captions** (`Captions`, `top` per look:
 ~1390 behind-the-person, ~1500 split-screen with `seam={false}`), not the look's own caption style.
 
 ## Cards & titles (top band, y 110+)
