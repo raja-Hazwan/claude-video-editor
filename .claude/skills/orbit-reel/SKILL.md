@@ -21,6 +21,9 @@ section of a talk (`<During from to>`), or a short reel as its own composition (
 - Cards ride an ellipse 570 px wide and 290 px deep at `speed` degrees/s, projected from (540, 900): cards behind him
   (z < 0) are drawn **under** the cut-out, the rest over it — no CSS 3D depth sorting against video. 8 cards (images
   repeat). Adjust `centerY` to his crop; check the cards never sit on his mouth for long.
+- `fit="contain"` for transparent cut-outs (toys, objects) so they sit whole on the card instead of being cropped;
+  `ink="#121412"` makes the title's first line dark when the wall above him is light (white text vanishes there).
+- It has no captions of its own: over talk, add `WordCaps` (≈ `top={1480}`) from `looks/captions.tsx`.
 
 ## Review
 Inspect the first frame, the main change and the ending. Use sharp photographs we may use, clean type; essential

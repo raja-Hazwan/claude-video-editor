@@ -3,7 +3,7 @@
 import { Img, staticFile, useCurrentFrame } from "remotion";
 import type { ClipData } from "../data/clips";
 import { Karaoke } from "./captions";
-import { E, mix, ramp, rich, sec } from "./core";
+import { E, HOUSE, mix, ramp, rich, sec } from "./core";
 import { HouseCut } from "./Storytelling";
 
 export const TIERS: [string, string][] = [["S", "#FF7F7F"], ["A", "#FFBF7F"], ["B", "#FFDF7F"], ["C", "#BFFF7F"], ["D", "#7FBFFF"], ["E", "#8F8FFF"], ["F", "#FF7FFF"]];
@@ -14,7 +14,7 @@ const SAFE_BOTTOM = 1500;
 export const RankingList: React.FC<{
   from: number; title: string; items: RankItem[]; tiers?: [string, string][]; tableTop?: number; itemTop?: number; captionTop?: number; titleColor?: string;
   volume?: (clip: ClipData) => ((f: number) => number) | undefined;
-}> = ({ from, title, items, tiers = TIERS, tableTop = 1100, itemTop, captionTop, titleColor = "#F7931E", volume }) => {
+}> = ({ from, title, items, tiers = TIERS, tableTop = 1100, itemTop, captionTop, titleColor = HOUSE.yellow, volume }) => {
   const abs = useCurrentFrame();
   const f = abs - from;
   const TX = 140, TW = 800, RH = 62, TY = tableTop;

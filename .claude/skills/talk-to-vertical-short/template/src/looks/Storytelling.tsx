@@ -3,7 +3,7 @@
 import { Img, Sequence, staticFile, useCurrentFrame } from "remotion";
 import type { ClipData } from "../data/clips";
 import { WordCaps } from "./captions";
-import { ClipSeries, E, formatNumber, mix, parseNumber, ramp, rich, sec } from "./core";
+import { ClipSeries, E, HOUSE, formatNumber, mix, parseNumber, ramp, rich, sec } from "./core";
 import { Grade } from "../Overlays";
 import { TrackedVideo } from "../TrackedVideo";
 
@@ -43,7 +43,7 @@ const Card: React.FC<{ k: StoryCard; f: number; from: number; dur: number }> = (
         <div style={{ position: "absolute", left: 0, right: 0, top: 40, textAlign: "center", font: "700 26px Inter", color: "#8a8a8a", letterSpacing: ".04em" }}>{k.label}</div>
         <svg width="180" height="180" viewBox="0 0 180 180" style={{ position: "absolute", left: 58, top: 82 }}>
           <circle cx="90" cy="90" r="78" fill="none" stroke="#eee" strokeWidth="12" />
-          <circle cx="90" cy="90" r="78" fill="none" stroke="#D97757" strokeWidth="12" strokeLinecap="round" strokeDasharray="490" strokeDashoffset={490 * (1 - (k.ring ?? 0.75) * t)} transform="rotate(-90 90 90)" />
+          <circle cx="90" cy="90" r="78" fill="none" stroke={HOUSE.red} strokeWidth="12" strokeLinecap="round" strokeDasharray="490" strokeDashoffset={490 * (1 - (k.ring ?? 0.75) * t)} transform="rotate(-90 90 90)" />
         </svg>
         <div style={{ position: "absolute", left: 0, right: 0, top: 132, textAlign: "center", font: "800 56px/1 Inter", color: "#111", letterSpacing: "-.02em" }}>{num ? formatNumber(Math.round(num[0] * t), num[1]) : k.value}</div>
         <div style={{ position: "absolute", left: 0, right: 0, top: 192, textAlign: "center", font: "600 22px Inter", color: "#8a8a8a" }}>{k.unit}</div>

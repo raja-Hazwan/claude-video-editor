@@ -1,13 +1,13 @@
 ---
 name: explainer
-description: Reel look (Remotion) over a talk's approved cut — the speaker sits low in a rounded panel on a light backdrop with his head breaking out over its top edge, and the top of the frame explains the point with visuals (a before-to-after compare with a drawn arrow, or a numbered list). White captions set key words in a serif. Use when the user runs /explainer or asks for this "speaker at the bottom, visuals on top" panel look (for a graphics-only motion piece use motion-graphics).
+description: Reel look (Remotion) over a talk's approved cut — the speaker sits low in a rounded panel on a light backdrop with his head breaking out over its top edge, and the top of the frame explains the point with visuals (a before-to-after compare with a drawn arrow, or a numbered list). White captions set key words in yellow. Use when the user runs /explainer or asks for this "speaker at the bottom, visuals on top" panel look (for a graphics-only motion piece use motion-graphics).
 ---
 
 # /explainer (Remotion)
 
 ```
 ┌──────────────────────┐
-│ Boleh atau *haram*?  │  title, one word serif italic
+│ Boleh atau *haram*?  │  title, one word red (Montserrat 900)
 │ [Bola] ⟶ [Ingat ...] │  compare: card, drawn arrow, reveal   (or a numbered list)
 │      ╭──head──╮      │  his head breaks out over the panel (the cut-out above its edge)
 │ ╭────┴────────┴────╮ │
@@ -37,7 +37,7 @@ reasoning and the yasir exception, a compare for bola vs basikal).
   `big`/`small`).
 - **list**: up to 4 numbered rows, each landing on its `at` word.
 - **eyeY**: his eye line in the wide frame (≈ 1080 for the wide head-and-shoulders window) = the panel's top edge.
-- **keys**: caption words set in the serif, every time they are said.
+- **keys**: caption words set in yellow, every time they are said.
 
 ## Taste
 - One point per segment. Land each visual on the word that names it; nothing appears before it is said (the title is

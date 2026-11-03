@@ -2,6 +2,7 @@
 // ranking-list and the photographic styles). Ported from claude-editing-skills (HyperFrames) to Remotion: every
 // look is a layer over the project's approved cut (CLIPS / timeline.ts), timed with word(clip, "x") frames.
 import { loadFont } from "@remotion/fonts";
+import { loadFont as loadMontserrat } from "@remotion/google-fonts/Montserrat";
 import { Video } from "@remotion/media";
 import { Fragment } from "react";
 import { AbsoluteFill, Easing, Freeze, interpolate, Series, staticFile, useCurrentFrame } from "remotion";
@@ -17,12 +18,15 @@ font("inter-600-normal.woff2", "Inter", "600");
 font("inter-700-normal.woff2", "Inter", "700");
 font("inter-800-normal.woff2", "Inter", "800");
 font("archivo-black-400-normal.woff2", "Archivo Black");
-font("dm-serif-display-400-italic.woff2", "DM Serif Display", "400", "italic");
-font("InstrumentSerif-400-normal.woff2", "Instrument Serif");
-font("InstrumentSerif-400-italic.woff2", "Instrument Serif", "400", "italic");
+// the house font for headlines, badges and stressed words (no thin serifs: user, 2026-11-03)
+loadMontserrat("normal", { weights: ["700", "800", "900"], subsets: ["latin"] });
 font("PixelifySans-500-normal.woff2", "Pixelify Sans", "500");
 font("PixelifySans-700-normal.woff2", "Pixelify Sans", "700");
 font("TikTokSans.ttf", "TikTok Sans", "100 900");
+
+// ---------------------------------------------------------------- house colours (video-style skill)
+/** red pill / accent, a deeper red for text on light panels, yellow emphasis, near-black ink */
+export const HOUSE = { red: "#E63946", redDk: "#C1272F", yellow: "#FFD60A", ink: "#151515", gold: "#CCB375" };
 
 // ---------------------------------------------------------------- time + easing
 export const FPS = 30;

@@ -3,7 +3,7 @@
 // (`at(1.5)` = 1.5 s into a 4.2 s segment), with his voice kept. Cut-out styles need public/cutout (cutout_clips.py).
 import { AbsoluteFill, Img, staticFile, useCurrentFrame } from "remotion";
 import type { ClipData } from "../data/clips";
-import { BottomFade, E, mix, ramp, Scaled, sec, WideCut } from "./core";
+import { BottomFade, E, HOUSE, mix, ramp, Scaled, sec, WideCut } from "./core";
 
 type Vol = { volume?: (clip: ClipData) => ((f: number) => number) | undefined };
 type Seg = { from: number; to: number };
@@ -33,10 +33,10 @@ export const ShapeShift: React.FC<Vol & Seg & {
         {cover(p.src, { objectPosition: p.objectPosition ?? "50% 50%", scale: String(p.zoom ?? 1) })}
       </div>
       <div style={{ position: "absolute", left: 120, top: 240, font: "500 25px Inter", letterSpacing: 4, textTransform: "uppercase", color: ink, zIndex: 20 }}>{eyebrow}</div>
-      <div style={{ position: "absolute", left: 120, top: 300, font: "400 115px/.95 'Instrument Serif'", letterSpacing: -2, color: ink, zIndex: 15 }}>{headline}</div>
+      <div style={{ position: "absolute", left: 120, top: 300, font: "900 92px/.98 Montserrat", letterSpacing: -2, color: ink, zIndex: 15 }}>{headline}</div>
       <div style={{ position: "absolute", left: 0, top: 1110, width: 1080, height: 810, background: "#202a26" }} />
       <Presenter box={presenter} />
-      <div style={{ position: "absolute", left: 120, top: 1420, zIndex: 20, font: "400 58px 'Instrument Serif'", color: "#eee9db" }}>{footer}</div>
+      <div style={{ position: "absolute", left: 120, top: 1420, zIndex: 20, font: "800 50px Montserrat", color: "#eee9db" }}>{footer}</div>
       <div style={{ position: "absolute", right: 160, top: 1440, zIndex: 20, font: "26px Inter", color: "#d4d4b8", letterSpacing: 4 }}>
         {String(i + 1).padStart(2, "0")} / {String(photos.length).padStart(2, "0")}
       </div>
@@ -96,7 +96,7 @@ export const VisualNotes: React.FC<Vol & Seg & {
       <div style={{ position: "absolute", left: 215, top: 310, width: 650, height: 550, overflow: "hidden", border: "2px solid #d9dbc8", background: "#e8e4dc", scale: String(mix(1, 0.92, shrink)), opacity: mix(1, 0.25, shrink) }}>
         {cover(image, { objectFit: "contain" })}
       </div>
-      <div style={{ position: "absolute", left: 235, top: 345, width: 590, height: 490, border: "3px solid #db925e", overflow: "hidden", zIndex: 3, opacity: iris, scale: String(mix(0.65, 1, iris)) }}>
+      <div style={{ position: "absolute", left: 235, top: 345, width: 590, height: 490, border: `3px solid ${HOUSE.yellow}`, overflow: "hidden", zIndex: 3, opacity: iris, scale: String(mix(0.65, 1, iris)) }}>
         <Img src={staticFile(image)} style={{ position: "absolute", maxWidth: "none", ...detail, translate: `${-18 * pan}px ${8 * pan}px`, scale: String(mix(1, 1.08, pan)) }} />
       </div>
       <div style={{ position: "absolute", left: 166, top: 845, width: 750, textAlign: "center", font: "500 37px Inter", color: "#dfdccc", opacity: call, translate: `0 ${mix(14, 0, call)}px` }}>{callout}</div>
@@ -108,8 +108,8 @@ export const VisualNotes: React.FC<Vol & Seg & {
 
 /** orbit-reel: portrait cards travel round him on a 3D ellipse (570 px wide, 290 px deep), behind his head and
  * across the foreground. Projected by hand: cards with z < 0 are drawn under the cut-out, the rest over it. */
-export const OrbitReel: React.FC<Vol & Seg & { cards: string[]; title: [string, string]; speed?: number; centerY?: number }> = ({
-  from, to, cards, title, speed = 36, centerY = 1010, volume,
+export const OrbitReel: React.FC<Vol & Seg & { cards: string[]; title: [string, string]; speed?: number; centerY?: number; fit?: "cover" | "contain"; ink?: string }> = ({
+  from, to, cards, title, speed = 36, centerY = 1010, fit = "cover", ink, volume,
 }) => {
   const f = useCurrentFrame();
   const PERSP = 1400, OX = 540, OY = 900;
@@ -122,7 +122,7 @@ export const OrbitReel: React.FC<Vol & Seg & { cards: string[]; title: [string, 
   });
   const card = (p: (typeof pos)[number]) => (
     <div key={p.i} style={{ position: "absolute", left: p.sx - 110, top: p.sy - 180, width: 220, height: 360, border: "3px solid #f6f0e5", borderRadius: 17, overflow: "hidden", background: "#dfd9d0", boxShadow: "0 5px 12px #0003", scale: String(p.k), transform: `perspective(1400px) rotateY(${p.ry}deg) rotateZ(${p.rz}deg)` }}>
-      {cover(cards[p.i % cards.length])}
+      {cover(cards[p.i % cards.length], fit === "contain" ? { objectFit: "contain", padding: 18, boxSizing: "border-box" } : {})}
     </div>
   );
   const sorted = [...pos].sort((a, b) => a.z - b.z);
@@ -133,7 +133,7 @@ export const OrbitReel: React.FC<Vol & Seg & { cards: string[]; title: [string, 
       <WideCut cutout />
       <BottomFade />
       {sorted.filter((p) => p.z >= 0).map(card)}
-      <div style={{ position: "absolute", left: 140, top: 240, width: 800, textAlign: "center", zIndex: 6, font: "700 65px/1.18 'TikTok Sans'", color: "#fff", textShadow: "0 2px 3px #000a" }}>
+      <div style={{ position: "absolute", left: 140, top: 240, width: 800, textAlign: "center", zIndex: 6, font: "700 65px/1.18 'TikTok Sans'", color: ink ?? "#fff", textShadow: ink ? "none" : "0 2px 3px #000a" }}>
         {title[0]}
         <div style={{ display: "block", width: "max-content", margin: "8px auto 0", background: "#fff", color: "#121412", textShadow: "none", padding: "0 12px 5px" }}>{title[1]}</div>
       </div>

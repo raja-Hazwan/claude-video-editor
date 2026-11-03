@@ -4,7 +4,7 @@
 import { Img, staticFile, useCurrentFrame } from "remotion";
 import type { ClipData } from "../data/clips";
 import { Karaoke, WordCaps } from "./captions";
-import { bare, E, mix, ramp, rich, sec, WORDS } from "./core";
+import { bare, E, HOUSE, mix, ramp, rich, sec, WORDS } from "./core";
 import { HouseCut } from "./Storytelling";
 
 type Vol = { volume?: (clip: ClipData) => ((f: number) => number) | undefined };
@@ -58,12 +58,12 @@ export const TrialV2: React.FC<Vol & {
       </div>
       <WordCaps top={captionTop} keys={keys} maxw={2} maxc={18} pop={[1.25, sec(0.12)]} upper
         style={{ font: "900 86px/1 'Archivo Black'", color: "#fff", letterSpacing: "-.01em", WebkitTextStroke: "6px #000", paintOrder: "stroke fill", textShadow: "0 8px 0 rgba(0,0,0,.5)" }}
-        keyStyle={{ color: "#FFE14D" }} />
+        keyStyle={{ color: HOUSE.yellow }} />
     </div>
   );
 };
 
-/** v3: one number or comparison he says, in a pixel font, over the clip in an orange frame with a blinking REC tag */
+/** v3: one number or comparison he says, in a pixel font, over the clip in an yellow frame with a blinking REC tag */
 export const TrialV3: React.FC<Vol & { from: number; stat: string; line: string; pulseAt?: number; captionTop?: number }> = ({ from, stat, line, pulseAt, captionTop = 1330, volume }) => {
   const abs = useCurrentFrame();
   const f = abs - from;
@@ -74,16 +74,16 @@ export const TrialV3: React.FC<Vol & { from: number; stat: string; line: string;
   return (
     <div style={{ position: "absolute", inset: 0, background: "#121110" }}>
       <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(255,255,255,.035) 2px,transparent 2px),linear-gradient(90deg,rgba(255,255,255,.035) 2px,transparent 2px)", backgroundSize: "40px 40px" }} />
-      <div style={{ position: "absolute", left: (1080 - VW) / 2, top: FT, width: VW, height: FH, borderRadius: 40, overflow: "hidden", boxShadow: "0 0 0 3px #D97757,0 30px 80px rgba(0,0,0,.6)", opacity: fr, translate: `0 ${mix(60, 0, fr)}px` }}>
+      <div style={{ position: "absolute", left: (1080 - VW) / 2, top: FT, width: VW, height: FH, borderRadius: 40, overflow: "hidden", boxShadow: `0 0 0 3px ${HOUSE.yellow},0 30px 80px rgba(0,0,0,.6)`, opacity: fr, translate: `0 ${mix(60, 0, fr)}px` }}>
         <div style={{ position: "absolute", left: 0, top: FH - VH, width: 1080, height: 1920, scale: String(SC), transformOrigin: "0 0" }}>
           <HouseCut volume={volume} />
         </div>
       </div>
-      <div style={{ position: "absolute", left: 0, width: 1080, top: 170, textAlign: "center", font: "700 190px/0.9 'Pixelify Sans'", color: "#FF8A4C", letterSpacing: ".01em", opacity: step, translate: `0 ${mix(-16, 0, step)}px` }}>
+      <div style={{ position: "absolute", left: 0, width: 1080, top: 170, textAlign: "center", font: "700 190px/0.9 'Pixelify Sans'", color: HOUSE.yellow, letterSpacing: ".01em", opacity: step, translate: `0 ${mix(-16, 0, step)}px` }}>
         <span style={{ display: "inline-block", scale: String(pulse) }}>{stat}</span>
         <small style={{ display: "block", font: "500 52px/1.1 'Pixelify Sans'", color: "#f3efe8", marginTop: 4, letterSpacing: ".02em" }}>{line}</small>
       </div>
-      <div style={{ position: "absolute", left: (1080 - VW) / 2 + 28, top: 438, padding: "8px 16px", borderRadius: 10, background: "rgba(0,0,0,.6)", font: "500 30px 'Pixelify Sans'", color: "#FF8A4C", opacity: Math.floor(f / sec(0.25)) % 2 ? 0.2 : 1 }}>● REC</div>
+      <div style={{ position: "absolute", left: (1080 - VW) / 2 + 28, top: 438, padding: "8px 16px", borderRadius: 10, background: "rgba(0,0,0,.6)", font: "500 30px 'Pixelify Sans'", color: HOUSE.yellow, opacity: Math.floor(f / sec(0.25)) % 2 ? 0.2 : 1 }}>● REC</div>
       <Karaoke top={captionTop} maxc={20} size={54} plate={false} font="500 {s}px/1 'Pixelify Sans'" grey="rgba(255,255,255,.35)" shadow="0 3px 10px rgba(0,0,0,.7)" />
     </div>
   );

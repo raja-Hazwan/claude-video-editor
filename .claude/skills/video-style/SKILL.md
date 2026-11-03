@@ -48,6 +48,15 @@ from `config.json` show yellow when not active.
 1080×1920, 30 fps. Grade `contrast(1.06) saturate(1.12) brightness(1.02)` + vignette + top gradient; bottom ~15% fades
 to black (hides source name bars / social icons — remove it if the source has no lower overlays).
 
+## Colours — the reel looks too (user, 2026-11-03)
+Only the house palette: red `#E63946` (pills, badges, accents; `#C1272F` for red text on a light panel), yellow
+`#FFD60A` (emphasis on dark), near-black `#151515`, white, and gold `#CCB375` for the end-card credit only. It lives
+in `looks/core.tsx` as `HOUSE`; use it, never new accent colours. No orange/cream palette and no starburst or
+asterisk marks (they read as the Claude logo): badges carry a plain yellow dot. Light backdrops stay neutral grey
+(matched to the wall), not warm cream.
+Fonts: no slim or serif faces (Instrument Serif, DM Serif were removed). Headlines, badges, list items and stressed
+words use **Montserrat 700–900**, upright; a stressed word differs by colour (red on light, yellow on dark), not italic.
+
 ## Cards & titles (top band, y 110+)
 - **Hook title**: red pill label (question / setup) + yellow two-line headline; ~6.7 s; drop SFX.
 - **Name tag**: speaker name, small, after the hook title.

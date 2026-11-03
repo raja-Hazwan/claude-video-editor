@@ -1,6 +1,6 @@
 ---
 name: split-screen
-description: Reel look (Remotion) — the classic half-and-half over a talk's approved cut. Visuals fill the top half (a step badge, a serif headline and a window showing the point — a checklist, a picture, or a grid with a cursor pick), the speaker fills the bottom half, bold uppercase captions sit on the seam. Use when the user runs /split-screen or asks for a split screen, "visuals on top, speaker at the bottom" or a step-by-step reel.
+description: Reel look (Remotion) — the classic half-and-half over a talk's approved cut. Visuals fill the top half (a step badge, a bold headline and a window showing the point — a checklist, a picture, or a grid with a cursor pick), the speaker fills the bottom half, bold uppercase captions sit on the seam. Use when the user runs /split-screen or asks for a split screen, "visuals on top, speaker at the bottom" or a step-by-step reel.
 ---
 
 # /split-screen (Remotion)
@@ -8,7 +8,7 @@ description: Reel look (Remotion) — the classic half-and-half over a talk's ap
 ```
 ┌──────────────────────┐
 │      [Langkah 1]     │  badge
-│ Ada *gharar* & maisir│  serif headline, *word* italic orange
+│ Ada *gharar* & maisir│  bold headline, *word* in yellow
 │ ┌──────────────────┐ │  window: checklist | image | grid-pick
 │ │ ☑ Gharar ...      │ │
 ├─[ UNSUR MAISIR ]─────┤  caption pill on the seam (y 918), words brighten as said

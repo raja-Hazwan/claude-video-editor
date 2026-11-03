@@ -19,7 +19,7 @@ section of a talk (`<During from to>`), or a short reel as its own composition (
 <VisualNotes from={a} to={b} image="showcase/pixel-burger.jpg" detail={{ left: -350, top: -200, width: 1100, height: 1034 }}
   tag={["STUDY / FOOD", "STUDY / THE DETAIL"]} callout={<>Familiar food. <span style={{ color: "#db925e" }}>Unexpected form.</span></>} note="look again." />
 ```
-- The whole image first; at 1.5 s it fades back and the orange-framed close-up (590×490) opens on `detail` — the
+- The whole image first; at 1.5 s it fades back and the yellow-framed close-up (590×490) opens on `detail` — the
   image's placement inside that frame (re-anchor it for every new image so it shows something real), then drifts.
   `tag` and `callout` change at 1.85 s.
 

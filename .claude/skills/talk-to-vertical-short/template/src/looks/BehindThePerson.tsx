@@ -2,7 +2,7 @@
 // they are said, an optional profile card that counts up. One `segment` per panel, over the whole cut.
 import { Img, Sequence, staticFile, useCurrentFrame } from "remotion";
 import type { ClipData } from "../data/clips";
-import { BottomFade, E, formatNumber, mix, parseNumber, ramp, sec, WideCut } from "./core";
+import { BottomFade, E, HOUSE, formatNumber, mix, parseNumber, ramp, sec, WideCut } from "./core";
 
 export type BehindPanel =
   | {
@@ -81,7 +81,7 @@ const Bars: React.FC<{ p: Extract<BehindPanel, { type: "bars" }>; f: number; fro
         const g = ramp(f, t0 + sec(i * 0.12), sec(0.5));
         return (
           <div key={i}>
-            <div style={{ position: "absolute", bottom: 170, left: x, width: bw, height: h, borderRadius: "14px 14px 4px 4px", background: i === hi ? p.color ?? "#4ade80" : "rgba(255,255,255,.22)", scale: `1 ${g}`, transformOrigin: "50% 100%" }} />
+            <div style={{ position: "absolute", bottom: 170, left: x, width: bw, height: h, borderRadius: "14px 14px 4px 4px", background: i === hi ? p.color ?? HOUSE.yellow : "rgba(255,255,255,.22)", scale: `1 ${g}`, transformOrigin: "50% 100%" }} />
             <div style={{ position: "absolute", left: x - 20, width: bw + 40, bottom: 170 + h + 12, textAlign: "center", font: "800 40px Inter", color: "#fff", opacity: ramp(f, t0 + sec(i * 0.12 + 0.3), sec(0.3)) }}>{b.show ?? b.value}</div>
             <div style={{ position: "absolute", left: x - 20, width: bw + 40, bottom: 110, textAlign: "center", font: "600 28px Inter", color: "#9a9a9a" }}>{b.label}</div>
           </div>
@@ -132,9 +132,9 @@ const Card: React.FC<{ seg: BehindSegment; top: number }> = ({ seg, top }) => {
       <Img src={staticFile(c.avatar)} style={{ width: 100, height: 100, borderRadius: "50%", objectFit: "cover" }} />
       <div>
         <div style={{ font: "700 38px/1.1 Inter", color: "#fff" }}>{c.name}</div>
-        <div style={{ font: "500 27px/1.3 Inter", color: "#9a9a9a" }}>{count && <b style={{ color: "#4ade80" }}>+{n} </b>}{c.label ?? ""}</div>
+        <div style={{ font: "500 27px/1.3 Inter", color: "#9a9a9a" }}>{count && <b style={{ color: HOUSE.yellow }}>+{n} </b>}{c.label ?? ""}</div>
       </div>
-      <div style={{ marginLeft: "auto", padding: "16px 30px", borderRadius: 40, background: pressed ? "#2c2c2e" : "#0095f6", color: "#fff", font: "700 30px Inter" }}>{pressed ? c.pressed : c.button ?? "Follow"}</div>
+      <div style={{ marginLeft: "auto", padding: "16px 30px", borderRadius: 40, background: pressed ? "#2c2c2e" : HOUSE.red, color: "#fff", font: "700 30px Inter" }}>{pressed ? c.pressed : c.button ?? "Follow"}</div>
     </div>
   );
 };

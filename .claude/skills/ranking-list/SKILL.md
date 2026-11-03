@@ -1,13 +1,13 @@
 ---
 name: ranking-list
-description: Reel look (Remotion) — a tier-list table on the speaker's chest; each item pops up as he names it and drops into its tier when the verdict lands, with an orange title on top and spoken captions just under the chin. Use when the user runs /ranking-list or asks for a tier list / ranking of things the speaker judges one by one. Not for fiqh rulings unless the user asks (the user found a tier list wrong for the blind-box talk).
+description: Reel look (Remotion) — a tier-list table on the speaker's chest; each item pops up as he names it and drops into its tier when the verdict lands, with a yellow title on top and spoken captions just under the chin. Use when the user runs /ranking-list or asks for a tier list / ranking of things the speaker judges one by one. Not for fiqh rulings unless the user asks (the user found a tier list wrong for the blind-box talk).
 ---
 
 # /ranking-list (Remotion)
 
 ```
 ┌──────────────────────┐
-│   MAINAN DALAM KOTAK │  orange skewed title
+│   MAINAN DALAM KOTAK │  yellow skewed title
 │        (face)        │
 │      anak patung     │  caption just under the chin
 │ S ▓▓  ┌──────────┐   │

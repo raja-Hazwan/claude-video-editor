@@ -1,6 +1,6 @@
 ---
 name: trial-reels
-description: Reel look (Remotion) — the same hook packaged three visually different ways, to post as Instagram/TikTok trial reels and keep the best 3-second hold. Version 1 a big yellow title with karaoke captions, version 2 a white post-card header with punch-in zooms and bold uppercase captions, version 3 a dark grid backdrop with a pixel-font stat and the clip in an orange frame. Use when the user runs /trial-reels or asks for trial reel versions, variations or A/B looks.
+description: Reel look (Remotion) — the same hook packaged three visually different ways, to post as Instagram/TikTok trial reels and keep the best 3-second hold. Version 1 a big yellow title with karaoke captions, version 2 a white post-card header with punch-in zooms and bold uppercase captions, version 3 a dark grid backdrop with a pixel-font stat and the clip in a yellow frame. Use when the user runs /trial-reels or asks for trial reel versions, variations or A/B looks.
 ---
 
 # /trial-reels (Remotion)
