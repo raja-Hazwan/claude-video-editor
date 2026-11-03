@@ -38,7 +38,7 @@ def panel_grid(j, c, p):
         cells.append(f'<div class="cell" id="cell{i}"><div class="strip">{inner}</div>{CAR_ICON if len(strip) > 1 or p.get("icons", True) else ""}</div>')
     head = ''.join(f'<b>{html.escape(t)}</b>' if k == 0 else f'<span>{html.escape(t)}</span>' for k, t in enumerate(tabs))
     label = hl.get('label')
-    c.body.append(f'''<div id="ig" class="a"><div class="hd"><div class="igl"></div>{head}</div>
+    c.body.append(f'''<div id="ig" class="a"><div class="hd">{'<div class="igl"></div>' if p.get('logo', True) else ''}{head}</div>
 <div id="grid">{''.join(cells)}{'<div id="hl" class="hid"></div>' if hl else ''}{f'<div id="hlc" class="hid">{html.escape(label)}</div>' if label else ''}</div></div>''')
     c.js.append(f'tl.fromTo("#grid",{{y:0}},{{y:{-int(p.get("scroll", 150))},duration:{c.dur:.3f},ease:"none"}},0);')
     if hl:

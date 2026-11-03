@@ -16,4 +16,5 @@ Local changes (re-apply after pulling a new upstream version):
   Malay/Arabic). Groq (cloud) removed entirely, and `groq` is no longer installed by `setup.sh`.
 - `setup.sh`: Windows venv path (`.venv/Scripts/python.exe`), `python` instead of the `python3` Store stub.
 - SKILL.md files: Windows first-use commands, plus the "In this repo" block at the end.
+- `behind-the-person/build.py`: `panel.logo: false` option to drop the Instagram-style logo.
 - `fetch_samples.sh`, this file: new.

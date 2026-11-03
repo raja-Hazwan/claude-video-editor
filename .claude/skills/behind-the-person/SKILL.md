@@ -58,7 +58,7 @@ Transcription is local (the Subtitle Engine); no API key. Needs ffmpeg and Node.
 }
 ```
 The panel takes one of three `type`s:
-- **`grid`**: an Instagram-style profile grid with 12 cells, filled with your images on repeat, that scrolls slowly. `highlight` outlines one cell, swipes through its `slides` and pops a `label` chip.
+- **`grid`**: an Instagram-style profile grid with 12 cells, filled with your images on repeat, that scrolls slowly. `highlight` outlines one cell, swipes through its `slides` and pops a `label` chip. `"logo": false` hides the Instagram-style logo in the header (this repo: always set it).
 - **`bars`**: `{"type": "bars", "title": "Views per post", "bars": [{"label": "Reels", "value": 12000, "show": "12K"}, ...], "highlight": 2, "at": 0.3}`. The bars grow in turn. Put the bar that matters at the side, because the middle sits behind the head.
 - **`image`**: `{"type": "image", "src": "screenshot.png", "scroll": 200}`, a screenshot that pans upward.
 
