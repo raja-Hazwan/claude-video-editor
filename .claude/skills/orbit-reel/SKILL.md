@@ -1,50 +1,28 @@
 ---
 name: orbit-reel
-description: Portrait image cards travel around the speaker in a 3D ring, passing behind the head and across the foreground. Use for /orbit-reel or to apply this specific portrait-video treatment.
+description: Reel look (Remotion) — portrait image cards travel around the speaker in a 3D ring, passing behind his head and across the foreground. Use for /orbit-reel or to apply this specific portrait-video treatment to a section of a talk.
 ---
 
-# /orbit-reel
+# /orbit-reel (Remotion)
 
-Apply this treatment to a portrait clip using the included 4.2-second, 1080x1920, 30fps starter. The style and images are independent of the sample speaker’s words; follow the user’s chosen topic. [See the reviewed example](../../docs/style-showcase/orbit-reel.mp4).
+Needs: cut-out + the original room.
+Setup, wide framing, cut-outs, storyboard and publish: **talk-to-vertical-short → "Reel looks"**. Component:
+`OrbitReel` in `src/looks/Photographic.tsx`; test: `Test-OrbitReel` in `template/src/LooksTest.example.tsx` (upstream sample
+photos in `.claude/assets/style-showcase`, restore with `bash .claude/kit/fetch_samples.sh` on a fresh clone).
 
-## Use
+Upstream this was a silent 4.2 s template. Here it is a **segment** `[from, to)` of the cut with his voice kept; the
+template's timings stretch to the segment (e.g. a change at 1.4 s of 4.2 s lands one third in). Use it for one
+section of a talk (`<During from to>`), or a short reel as its own composition (`<Sequence from={-from}>`).
 
-Resolve this skill folder from the base directory shown when the skill loads. Its `build.py` resolves the shared kit through that real path, including when installed as a symlink. Run:
-
-```bash
-python "D:/Claude Video Editor/.claude/skills/orbit-reel/build.py" path/to/spec.json
+## Props
+```tsx
+<OrbitReel from={a} to={b} cards={TOYS} title={["Put your ideas", "in motion."]} speed={36} centerY={1010} />
 ```
+- Cards ride an ellipse 570 px wide and 290 px deep at `speed` degrees/s, projected from (540, 900): cards behind him
+  (z < 0) are drawn **under** the cut-out, the rest over it — no CSS 3D depth sorting against video. 8 cards (images
+  repeat). Adjust `centerY` to his crop; check the cards never sit on his mouth for long.
 
-With no spec, the command reproduces the included silent sample into the repository’s `.work/` directory. `--prepare-only` builds an editable composition without rendering. Python 3.9+, ffmpeg/ffprobe and Node.js 22+/npm are required. The first build downloads pinned GSAP 3.15.0 into the ignored vendor cache; rendering uses HyperFrames 0.8.214. No transcript or API key is needed for these short templates. [Spec and custom-footage instructions](../../docs/style-showcase/README.md).
-
-## Adapt the treatment
-
-Maintain a single preserve-3d scene with perspective and a frame-matched alpha presenter at z=0. Cards with negative z pass behind the speaker; positive-z cards pass across the foreground. Keep both base video and cutout on the same source offset. The example uses eight cards, a 570px horizontal orbit and 290px depth; adjust the ring to the new speaker crop. Every card’s initial pose must use an explicit timeline position of 0, so all cards exist on frame zero.
-
-Asset keys: `banana-heels.jpg`, `blue-stairs.jpg`, `cactus.jpg`, `explainer.mp4`, `explainer_cut.webm`, `pixel-burger.jpg`, `pixel-fruit.jpg`, `red-stairs.jpg`. Full-resolution example images and source credits are in [assets/style-showcase](../../assets/style-showcase/README.md).
-
-Supply a same-size, frame-matched alpha cutout when changing the presenter. The existing `kit/cutout.py` can create it; see the shared guide. Inspect hair and hands over both bright and dark imagery. The build helper does not perform segmentation automatically.
-
-Keep the presenter visible from the first result frame. Use sharp photographs and clean type. Essential text and the face should clear platform overlays; let decorative imagery bleed rather than shrinking the entire composition. The sample’s captions and image anchors are starting points, not automatic tracking.
-
-## Review and deliver
-
-The helper validates media dimensions/duration, prepares the composition, runs the renderer check, renders and fully decodes the MP4. Inspect the first frame, the main change and the ending. Check crop anchors, text readability and matching source/cutout timing. The default is silent; preserve or add speech, SFX or music only when the user requests them. Longer edits require extending the HTML timeline and source windows; changing only the duration is insufficient.
-
-These are local Claude Code/Codex editing workflows. The ChatGPT conversation in the showcase is an authored visual, not a built-in ChatGPT slash-command integration. Third-party image rights are documented separately from the code license in the asset directory.
-
-## In this repo (claude-video-editor)
-- These are **alternative looks** to the house style, for a 9:16 talking head. Use one only when the user asks for it
-  by name or picks it; the default for a talk is still `talk-to-vertical-short` + `video-style`.
-- **Input**: a clean vertical clip with no burned-in captions. Our sources are 16:9 lectures and `reel.py` centre-crops,
-  which can cut him out of frame — first make the 9:16 crop (locked on him) with ffmpeg (`ffmpeg-toolkit`) into
-  `workspace/02_Projects/<name>/`.
-- **Where files go**: the spec, the clip, `"transcript"` and `"out"` all live in `workspace/02_Projects/<name>/`
-  (`"out": "out/<name>.<skill>.mp4"`). Never next to an original in `00_Inbox` / `01_Sources` (read-only).
-- **Words**: transcription runs locally with the Subtitle Engine (Malay/Arabic tuned); set `"transcript"` in the spec
-  (and `--transcript` for `reel.py words`) to a file in the project. Fix spellings in it before building.
-- House rules still apply: captions in Malay as he says them, "SAW" not ﷺ, no music/SFX over Quran or hadith
-  recitation, never invent numbers or claims for him, pictures we are allowed to use. Look at the sheet before
-  handing over; finished videos go through `/publish`.
-- Python is `.claude/kit/.venv/Scripts/python.exe` (run `bash .claude/kit/setup.sh --cutout` once if missing).
-  Upstream and local changes: `.claude/kit/UPSTREAM.md`.
+## Review
+Inspect the first frame, the main change and the ending. Use sharp photographs we may use, clean type; essential
+text and his face clear of the platform overlays (let decorative imagery bleed). Texts in Malay where he speaks
+Malay; nothing that claims more than he says. No music/SFX unless asked, never over Quran/hadith.

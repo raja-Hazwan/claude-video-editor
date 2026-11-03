@@ -8,7 +8,7 @@ Everything lives in this folder: the toolkit (`tools/`, `.claude/`) and the medi
 |---|---|---|
 | `00_Inbox` | new downloads (+ .srt) waiting to be edited | read-only originals |
 | `01_Sources` | originals of finished videos | read-only originals; one numbered folder per source, `NN - <original name>/` with `NN - <original name>.mp4` + `.srt` — same NN as its export |
-| `02_Projects/<name>` | one Remotion or HyperFrames project per video (`public/source.mp4`, `out/`) | all work happens here |
+| `02_Projects/<name>` | one Remotion project per video (`public/source.mp4`, `out/`) | all work happens here |
 | `03_Exports` | finals + covers ready to post | one numbered folder per video: `NN - <Speaker> - <Topic> - Short (Vertical)/` holding `NN - … - Short (Vertical).mp4` + `… - Cover.png` + `… - Post.txt` (YT Shorts / TikTok title, description, hashtags; see `/publish`) (or `Full Context (Vertical)`); NN = next free number |
 | `04_Footage` | own camera footage (e.g. Yogyakarta) | read-only originals |
 
@@ -18,11 +18,11 @@ Pipeline: link → `/new-video` (download, transcribe, propose highlights, **wai
 ## Which tool
 - **The look** (framing: track vs lock, camera moves, captions, cards, end card, SFX levels, loudness): `video-style` skill — the single source of the house style; change it there.
 - **Talk → vertical short / full-context cut** (face-tracked 9:16, word captions, punch-ins, cards, SFX): Remotion, `talk-to-vertical-short` skill. It holds the house style and the cut rules the user has flagged — follow them exactly.
-- **Graphic-first pieces** (quote cards, intros, explainers, overlays): HyperFrames, `hyperframes-video` skill.
-- **Alternative reel looks** for a 9:16 talking head, only when the user asks for one: `trial-reels`, `explainer`,
-  `split-screen`, `storytelling`, `ranking-list`, `behind-the-person` (spec → HyperFrames, captions from the local
-  Whisper) and the photographic templates `shape-shift`, `picture-stack`, `scene-switch`, `visual-notes`, `orbit-reel`.
-  Shared kit in `.claude/kit/` (from claude-editing-skills; see `UPSTREAM.md`). House rules still apply.
+- **Graphic-first pieces** (quote cards, intros, slideshows, charts, overlays): Remotion, `motion-graphics` skill.
+- **Alternative reel looks** over the approved cut, only when the user asks for one (all Remotion, `template/src/looks/`,
+  setup in talk-to-vertical-short "Reel looks"): `split-screen`, `behind-the-person`, `explainer`, `storytelling`,
+  `trial-reels`, `ranking-list`, and the photographic `shape-shift`, `picture-stack`, `scene-switch`, `visual-notes`,
+  `orbit-reel`. Cut-outs, frame rulers and sheets: `.claude/kit/`. House rules still apply.
 - **Quick jobs** (probe, trim, crop, mix, loudness, verify): ffmpeg, `ffmpeg-toolkit` skill.
 - **Downloading**: yt-dlp via `download-source` skill.
 - **Missing SFX / voice-over / music**: ElevenLabs, `elevenlabs-audio` skill — check `D:\sfx` first; calls cost credits.

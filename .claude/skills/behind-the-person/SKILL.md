@@ -1,88 +1,47 @@
 ---
 name: behind-the-person
-description: Edits a talking-head clip so the graphics sit BEHIND the speaker. The speaker is cut out and stays in front of a panel (a grid of posts, a bar chart or a screenshot), big words land on the chest as they are said, and a profile card counts a number up. Use when the user runs /behind-the-person or asks for "visuals behind me", "graphs behind the person" or a professional depth effect on a 9:16 clip.
+description: Reel look (Remotion) — graphics BEHIND the speaker over a talk's approved cut. The speaker is cut out and stands in front of a panel (a grid of pictures, a bar chart or a screenshot); big words land on his chest as they are said; an optional profile card counts a number up. Use when the user runs /behind-the-person or asks for "visuals behind him", a depth effect or graphics behind the person.
 ---
 
-# /behind-the-person
+# /behind-the-person (Remotion)
 
 ```
 ┌──────────────────────┐
 │ ╭──────────────────╮ │
-│ │ grid / chart /   │ │  the panel, BEHIND the head
-│ │ screenshot  head │ │
+│ │ grid / bars /    │ │  the panel, BEHIND his head (y 150-1020)
+│ │ image     head   │ │
 │ ╰──────── ( ) ─────╯ │
-│        10,000        │  big chest words, one beat at a time
-│  (o) Name  +10,000 [Follow] │  profile card, counts up, button flips
+│       tak tahu       │  big chest words (y ~1370), one beat at a time
+│  (o) Name  +10,000   │  optional card
 └──────────────────────┘
 ```
+Setup, wide framing, **cut-outs** (`cutout_clips.py`), storyboard and publish: **talk-to-vertical-short → "Reel
+looks"**. Component: `src/looks/BehindThePerson.tsx`; worked example: `BlindBoxDepth` in
+`template/src/Looks.timeline-example.tsx` (behind-the-person for the question, the toys, the ball and the closer).
 
-## First use
-This skill's folder is the "Base directory" Claude Code shows when it loads it.
-```bash
-SKILL_DIR="<base directory of this skill>"   # the path Claude Code printed as "Base directory for this skill"
-KIT=$(python -c 'import os,sys;print(os.path.realpath(os.path.join(sys.argv[1],"..","..","kit")))' "$SKILL_DIR")
-PY="$KIT/.venv/Scripts/python.exe"; [ -x "$PY" ] || bash "$KIT/setup.sh" --cutout   # Windows venv; macOS/Linux: .venv/bin/python
+## Props
+```tsx
+<BehindThePerson chestTop={1370} volume={closerVolume} segments={[
+  { from: 0, to: START.gharar,
+    panel: { type: "grid", images: TOYS, tabs: ["Blind box", "Mainan", "Hadiah"],
+             highlight: { index: 0, at: word("hook", "blind"), label: "Tak tahu isi?", labelAt: word("hook_2", "isi") } },
+    chest: [{ text: "blind box", at: word("hook", "blind") }, { text: "tak sah", at: word("hook_5", "sah") }] },
+]} />
 ```
-Transcription is local (the Subtitle Engine); no API key. Needs ffmpeg and Node.
-
-## Steps
-1. **Clip.** The user's 9:16 talking head. The cutout works best on one person, waist up, on a plain background.
-2. **Words.** Run `"$PY" "$KIT/reel.py" words <video>`. It prints one sentence per line with `[ends …]` (when its last word ends). Pick a 3 to 6 second stretch of whole sentences with a concrete claim: `start` is the first word's time and `end` is the `[ends …]` time. A claim that holds a number works best ("this post alone got me over 10,000 followers").
-3. **Framing.** Run `"$PY" "$KIT/reel.py" frame <video> <t> frame.jpg` and look at it.
-   - The panel spans y 150 to 1020 by default. The head should cover its lower middle.
-   - The chest words sit at `chest_top` (1105) and the card at `card_top` (1235). Both should land on the torso, under the chin.
-4. **Spec.** Write `<clip>.behind-the-person.json` (below). Paths in a spec are relative to the spec file. Times are seconds from `start`, or spoken words (`"followers"`, `"this#2"`, `"over+0.2"`).
-5. **Build.** Run `"$PY" "$SKILL_DIR/build.py" <spec.json>`. The cutout takes about 0.1 s per frame.
-6. **Check.** Look at `<out>.sheet.jpg`:
-   - The chest words don't cover the mouth.
-   - The panel reads around the head.
-   - The card is fully visible.
-   - Nothing sits in the red zones.
-7. **Hand over** the mp4 path.
-
-## Spec
-```json
-{
-  "video": "my-clip.mp4", "start": 9.4, "end": 13.1,
-  "panel": {
-    "type": "grid", "images": "my-posts/*.jpg", "tabs": ["Posts", "Reels", "Tagged"],
-    "highlight": {"index": 0, "at": "this", "slides": ["post-2.jpg", "post-3.jpg"], "swipe_at": ["carousel", "alone+0.2"],
-                  "label": "10K+ followers", "label_at": "10,000"}
-  },
-  "chest": [
-    {"text": "for example", "at": 0.24}, {"text": "this carousel", "at": "this"}, {"text": "alone", "at": "alone"},
-    {"text": "got me over", "at": "got"}, {"text": "{count}", "at": "10,000"}, {"text": "followers", "at": "followers"}
-  ],
-  "card": {"avatar": "me.jpg", "name": "Your Name", "label": "new followers", "count": "10,000", "at": "got",
-           "count_at": "10,000", "button": "Follow", "pressed": "Following", "press_at": "followers"}
-}
-```
-The panel takes one of three `type`s:
-- **`grid`**: an Instagram-style profile grid with 12 cells, filled with your images on repeat, that scrolls slowly. `highlight` outlines one cell, swipes through its `slides` and pops a `label` chip. `"logo": false` hides the Instagram-style logo in the header (this repo: always set it).
-- **`bars`**: `{"type": "bars", "title": "Views per post", "bars": [{"label": "Reels", "value": 12000, "show": "12K"}, ...], "highlight": 2, "at": 0.3}`. The bars grow in turn. Put the bar that matters at the side, because the middle sits behind the head.
-- **`image`**: `{"type": "image", "src": "screenshot.png", "scroll": 200}`, a screenshot that pans upward.
-
-The other fields:
-- **`chest`**: the big words, each shown from its `at` until the next one. `{count}` counts up to `card.count` (`"10,000"`, `"4:12"` or `"250"`).
-- **`card`**: optional. It counts up with the chest and the button flips at `press_at`.
+- **panel** (per segment, re-enters at its `from`):
+  - `grid`: 12 cells (images repeat), slow scroll; `highlight` outlines cell `index` at `at`, swipes through `slides`
+    at `swipeAt` and pops a `label` chip at `labelAt`. No platform logo (the upstream Instagram logo is gone).
+  - `bars`: `{type: "bars", title, bars: [{label, value, show}], highlight, at}` — bars grow in turn; put the bar that
+    matters at the side (the middle is behind his head).
+  - `image`: `{type: "image", src, scroll}` — a screenshot panning up.
+- **chest**: each shown from its `at` until the next. `{count}` in a text counts up to `card.count`.
+- **card** (optional): `{avatar, name, label, count, at, countAt, button, pressed, pressAt}`.
+- Mix with other looks by section: `<During from to><BehindThePerson segments={[s]} /></During>`.
 
 ## Taste
-- Chest words are 1 to 3 words: the beat, not the sentence. Land each one on its word.
-- The panel's content must be real: the user's own posts, analytics or screenshots. Never invent their numbers. The count must be one they said.
-- Keep it calm. One panel, one highlight and one card is enough. The motion comes from the speaker standing in front of it.
-
-## In this repo (claude-video-editor)
-- These are **alternative looks** to the house style, for a 9:16 talking head. Use one only when the user asks for it
-  by name or picks it; the default for a talk is still `talk-to-vertical-short` + `video-style`.
-- **Input**: a clean vertical clip with no burned-in captions. Our sources are 16:9 lectures and `reel.py` centre-crops,
-  which can cut him out of frame — first make the 9:16 crop (locked on him) with ffmpeg (`ffmpeg-toolkit`) into
-  `workspace/02_Projects/<name>/`.
-- **Where files go**: the spec, the clip, `"transcript"` and `"out"` all live in `workspace/02_Projects/<name>/`
-  (`"out": "out/<name>.<skill>.mp4"`). Never next to an original in `00_Inbox` / `01_Sources` (read-only).
-- **Words**: transcription runs locally with the Subtitle Engine (Malay/Arabic tuned); set `"transcript"` in the spec
-  (and `--transcript` for `reel.py words`) to a file in the project. Fix spellings in it before building.
-- House rules still apply: captions in Malay as he says them, "SAW" not ﷺ, no music/SFX over Quran or hadith
-  recitation, never invent numbers or claims for him, pictures we are allowed to use. Look at the sheet before
-  handing over; finished videos go through `/publish`.
-- Python is `.claude/kit/.venv/Scripts/python.exe` (run `bash .claude/kit/setup.sh --cutout` once if missing).
-  Upstream and local changes: `.claude/kit/UPSTREAM.md`.
+- Chest words are 1–3 words: the beat, not the sentence; land each on its word. Malay, as he says it.
+- The panel's content must be real or illustrative pictures we may use — never invent numbers; a count must be one
+  he said.
+- Keep it calm: one panel, one highlight per segment. The motion comes from him standing in front of it.
+- Check: chest words under his chin (not on the mouth), the panel reads around his head, nothing in the red zones,
+  his edges clean against the panel (hands, cap, glasses).

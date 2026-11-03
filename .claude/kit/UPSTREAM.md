@@ -1,20 +1,16 @@
-# Reel skills kit — upstream
+# Reel looks — upstream
 
-Copied from https://github.com/artemnovitckii/claude-editing-skills at commit `beff6b8` (2026-11-03), by
-Artem Novitckii, MIT licensed (`LICENSE-editing-skills`). Fonts: SIL OFL (`fonts/OFL-*.txt`). Sample photos and
-footage are third-party; their rights are in `../assets/style-showcase/README.md` and `sources.json` (not covered by
-the MIT licence; media is gitignored — `bash .claude/kit/fetch_samples.sh` restores it).
+The eleven reel-look skills started from https://github.com/artemnovitckii/claude-editing-skills (commit `beff6b8`,
+2026-11-03) by Artem Novitckii, MIT licensed (`LICENSE-editing-skills`), which rendered spec JSON through HyperFrames
+(HTML + GSAP). **This repo is a Remotion port, not a copy**: upstream is a reference for look and taste only, and its
+updates don't apply by pulling.
 
-Layout here: skills in `.claude/skills/<name>/`, the shared kit in `.claude/kit/`, sample media in
-`.claude/assets/style-showcase/`, guide + previews in `.claude/docs/style-showcase/` (their `build.py` files find these
-via `parents[1]` / `parents[2]` of the skill folder, so no path changes were needed).
-
-Local changes (re-apply after pulling a new upstream version):
-- `reel.py`, `style_template.py`: every `read_text`/`write_text` uses utf-8 (Windows default cp1252 breaks the
-  templates); `npx` resolved with `shutil.which` (Windows has `npx.cmd`).
-- `transcribe.py`: rewritten to use only the local Subtitle Engine (`words_engine.py`, Whisper tuned for
-  Malay/Arabic). Groq (cloud) removed entirely, and `groq` is no longer installed by `setup.sh`.
-- `setup.sh`: Windows venv path (`.venv/Scripts/python.exe`), `python` instead of the `python3` Store stub.
-- SKILL.md files: Windows first-use commands, plus the "In this repo" block at the end.
-- `behind-the-person/build.py`: `panel.logo: false` option to drop the Instagram-style logo.
-- `fetch_samples.sh`, this file: new.
+- Looks: `talk-to-vertical-short/template/src/looks/*.tsx` (core, captions, SplitScreen, BehindThePerson, Explainer,
+  Storytelling, TrialReels, RankingList, Photographic). Each is a layer over the project's approved cut, timed with
+  `timeline.ts` — not one short stretch per reel. Skill docs: `.claude/skills/<look>/SKILL.md`; setup in
+  talk-to-vertical-short "Reel looks".
+- Kept from upstream here: `cutout.py` (RobustVideoMatting, GPL-3.0 model downloaded at setup), `reel.py` (words /
+  frame ruler / safe-zone sheet), `fonts/` (SIL OFL, `OFL-*.txt`), the sample photos (`../assets/style-showcase`,
+  third-party rights in its README / `sources.json`; media gitignored — `bash .claude/kit/fetch_samples.sh`).
+- New here: `cutout_clips.py` (one cut-out per approved clip, on the wide window), local `transcribe.py` (the Subtitle
+  Engine; no cloud), Windows-ready `setup.sh`. Removed: every HyperFrames/GSAP builder and template.

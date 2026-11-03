@@ -30,7 +30,7 @@ for exe, args in [("ffmpeg", ["-version"]), ("ffprobe", ["-version"]), ("yt-dlp"
     row(exe, bool(path), version([exe, *args]) if path else "")
 
 node_major = version(["node", "--version"]).lstrip("v").split(".")[0]
-row("node >= 22 (HyperFrames)", node_major.isdigit() and int(node_major) >= 22, f"v{node_major}")
+row("node >= 22 (Remotion)", node_major.isdigit() and int(node_major) >= 22, f"v{node_major}")
 
 for mod, pip in [("faster_whisper", "faster-whisper"), ("cv2", "opencv-python==4.10.0.84"), ("numpy", "numpy")]:
     row(f"python: {mod}", importlib.util.find_spec(mod) is not None, "" if importlib.util.find_spec(mod) else f"pip install {pip}")

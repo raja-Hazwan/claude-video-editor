@@ -61,6 +61,32 @@ Register it next to the short in `Root.tsx`; keep the short too and save as `<na
 9. Use `makeTimeline(CLIPS)` from `timeline.ts` for the long composition too (example `template/src/Long.timeline-example.tsx`) — jump cuts are a `JUMP_CUT` set, everything else gets a flash.
 10. Verify with `silencedetect=n=-35dB:d=1.0` and a 1fps contact sheet across every changed boundary.
 
+## Reel looks (Remotion, `template/src/looks/`)
+Alternative looks to the house style, used only when the user picks one — skills `split-screen`, `behind-the-person`,
+`explainer`, `storytelling`, `trial-reels`, `ranking-list`, `shape-shift`, `picture-stack`, `scene-switch`,
+`visual-notes`, `orbit-reel` (ported from claude-editing-skills, which rendered with HyperFrames). Every look is a
+**layer over the approved cut** (same `CLIPS`, `timeline.ts`, `word()`), so it runs the full length — the upstream
+"one 3–8 s stretch per reel" model cut 08/09 to 42 s and dropped the hook (user: "the video are cut short").
+1. **After** the house cut is approved and `gen_data.py` has run: copy `template/src/looks/` → `src/looks/`,
+   `npx remotion add @remotion/fonts`, copy `.claude/kit/fonts/*` → `public/fonts/`.
+2. **Wide framing** (split-screen + every cut-out look): the face-tracked crop is too tight for panels (his chin fell
+   into Instagram's bottom zone). Read a source frame and set `WIDE` in `looks/core.tsx` (x = his centre − w/2, h
+   above any desk, srcEnd = source duration): the source window scaled to 1080 wide, placed low, a feathered fill above.
+3. **Cut-outs** (behind-the-person, explainer, scene-switch, shape-shift, visual-notes, orbit-reel): once
+   `bash .claude/kit/setup.sh --cutout`; then in the background
+   `.claude/kit/.venv/Scripts/python.exe .claude/kit/cutout_clips.py <project> --crop X,W,H` (same numbers as `WIDE`;
+   ~0.1 s/frame, cached per clip) → `public/cutout/<clip>.webm`. Check alignment before building: a still of the
+   cut-out over red with the base ghosted on top (`CutoutCheck` in `Looks.timeline-example.tsx`) — no double edge.
+4. **`src/Looks.tsx`** (example: `Looks.timeline-example.tsx`): steps/segments `from`/`to` = `START.<clip>` /
+   `end(...)`, every `at` = `word(clip, "x")` — never hand frames. Mix looks by section with `<During from to>` (no
+   time shift). A stretch-only reel (trial-reels, a hook test) = its own composition with `<Sequence from={-from}>`
+   (`LooksTest.example.tsx`). Keep the house `EndCard` on the closer's extend.
+5. **Banners**: `BottomFade` (y 1640→1715) is in every look and rides with the presenter box — check the account
+   banner / name bars stay hidden in the frames.
+6. **Storyboard stop (9b)** as usual — stills at every step/segment start and key words; wait for approval; then
+   render, loudnorm (`-14 LUFS`, ≤ −1.5 dBTP), `/publish`. House rules hold: Malay captions as he says them, "SAW",
+   no SFX/music over Quran/hadith, no invented claims or numbers, pictures we may use, no brand UI (logos) in panels.
+
 ## Popups (optional — pictures of the things he names)
 Look and rules: `video-style` → "Popups". Reference: `workspace\02_Projects\maza-blindbox-long` (10 popups).
 1. **Propose slots** from the approved storyboard: one table row per slot — output time · the line ("…dapat

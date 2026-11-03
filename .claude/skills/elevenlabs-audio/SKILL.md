@@ -29,8 +29,7 @@ Endpoints used: `POST /v1/sound-generation`, `POST /v1/text-to-speech/{voice_id}
 
 ## Using the result
 - Remotion: copy into `public/sfx/` and use `<Audio src={staticFile("sfx/x.mp3")} volume={…} />` at the hit frame;
-  align the sound's *peak*, not its start (measure: `ffmpeg -i x.mp3 -af astats=metadata=1:reset=1 …` or `npx hyperframes audio`).
-- HyperFrames: `<audio src="x.mp3" data-start="12.5" data-duration="1.2" data-track-index="5" data-volume="0.5">`.
+  align the sound's *peak*, not its start (measure: `ffmpeg -i x.mp3 -af astats=metadata=1:reset=1 …`).
 - Plain ffmpeg mix / ducking recipes: see the ffmpeg-toolkit skill.
 - Levels: speech ≈ -14 LUFS; music bed 18–24 dB under the voice; SFX felt, not heard over words.
 - Religious talks (house rule): no music under Quran/hadith recitation, no techy beeps — keep it soft and sparse.

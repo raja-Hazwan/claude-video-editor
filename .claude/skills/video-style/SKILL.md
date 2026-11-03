@@ -1,12 +1,12 @@
 ---
 name: video-style
-description: The channel's house style for every edited video — framing (when to face-track vs lock the frame), camera moves (slow push/pull, quick zoom in/out, emphasis zooms), caption look and size, title/key cards, end card and branding, colours, and SFX levels. Use whenever building or changing the look of a short, full-context cut, cover or graphic (Remotion or HyperFrames), or when the user says the style feels too busy / too much / wants it adjusted.
+description: The channel's house style for every edited video — framing (when to face-track vs lock the frame), camera moves (slow push/pull, quick zoom in/out, emphasis zooms), caption look and size, title/key cards, end card and branding, colours, and SFX levels. Use whenever building or changing the look of a short, full-context cut, cover or graphic (Remotion), or when the user says the style feels too busy / too much / wants it adjusted.
 ---
 
 # Video house style
 
 The look the user approved for Malay Islamic talk shorts (Dr MAZA, Prof Dr Rozaimi). `talk-to-vertical-short` and
-`hyperframes-video` build with it; change it **here** when the user adjusts the style, then update the template
+`motion-graphics` build with it; change it **here** when the user adjusts the style, then update the template
 components (`talk-to-vertical-short/template/src/`) to match. Overall feel: calm and steady, with movement only where
 it means something.
 

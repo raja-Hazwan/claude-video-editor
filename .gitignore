@@ -36,10 +36,8 @@ __pycache__/
 .venv/
 *.stackdump
 
-# Reel skills kit (.claude/kit, from claude-editing-skills): env, downloads, build output
+# Reel-look tools (.claude/kit): env, matting model, transcripts
 .claude/kit/.venv/
-.claude/kit/vendor/
 .claude/kit/models/
 .work/
-*.composition/
 *.transcript.json
