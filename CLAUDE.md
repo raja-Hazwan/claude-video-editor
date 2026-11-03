@@ -19,6 +19,8 @@ Pipeline: link → `/new-video` (download, transcribe, propose highlights, **wai
 - **The look** (framing: track vs lock, camera moves, captions, cards, end card, SFX levels, loudness): `video-style` skill — the single source of the house style; change it there.
 - **Talk → vertical short / full-context cut** (face-tracked 9:16, word captions, punch-ins, cards, SFX): Remotion, `talk-to-vertical-short` skill. It holds the house style and the cut rules the user has flagged — follow them exactly.
 - **Graphic-first pieces** (quote cards, intros, slideshows, charts, overlays): Remotion, `motion-graphics` skill.
+- **House reel look** (default for full-context cuts): stickers + split-screen alternating, house captions on top —
+  `video-style` "House reel look", built from talk-to-vertical-short `template/src/Reel.timeline-example.tsx`.
 - **Alternative reel looks** over the approved cut, only when the user asks for one (all Remotion, `template/src/looks/`,
   setup in talk-to-vertical-short "Reel looks"): `split-screen`, `behind-the-person`, `explainer`, `storytelling`,
   `trial-reels`, `ranking-list`, and the photographic `shape-shift`, `picture-stack`, `scene-switch`, `visual-notes`,

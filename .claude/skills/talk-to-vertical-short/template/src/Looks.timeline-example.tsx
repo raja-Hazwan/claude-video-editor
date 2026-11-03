@@ -1,4 +1,4 @@
-// Example (maza-blindbox-long): the blind-box talk in two reel looks over the whole approved cut. Copy to src/Looks.tsx and rewrite the steps/segments for your talk. Timing from timeline.ts only.
+// Example (maza-blindbox-long): the blind-box talk in the reel looks over the whole approved cut. Copy to src/Looks.tsx and rewrite the steps/segments for your talk. Timing from timeline.ts only.
 import { Composition, interpolate, Sequence } from "remotion";
 import { CLIPS, type ClipData } from "./data/clips";
 import { EndCard } from "./Overlays";
@@ -9,18 +9,18 @@ import { Explainer, type ExplainerSegment } from "./looks/Explainer";
 import { SplitScreen, type SplitStep } from "./looks/SplitScreen";
 import { end, START, TOTAL_FRAMES, word } from "./timeline";
 
-const END_CARD = 90;
-const endCard = end("closer", -END_CARD);
+export const END_CARD = 90;
+export const endCard = end("closer", -END_CARD);
 // speech fades out under the end card (as in the house cut)
-const closerVolume = (clip: ClipData) =>
+export const closerVolume = (clip: ClipData) =>
   clip.id === "closer"
     ? (f: number) => interpolate(f, [CLIPS.closer.frames - END_CARD, CLIPS.closer.frames - END_CARD + 6], [1, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp" })
     : undefined;
 
-const P = (f: string) => `popups/${f}.png`;
-const TOYS = ["blindbox", "kereta", "patung", "bola_kotak", "basikal", "bola_je", "bola_merah_biru", "tikam"].map(P);
+export const P = (f: string) => `popups/${f}.png`;
+export const TOYS = ["blindbox", "kereta", "patung", "bola_kotak", "basikal", "bola_je", "bola_merah_biru", "tikam"].map(P);
 
-const STEPS: SplitStep[] = [
+export const STEPS: SplitStep[] = [
   { from: 0, to: START.gharar, badge: "Soalan", headline: "Beli *blind box*?", visual: { type: "checklist", bar: "apa hukumnya?", items: [
     { text: "Tak tahu *isi*", at: word("hook_2", "isi") },
     { text: "Apa sahaja *barang*", at: word("hook_4", "barang") },
@@ -50,7 +50,7 @@ const STEPS: SplitStep[] = [
   ] } },
 ];
 
-const End = () => (
+export const End = () => (
   <Sequence name="End card" from={endCard} durationInFrames={END_CARD}>
     <EndCard durationInFrames={END_CARD} message="Tak tahu isinya? Haram." sub="Kecuali gharar yang sedikit (yasir)." speaker="S.S. Dato' Dr. MAZA" source="PROmedia Tajdid" />
   </Sequence>
@@ -64,8 +64,8 @@ export const BlindBoxSteps: React.FC = () => (
 );
 
 // ---------------------------------------------------------------- Depth: behind-the-person + explainer, by section
-const GRID = { type: "grid" as const, images: TOYS, tabs: ["Blind box", "Mainan", "Hadiah"] };
-const BEHIND: BehindSegment[] = [
+export const GRID = { type: "grid" as const, images: TOYS, tabs: ["Blind box", "Mainan", "Hadiah"] };
+export const BEHIND: BehindSegment[] = [
   { from: 0, to: START.gharar, panel: { ...GRID, highlight: { index: 0, at: word("hook", "blind"), label: "Tak tahu isi?", labelAt: word("hook_2", "isi") } },
     chest: [
       { text: "blind box", at: word("hook", "blind") }, { text: "apa hukum?", at: word("hook_2", "tak") },
@@ -88,7 +88,7 @@ const BEHIND: BehindSegment[] = [
       { text: "tak boleh beli", at: word("closer", "kita") }, { text: "maisir", at: word("closer", "maisir") }, { text: "perjudian", at: word("closer", "perjudian") },
     ] },
 ];
-const EXPLAIN: ExplainerSegment[] = [
+export const EXPLAIN: ExplainerSegment[] = [
   { from: START.gharar, to: START.anak, title: "Kenapa *haram*?", visual: { type: "list", items: [
     { text: "Ada *gharar*: tidak jelas", at: word("gharar", "gharar") },
     { text: "Ada *maisir*: judi", at: word("gharar", "maisir") },
@@ -104,7 +104,7 @@ const EXPLAIN: ExplainerSegment[] = [
     right: { label: "Tak tahu isi", big: "Ingat\n*basikal*", small: "tengok-tengok, bola je", at: word("basikal", "ingat"), revealAt: word("basikal_2", "bola") },
     arrowAt: word("basikal", "tapi") } },
 ];
-const KEYS = ["gharar", "maisir", "yasir", "haram", "boleh", "basikal", "bola"];
+export const KEYS = ["gharar", "maisir", "yasir", "haram", "boleh", "basikal", "bola"];
 
 export const BlindBoxDepth: React.FC = () => (
   <>

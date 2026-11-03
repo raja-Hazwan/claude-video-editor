@@ -62,7 +62,13 @@ Register it next to the short in `Root.tsx`; keep the short too and save as `<na
 10. Verify with `silencedetect=n=-35dB:d=1.0` and a 1fps contact sheet across every changed boundary.
 
 ## Reel looks (Remotion, `template/src/looks/`)
-Alternative looks to the house style, used only when the user picks one — skills `split-screen`, `behind-the-person`,
+**House reel (default for full-context cuts):** stickers + split-screen alternating by section, house captions on
+top — rules in `video-style` → "House reel look". Build it from `template/src/Reel.timeline-example.tsx` (copy to
+`src/Reel.tsx`, register `ReelComposition` in `Root.tsx`) with `Looks.timeline-example.tsx` for the split steps and
+`BikeWish.example.tsx` for a story scene; `public/sfx/pop.mp3` from `D:\sfx`; sticker pictures = the popup cut-outs
+(`public/popups/`, transparent PNGs). Setup steps 1–2 and 4–6 below apply (no cut-outs needed).
+
+Other looks, used only when the user picks one — skills `split-screen`, `behind-the-person`,
 `explainer`, `storytelling`, `trial-reels`, `ranking-list`, `shape-shift`, `picture-stack`, `scene-switch`,
 `visual-notes`, `orbit-reel` (ported from claude-editing-skills, which rendered with HyperFrames). Every look is a
 **layer over the approved cut** (same `CLIPS`, `timeline.ts`, `word()`), so it runs the full length — the upstream

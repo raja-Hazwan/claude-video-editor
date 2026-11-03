@@ -63,6 +63,24 @@ clicks the box, a drawn avatar dreams of the prize, the box opens on the let-dow
 wanted: orbit-reel (the "carousel"), the explainer panel (the "phone frame"), and behind-the-person's post panel. Over any look, keep the **house word captions** (`Captions`, `top` per look:
 ~1390 behind-the-person, ~1500 split-screen with `seam={false}`), not the look's own caption style.
 
+## House reel look — stickers + split-screen (user, 2026-11-03: "i love this style make it home")
+The default look for every **full-context cut** (and a short when it has named things to show), built over the
+approved cut at the same length. Reference: `workspace/02_Projects/maza-blindbox-long` → `src/Reel.tsx`
+(export 08); template `talk-to-vertical-short/template/src/Reel.timeline-example.tsx`.
+- **Sections alternate** by what he is doing: **stickers** where he names concrete things or tells a story (hook,
+  examples, the let-down) · **split-screen** where he gives reasons, rulings, conditions (checklist / picture steps,
+  `seam={false}`). Switch only at a clip boundary; flash + woosh where content is skipped, otherwise a hard cut with
+  a different whoosh per change (woosh2 / woosh3 / fastwoosh / Woosh into the closer).
+- **Stickers**: land 3f before the word, 50–190f, never two pictures on the same spot at once; positions in the wall
+  above his head — left x 260 / centre 540 / right 820, y 330–560; pictures 230–470 px wide; text stickers short
+  (2–3 words, uppercase, red pill, ink for a calm line), tilt ±3–7° alternating. `pop.mp3` 0.4 on each.
+- **Split steps**: badge (Sebabnya / Pengecualian / Boleh / Hukumnya …) + Montserrat headline with one stressed word
+  + checklist items landing on his words; clicks / old cam / drop on the items as in the SFX table.
+- **One story scene** where the talk has a punchline example (blind box: `BikeWish.example.tsx` — cursor clicks the
+  box, a drawn avatar dreams of the prize in a thought bubble, the box opens on the let-down, the face falls).
+- **House word captions** over everything, `top` per section (1390 stickers, 1500 split); none under the end card.
+- House end card, house loudness. Other looks (behind-the-person, storytelling …) only when the user asks.
+
 ## Cards & titles (top band, y 110+)
 - **Hook title**: red pill label (question / setup) + yellow two-line headline; ~6.7 s; drop SFX.
 - **Name tag**: speaker name, small, after the hook title.
