@@ -18,13 +18,13 @@ const PAUSE_SPLIT_MS = 700;
 const ACTIVE = "#FFD60A";
 const KEY_BG = "#E63946";
 
-const CaptionPage: React.FC<{ page: TikTokPage; keys: Set<number> }> = ({ page, keys }) => {
+const CaptionPage: React.FC<{ page: TikTokPage; keys: Set<number>; top: number }> = ({ page, keys, top }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const absoluteTimeMs = page.startMs + (frame / fps) * 1000;
 
   return (
-    <AbsoluteFill style={{ justifyContent: "flex-start", alignItems: "center", paddingTop: 1180 }}>
+    <AbsoluteFill style={{ justifyContent: "flex-start", alignItems: "center", paddingTop: top }}>
       <div
         style={{
           width: 800,
@@ -80,9 +80,10 @@ const CaptionPage: React.FC<{ page: TikTokPage; keys: Set<number> }> = ({ page, 
 };
 
 /** Word-by-word TikTok-style captions for one clip (times relative to the clip start). */
-export const Captions: React.FC<{ words: Word[]; durationInFrames: number }> = ({
+export const Captions: React.FC<{ words: Word[]; durationInFrames: number; top?: number }> = ({
   words,
   durationInFrames,
+  top = 1180,
 }) => {
   const { fps } = useVideoConfig();
 
@@ -119,7 +120,7 @@ export const Captions: React.FC<{ words: Word[]; durationInFrames: number }> = (
         if (endFrame - startFrame <= 0) return null;
         return (
           <Sequence key={index} from={startFrame} durationInFrames={endFrame - startFrame} name={`Caption ${index + 1}`}>
-            <CaptionPage page={page} keys={keys} />
+            <CaptionPage page={page} keys={keys} top={top} />
           </Sequence>
         );
       })}

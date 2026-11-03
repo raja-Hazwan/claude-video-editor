@@ -160,8 +160,8 @@ const StepPanel: React.FC<{ step: SplitStep }> = ({ step }) => {
 };
 
 /** videoTop: moves the wide frame inside the bottom half so the eyes sit ~220-300 px into it (chin above y 1500) */
-export const SplitScreen: React.FC<{ steps: SplitStep[]; videoTop?: number; captionTop?: number; volume?: (clip: ClipData) => ((f: number) => number) | undefined }> = ({
-  steps, videoTop = -860, captionTop = 918, volume,
+export const SplitScreen: React.FC<{ steps: SplitStep[]; videoTop?: number; captionTop?: number; seam?: boolean; volume?: (clip: ClipData) => ((f: number) => number) | undefined }> = ({
+  steps, videoTop = -860, captionTop = 918, seam = true, volume,
 }) => (
   <div style={{ position: "absolute", inset: 0, backgroundColor: "#000" }}>
     <div style={{ position: "absolute", left: 0, top: 960, width: 1080, height: 960, overflow: "hidden" }}>
@@ -178,6 +178,6 @@ export const SplitScreen: React.FC<{ steps: SplitStep[]; videoTop?: number; capt
         </Sequence>
       ))}
     </div>
-    <SeamCaptions top={captionTop} />
+    {seam && <SeamCaptions top={captionTop} />}
   </div>
 );

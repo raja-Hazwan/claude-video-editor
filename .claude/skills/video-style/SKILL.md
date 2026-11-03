@@ -56,6 +56,9 @@ asterisk marks (they read as the Claude logo): badges carry a plain yellow dot. 
 (matched to the wall), not warm cream.
 Fonts: no slim or serif faces (Instrument Serif, DM Serif were removed). Headlines, badges, list items and stressed
 words use **Montserrat 700–900**, upright; a stressed word differs by colour (red on light, yellow on dark), not italic.
+Reel looks the user likes: **behind-the-person** and **split-screen**. Not wanted: orbit-reel (the "carousel") and
+the explainer panel (the "phone frame"). Over any look, keep the **house word captions** (`Captions`, `top` per look:
+~1390 behind-the-person, ~1500 split-screen with `seam={false}`), not the look's own caption style.
 
 ## Cards & titles (top band, y 110+)
 - **Hook title**: red pill label (question / setup) + yellow two-line headline; ~6.7 s; drop SFX.
