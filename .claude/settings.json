@@ -6,15 +6,11 @@
     "sessionUrl": false
   },
   "permissions": {
-    "additionalDirectories": [
-      "D:\\Davinci Vids"
-    ],
     "allow": [
       "Bash(ffmpeg *)",
       "Bash(ffprobe *)",
       "Bash(yt-dlp *)",
       "Bash(npx remotion *)",
-      "Bash(npx hyperframes *)",
       "Bash(npx tsc *)",
       "Bash(python tools/*)",
       "Bash(python .claude/skills/*)"
@@ -57,16 +53,9 @@
         "source": "github",
         "repo": "remotion-dev/claude-code-plugin"
       }
-    },
-    "hyperframes": {
-      "source": {
-        "source": "github",
-        "repo": "heygen-com/hyperframes"
-      }
     }
   },
   "enabledPlugins": {
-    "remotion@remotion": true,
-    "hyperframes@hyperframes": true
+    "remotion@remotion": true
   }
 }

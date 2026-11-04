@@ -6,7 +6,8 @@
 # Personal Claude Code overrides
 .claude/settings.local.json
 
-# Media never goes in git — it lives in the video workspace (D:\Davinci Vids)
+# Media never goes in git — the whole video workspace is ignored
+workspace/
 #   Video/ and Video/Subtitles/ stay in the repo (README + .gitkeep); their contents don't.
 Video/*
 !Video/README.md
@@ -39,3 +40,9 @@ __pycache__/
 *.pyc
 .venv/
 *.stackdump
+
+# Reel-look tools (.claude/kit): env, matting model, transcripts
+.claude/kit/.venv/
+.claude/kit/models/
+.work/
+*.transcript.json

@@ -1,25 +1,32 @@
 # Claude Video Editor
 
-This repo is the toolkit; the media lives in the **video workspace** `D:\Davinci Vids` (added as an extra working
-directory in `.claude/settings.json`). Never copy media into the repo — the `Video/` folder here is a gitignored drop
-folder, treat it like `00_Inbox`. Its `Video/Subtitles/` subfolder holds the
-matching `.srt`/`.vtt` files (`Video/Talk.mp4` → `Video/Subtitles/Talk.srt`); both are gitignored apart from their placeholders.
+Everything lives in this folder: the toolkit (`tools/`, `.claude/`) and the media in the **video workspace**
+`workspace/` (gitignored — nothing in it is ever committed). New downloads go straight to `workspace/00_Inbox`.
+The repo's `Video/` folder is a gitignored drop folder — treat it like `00_Inbox`. Its `Video/Subtitles/`
+subfolder holds the matching `.srt`/`.vtt` files (`Video/Talk.mp4` → `Video/Subtitles/Talk.srt`) and is writable.
 
-## Workspace layout (`D:\Davinci Vids`)
+## Workspace layout (`workspace/`)
 | Folder | Holds | Rule |
 |---|---|---|
 | `00_Inbox` | new downloads (+ .srt) waiting to be edited | read-only originals |
-| `01_Sources` | originals of finished videos | read-only originals |
-| `02_Projects/<name>` | one Remotion or HyperFrames project per video (`public/source.mp4`, `out/`) | all work happens here |
-| `03_Exports` | finals + covers ready to post | `<Speaker> - <Topic> - Short (Vertical).mp4`, `… - Full Context (Vertical).mp4`, `… - Cover.png` |
+| `01_Sources` | originals of finished videos | read-only originals; one numbered folder per source, `NN - <original name>/` with `NN - <original name>.mp4` + `.srt` — same NN as its export |
+| `02_Projects/<name>` | one Remotion project per video (`public/source.mp4`, `out/`) | all work happens here |
+| `03_Exports` | finals + covers ready to post | one numbered folder per video: `NN - <Speaker> - <Topic> - Short (Vertical)/` holding `NN - … - Short (Vertical).mp4` + `… - Cover.png` + `… - Post.txt` (YT Shorts / TikTok title, description, hashtags; see `/publish`) (or `Full Context (Vertical)`); NN = next free number |
 | `04_Footage` | own camera footage (e.g. Yogyakarta) | read-only originals |
 
 Pipeline: link → `/new-video` (download, transcribe, propose highlights, **wait for approval**) → build in `02_Projects`
 → render → `/publish` (verify, copy to `03_Exports`, move source Inbox → Sources).
 
 ## Which tool
+- **The look** (framing: track vs lock, camera moves, captions, cards, end card, SFX levels, loudness): `video-style` skill — the single source of the house style; change it there.
 - **Talk → vertical short / full-context cut** (face-tracked 9:16, word captions, punch-ins, cards, SFX): Remotion, `talk-to-vertical-short` skill. It holds the house style and the cut rules the user has flagged — follow them exactly.
-- **Graphic-first pieces** (quote cards, intros, explainers, overlays): HyperFrames, `hyperframes-video` skill.
+- **Graphic-first pieces** (quote cards, intros, slideshows, charts, overlays): Remotion, `motion-graphics` skill.
+- **House reel look** (default for full-context cuts): stickers + split-screen alternating, house captions on top —
+  `video-style` "House reel look", built from talk-to-vertical-short `template/src/Reel.timeline-example.tsx`.
+- **Alternative reel looks** over the approved cut, only when the user asks for one (all Remotion, `template/src/looks/`,
+  setup in talk-to-vertical-short "Reel looks"): `split-screen`, `behind-the-person`, `explainer`, `storytelling`,
+  `trial-reels`, `ranking-list`, and the photographic `shape-shift`, `picture-stack`, `scene-switch`, `visual-notes`,
+  `orbit-reel`. Cut-outs, frame rulers and sheets: `.claude/kit/`. House rules still apply.
 - **Quick jobs** (probe, trim, crop, mix, loudness, verify): ffmpeg, `ffmpeg-toolkit` skill.
 - **Downloading**: yt-dlp via `download-source` skill.
 - **Missing SFX / voice-over / music**: ElevenLabs, `elevenlabs-audio` skill — check `D:\sfx` first; calls cost credits.
@@ -39,5 +46,5 @@ Pipeline: link → `/new-video` (download, transcribe, propose highlights, **wai
 - Never commit media, `.env`, renders or `node_modules` (see `.gitignore`).
 
 ## Machine paths (override with env vars)
-`VIDEO_WORKSPACE`=`D:\Davinci Vids` · `SUBTITLE_ENGINE_DIR`=`D:\subtitle engine` (Whisper tuned for Malay/Arabic, has its own `.venv`) · `SFX_LIBRARY`=`D:\sfx` · `BRANDING_DIR`=`D:\branding`.
+`VIDEO_WORKSPACE`=`<repo>\workspace` · `SUBTITLE_ENGINE_DIR`=`D:\subtitle engine` (Whisper tuned for Malay/Arabic, has its own `.venv`) · `SFX_LIBRARY`=`D:\sfx` · `BRANDING_DIR`=`D:\branding`.
 Run `python tools/doctor.py` to check everything is installed.

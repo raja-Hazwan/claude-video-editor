@@ -1,0 +1,7 @@
+[
+  {"name": "blindbox", "file": "scene01_hook/scene01_blindbox_closed.png"},
+  {"name": "tikam", "file": "scene03_tikam/Price_pulltabs.webp", "crop": [70, 40, 940, 830]},
+  {"name": "unboxing", "file": "scene04_mainan/scene04_mainan_unboxing.mp4"},
+  {"name": "kereta", "file": "scene04_mainan/car.png"},
+  {"name": "bola_je", "file": "scene08_basikal/small ball.jpg", "crop": [30, 40, 530, 500]}
+]

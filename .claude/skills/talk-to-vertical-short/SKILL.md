@@ -6,11 +6,11 @@ description: Use when turning a long horizontal talk, lecture, ceramah, podcast 
 # Talk → Vertical Short (Remotion)
 
 ## Overview
-Pick the strongest 4–6 moments from a long talk, crop to 9:16 following the speaker's face, and dress it with
-TikTok-style captions, punch-in zooms, key-idea cards and timed SFX. Reference build:
-`D:\Davinci Vids\02_Projects\rozaimi-short` (all components + `scripts/config.json`).
+Pick the strongest 4–6 moments from a long talk, crop to 9:16 (locked on the speaker, face-tracked only where the
+`video-style` skill says), and dress it with captions, camera moves, key-idea cards and timed SFX. Reference build:
+`workspace\02_Projects\rozaimi-short` (all components + `scripts/config.json`).
 
-## Folder layout (`D:\Davinci Vids`)
+## Folder layout (`workspace/`)
 `00_Inbox\` new downloads (+ .srt) not yet edited · `01_Sources\` originals of finished videos (move from Inbox when done) ·
 `02_Projects\<name>\` Remotion projects · `03_Exports\` finals + covers ready to post · `04_Footage\` own camera footage · `_Tools\` scripts.
 
@@ -21,47 +21,33 @@ Scripts: `.claude/skills/talk-to-vertical-short/scripts/` (in the claude-video-e
 2. **Word timings**: prefer `D:\subtitle engine\.venv\Scripts\python scripts/words_engine.py <video> <words.json>` — uses the Subtitle Engine's tuned settings (Islamic-term prompt, VAD pad 600/500, romanized Arabic, user's auto-corrections). Fallback: `scripts/transcribe_words.py`. Prints timed lines.
 3. **Choose highlights (~50–60s total)**: hook first (most provocative line, often the opening), then the key term → core point → religious/authority reference → strongest closing line. Cut 0.15–0.3s outside word boundaries; never mid-word. Present the table (source time + line) to the user.
 4. **Check frames**: contact sheet per clip (`ffmpeg -vf "fps=1,scale=320:-1,tile=6x3"`). Look for on-screen overlays (venue name bars, donation banners, bank account numbers, QR codes). Measure their top edge on a gridded full frame. Overlays in the bottom ~15% are hidden by the bottom fade in `Grade` (template). Only zoom (`zoomFloor` + `maxBottom`) for overlays that reach higher, and keep zoom ≤1.2 — more makes the face fill the frame.
-5. **Scaffold** (in `D:\Davinci Vids\02_Projects`): `npx create-video@latest --yes --blank --no-tailwind <name>`, `npx remotion add @remotion/media @remotion/transitions @remotion/captions @remotion/google-fonts`. Copy the video to `public/source.mp4` (ASCII name — OpenCV can't open fullwidth/unicode paths).
-6. **config.json** (see reference project): `keywords`, `merge` (e.g. `"what aboutism": "whataboutism"`), `clips[]` with `id,start,end,punchWords`, optional `extend` (seconds of extra picture for end card), `zoomFloor`, `maxBottom`.
+5. **Scaffold** (in `workspace\02_Projects`): `npx create-video@latest --yes --blank --no-tailwind <name>`, `npx remotion add @remotion/media @remotion/transitions @remotion/captions @remotion/google-fonts`. Copy the video to `public/source.mp4` (ASCII name — OpenCV can't open fullwidth/unicode paths).
+6. **config.json** (see reference project): `keywords`, `merge` (e.g. `"what aboutism": "whataboutism"`), `clips[]` with `id,start,end,framing,move,punchWords` (framing/move/one emphasis word per clip: see `video-style`), optional `extend` (seconds of extra picture for end card), `zoomFloor`, `maxBottom`.
 6a. **Speakers who pause a lot** (MAZA taat: 33s of dead air in 4:33): write *coarse* keep-ranges (one per argument step), then `python scripts/split_pauses.py <src> config_coarse.json config_long.json 1.0` splits each at every real pause ≥1s into `<id>_2`, `<id>_3`… parts (treat ids containing `_` as jump cuts). Then **re-caption per part**: `"D:\subtitle engine\.venv\Scripts\python" scripts/words_per_clip.py <src> config_long.json words.json` — whole-file Whisper timings drift by seconds in pause-heavy talks, so words fall into removed gaps and vanish from captions (lost "Sebab", "golongan", "agnostik"; "tidak faham" placed 6s early). Fix spellings in its printed text.
 6b. **CUT CHECK — mandatory, before tracking/rendering**: `python scripts/check_cuts.py public/source.mp4 config.json` must print `all boundaries clean`. It measures real audio loudness at every clip start/end. **Never trust Whisper word end times for cuts**: Whisper ends the last word early and stretches the next word's start back over the pause (MAZA short: "salah" really ended 46.45 but Whisper said 46.25; "operation" ended 206.4, Whisper said 205.98 → both words got chopped and the user caught it at 0:29 and 0:48). Apply its suggested times, re-run until clean. Also fix that word's `e` in words.json so captions match. Re-run after ANY config change.
 7. **Face track**: `python scripts/track_faces.py public/source.mp4 config.json track.json` (needs `pip install "opencv-python==4.10.0.84"`; 5.x lacks CascadeClassifier).
 8. **Data**: `python scripts/gen_data.py config.json track.json words.json src/data/clips.ts` → prints each clip's start frame and every word's absolute frame. Use those to hardcode Sequence `from` values.
 8b. **Timing comes from data, not hardcoded frames**: use `template/src/timeline.ts` — `START.<clip>`, `at(clip, local)`, `end(clip, offset)`, `word(clip, "text")` — and build the TransitionSeries by mapping `ORDER` (see `template/src/Composition.timeline-example.tsx` / `Sfx.timeline-example.tsx`; SFX take `hit` + `peak`). Then changing a cut = edit config → gen_data → render; cards/SFX follow automatically. Never hand-shift frame numbers.
-9. **Components**: copy `template/src/*` into `src/` (or copy the latest project, e.g. `D:\Davinci Vids\02_Projects\pecah-amanah-short`, minus `out/`, `src/data`, `public/source.mp4`). Edit `Composition.tsx`: TransitionSeries durations, TOTAL_FRAMES, card frames; texts are props: `HookTitle label/title/size`, `NameTag name`, `KeyCard label/title/sub`, `EndCard message/sub/speaker/source`; edit `Sfx.tsx` frames. Remove the bottom fade in `Grade` if the source has no lower overlays.
-10. **Verify**: `npx tsc --noEmit`, render stills at hook/cards/closer/end (`npx remotion still ... --frame=N`), contact-sheet them and look. Then `npx remotion render <id> out/x.mp4 --codec=h264 --crf=18`; check 1fps contact sheet + `silencedetect`. Copy final (and cover) to `D:\Davinci Vids\03_Exports\` as `<name> - Short (Vertical).mp4` / `<name> - Short (Vertical) - Cover.png`, and move the source + .srt from `00_Inbox\` to `01_Sources\`.
+9. **Components**: copy `template/src/*` into `src/` (or copy the latest project, e.g. `workspace\02_Projects\pecah-amanah-short`, minus `out/`, `src/data`, `public/source.mp4`). Edit `Composition.tsx`: TransitionSeries durations, TOTAL_FRAMES, card frames; texts are props: `HookTitle label/title/size`, `NameTag name`, `KeyCard label/title/sub`, `EndCard message/sub/speaker/source`; edit `Sfx.tsx` frames. Remove the bottom fade in `Grade` if the source has no lower overlays.
+9b. **STORYBOARD — mandatory, stop for approval before rendering the video** (user rule): once the composition is
+    wired (after gen_data), show the user one table of the whole edit in output order — per row: output time (mm:ss) ·
+    source clip (time + line) · on-screen text (hook title / name tag / KeyCard label+title+sub / end-card message) ·
+    framing (track / lock, any LOCK->TRACK) + move + emphasis word · SFX (file + vol) · transition into the next clip (flash / jump cut). Add total
+    length, what was dropped, and trim options if it runs long. **It must have pictures** (user asked to see the parts
+    before rendering): write `scripts/storyboard.json` (one row per clip + end card, 3–4 frames each: flash-in, every
+    card, every punch-in, the closer word, end card/logo) and run `python scripts/storyboard.py . scripts/storyboard.json`
+    → `out/storyboard.html` (real stills from the composition, self-contained). Send that page with the table, and
+    look at its frames yourself first. Wait for the user's OK or changes; re-show it after big changes. Stills are fine
+    before approval; `npx remotion render` of the full video is not.
+10. **Verify**: `npx tsc --noEmit`, render stills at hook/cards/closer/end (`npx remotion still ... --frame=N`), contact-sheet them and look. Then `npx remotion render <id> out/x.mp4 --codec=h264 --crf=18`; check 1fps contact sheet + `silencedetect`. Copy final (and cover) to a numbered folder in `workspace\03_Exports\` (`NN - <name> - Short (Vertical)/` with `NN - <name> - Short (Vertical).mp4` + `… - Cover.png` + `… - Post.txt` for YT Shorts/TikTok; NN = next free number — see `/publish`), and move the source + .srt from `00_Inbox\` into `01_Sources\NN - <original name>\` (same NN as the export, files prefixed `NN - `).
 
-## House style (user approved)
-| Element | Spec |
-|---|---|
-| Format | 1080×1920, 30fps, full-bleed face-tracked crop, `contrast(1.06) saturate(1.12)` grade + vignette + top gradient |
-| Zoom | base 1.0; entry kick +0.10 over 14f; slow push +0.05/clip; punch +0.13 on punch words (in 7f, hold ~40f, out 12f) |
-| Captions | Montserrat 900, 82px, uppercase, 14px black stroke, at y≈1180; ~1s pages; active word yellow `#FFD60A`; active keyword = white on red `#E63946` pill; NO scale on active word (eats spaces) — lift 4px instead |
-| Top band (y 110+) | Hook title (red pill "Ditegur, terus kata:" + yellow quote headline), name tag, KeyCards (yellow label pill + big headline + sub-line) |
-| Cuts | white flash overlay 10f (`TransitionSeries.Overlay`), never crossfade speech |
-| End | last ~3s (`extend: 3.0`): blur + dark, yellow message headline, speaker name, "Sumber: <channel>" credit, then **"EDITED BY" (gold #CCB375, letterspaced) + The Returning Soul logo** fading up at +20f; speech volume fades out |
-| Branding | `D:/branding` → crop `logo with text no bg.png` to its alpha bbox → `public/brand/logo-lockup.png`, 400px wide. Branding only on the end card (user wants it subtle) |
-| Language | captions/cards in the talk's language (Malay); write "SAW" not ﷺ (font lacks glyph) |
-
-## SFX (library `D:\sfx`) — align the **peak**, not the file start
-`from = targetFrame − peakFrames`. Peaks @30fps: Woosh 17f · woosh2 14f · woosh3 9f · fastwoosh 3f · drop 26f · Riser 50f · old cam 6f · Hi-Tech Click 8f · Camera Click 4f · flick 3f · Mouse Click 2f · ding 4f · Music Box 12f. (woosh4 = duplicate of woosh2.) For a new file, measure the envelope peak with numpy first.
-
-| Moment | SFX | vol |
-|---|---|---|
-| Hook title slam | drop (trimBefore so peak hits ~f8), fade out | 0.22 |
-| Name tag | Mouse Click | 0.6 |
-| Punch-ins | flick | 0.5 |
-| Flash cuts | **vary**: woosh2 → fastwoosh (short clips) → woosh3 → Woosh (biggest, into closer) | 0.35–0.5 |
-| Key cards | old cam / Camera Click / Hi-Tech Click (different per card) | 0.45–0.9 |
-| Main message punch | drop | 0.28 |
-| Into final word | Riser peaking on the word | 0.35 |
-| Brand logo reveal | Music Box (peak 12f on logo landing), fade | 1.0 |
-| Permission / ruling word ("dibenarkan", "boleh") | ding (peak 4f), layered on the Riser peak | 0.5 |
-Avoid beep/charge/multi flicker on religious talks (too techy). Keep SFX under the voice.
+## Style
+The look — framing (track vs lock), camera moves, captions, cards, end card, SFX levels, loudness, cover —
+lives in the **`video-style`** skill. Read it before step 6 and follow it; change the style there, not here.
 
 ## Long-form "full context" variant (< 2 min)
 Use when the user says 50–60s doesn't do the talk justice (a fiqh answer whose reasoning is a chain). Reference:
-`D:\Davinci Vids\02_Projects\pecah-amanah-short` → `src/Long.tsx` (copy in `template/src/Long.tsx`, config `template/config_long.example.json`).
+`workspace\02_Projects\pecah-amanah-short` → `src/Long.tsx` (copy in `template/src/Long.tsx`, config `template/config_long.example.json`).
 Register it next to the short in `Root.tsx`; keep the short too and save as `<name> - Full Context (Vertical).mp4`.
 
 1. **Keep the argument chain, drop illustrations.** Map his answer as steps (question → principle → key term → purpose → test → danger → Quran → ruling → "you decide") and keep one clip per step. Drop jokes, side examples, scholar side-debates, disclaimers. Tell the user what was dropped.
@@ -74,6 +60,55 @@ Register it next to the short in `Root.tsx`; keep the short too and save as `<na
 8. **Overlay only in part of a clip** (donation banner 3:07–3:17): split the clip at a pause where it disappears; zoom (`zoomFloor 1.2, maxBottom 0.8`) only the covered part.
 9. Use `makeTimeline(CLIPS)` from `timeline.ts` for the long composition too (example `template/src/Long.timeline-example.tsx`) — jump cuts are a `JUMP_CUT` set, everything else gets a flash.
 10. Verify with `silencedetect=n=-35dB:d=1.0` and a 1fps contact sheet across every changed boundary.
+
+## Reel looks (Remotion, `template/src/looks/`)
+**House reel (default for full-context cuts):** stickers + split-screen alternating by section, house captions on
+top — rules in `video-style` → "House reel look". Build it from `template/src/Reel.timeline-example.tsx` (copy to
+`src/Reel.tsx`, register `ReelComposition` in `Root.tsx`) with `Looks.timeline-example.tsx` for the split steps and
+`BikeWish.example.tsx` for a story scene; `public/sfx/pop.mp3` from `D:\sfx`; sticker pictures = the popup cut-outs
+(`public/popups/`, transparent PNGs). Setup steps 1–2 and 4–6 below apply (no cut-outs needed).
+
+Other looks, used only when the user picks one — skills `split-screen`, `behind-the-person`,
+`explainer`, `storytelling`, `trial-reels`, `ranking-list`, `shape-shift`, `picture-stack`, `scene-switch`,
+`visual-notes`, `orbit-reel` (ported from claude-editing-skills, which rendered with HyperFrames). Every look is a
+**layer over the approved cut** (same `CLIPS`, `timeline.ts`, `word()`), so it runs the full length — the upstream
+"one 3–8 s stretch per reel" model cut 08/09 to 42 s and dropped the hook (user: "the video are cut short").
+1. **After** the house cut is approved and `gen_data.py` has run: copy `template/src/looks/` → `src/looks/`,
+   `npx remotion add @remotion/fonts`, copy `.claude/kit/fonts/*` → `public/fonts/`.
+2. **Wide framing** (split-screen + every cut-out look): the face-tracked crop is too tight for panels (his chin fell
+   into Instagram's bottom zone). Read a source frame and set `WIDE` in `looks/core.tsx` (x = his centre − w/2, h
+   above any desk, srcEnd = source duration): the source window scaled to 1080 wide, placed low, a feathered fill above.
+3. **Cut-outs** (behind-the-person, explainer, scene-switch, shape-shift, visual-notes, orbit-reel): once
+   `bash .claude/kit/setup.sh --cutout`; then in the background
+   `.claude/kit/.venv/Scripts/python.exe .claude/kit/cutout_clips.py <project> --crop X,W,H` (same numbers as `WIDE`;
+   ~0.1 s/frame, cached per clip) → `public/cutout/<clip>.webm`. Check alignment before building: a still of the
+   cut-out over red with the base ghosted on top (`CutoutCheck` in `Looks.timeline-example.tsx`) — no double edge.
+4. **`src/Looks.tsx`** (example: `Looks.timeline-example.tsx`): steps/segments `from`/`to` = `START.<clip>` /
+   `end(...)`, every `at` = `word(clip, "x")` — never hand frames. Mix looks by section with `<During from to>` (no
+   time shift). A stretch-only reel (trial-reels, a hook test) = its own composition with `<Sequence from={-from}>`
+   (`LooksTest.example.tsx`). Keep the house `EndCard` on the closer's extend.
+5. **Banners**: `BottomFade` (y 1640→1715) is in every look and rides with the presenter box — check the account
+   banner / name bars stay hidden in the frames.
+6. **Storyboard stop (9b)** as usual — stills at every step/segment start and key words; wait for approval; then
+   render, loudnorm (`-14 LUFS`, ≤ −1.5 dBTP), `/publish`. House rules hold: Malay captions as he says them, "SAW",
+   no SFX/music over Quran/hadith, no invented claims or numbers, pictures we may use, no brand UI (logos) in panels.
+
+## Popups (optional — pictures of the things he names)
+Look and rules: `video-style` → "Popups". Reference: `workspace\02_Projects\maza-blindbox-long` (10 popups).
+1. **Propose slots** from the approved storyboard: one table row per slot — output time · the line ("…dapat
+   KERETA…") · what to show · still or clip · why. Only concrete nouns; skip recitation.
+2. **Make `assets_to_insert/`** in the project, one folder per scene (`scene04_mainan/`), and a `README.txt` that says,
+   per slot, the exact filename, output time, his line, what to show, search terms, what to avoid, and the format;
+   plus the general "good popup picture" rules. Mark each slot `✅ RECEIVED (as <file>)` as it arrives.
+3. **Ask for one asset at a time**; when the user says "slot N added", look at the file (Read it), say how it will be
+   cropped, flag problems (brand logo, watermark, pale), and only then ask for the next. The user may supply a
+   different filename or a ready cut-out — accept it, don't install background removers unasked. For a clip from a
+   link: `download-source`, then cut 2–3 s and mute with ffmpeg.
+4. `scripts/popups.json` (see `template/popups.example.json`) → `python <skill>/scripts/prep_popups.py` writes
+   `public/popups/`. Copy `template/src/Popups.tsx`, list a `POPUPS: PopupSpec[]` in the composition with
+   `at: word(clip, "kereta") - 3`, render `<PopupLayer popups={POPUPS} />` before `<ProgressBar/>`.
+5. **Preview before the final render**: stills at each popup's frame + a short `--frames` render around the busiest
+   stretch; send a grid; wait for approval. Then render, loudnorm, verify every popup in the final file.
 
 ## TikTok cover (thumbnail)
 `template/src/Thumbnail.tsx` (a `<Still id="Thumbnail">`, register in Root). Pick the most intense face frame from the clips (contact sheet at 2fps, then 10fps around the best moment), crop 9:16 with ffmpeg (`crop=608:1080:X:0,scale=1080:1920:flags=lanczos`) → `public/cover-frame.png`. Layout: face in the upper half; red pill hook label + yellow two-line quote (Montserrat 900, ~112px, nowrap, 16px stroke) + name tag, all inside y 1100–1600 (the profile grid shows only the centre 3:4, y 240–1680). Dark gradient behind the text, no branding. **Check the eyes** on a close-up strip (crop around the face at 15fps): reject blinks/squints — prefer a frame where he faces the camera mid-word on the key line (MAZA: 0:38.4 "tidak *benar*"). Centre the face horizontally. One cover can serve both short and full-context versions (save one copy per video name). `npx remotion still Thumbnail out/cover.png`; save as `<video name> - Cover.png`.

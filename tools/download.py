@@ -14,7 +14,8 @@ import sys
 
 sys.stdout.reconfigure(encoding="utf-8")
 
-WORKSPACE = os.environ.get("VIDEO_WORKSPACE", r"D:\Davinci Vids")
+REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+WORKSPACE = os.environ.get("VIDEO_WORKSPACE", os.path.join(REPO, "workspace"))
 
 ap = argparse.ArgumentParser()
 ap.add_argument("url")
@@ -37,6 +38,8 @@ cmd = [
 ]
 if args.subs:
     cmd += ["--write-subs", "--write-auto-subs", "--sub-langs", args.subs, "--convert-subs", "srt"]
+    # A rate-limited subtitle language (YouTube 429 on "en") must not abort the video download.
+    cmd += ["--ignore-errors"]
 
 print(">", " ".join(cmd))
 sys.exit(subprocess.call(cmd))

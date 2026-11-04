@@ -5,7 +5,7 @@ description: Use when the user gives a YouTube / Facebook / TikTok / Instagram l
 
 # Download a source video
 
-1. `python tools/download.py "<url>"` → `<title> [<id>].mp4` (+ `.srt` if the site has captions) in `D:\Davinci Vids\00_Inbox`.
+1. `python tools/download.py "<url>"` → `<title> [<id>].mp4` (+ `.srt` if the site has captions) in `workspace\00_Inbox`.
    - `--max-height 720` for quick drafts; `--subs ""` to skip captions; `--dest` to override.
    - Playlists are skipped by default (`--no-playlist`); download items one at a time.
 2. YouTube auto-captions are only for *reading the story*. For cutting and word-by-word captions get real timings:

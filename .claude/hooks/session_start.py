@@ -8,7 +8,7 @@ import sys
 sys.stdout.reconfigure(encoding="utf-8")  # inbox names contain fullwidth ？ and ：
 
 REPO = os.environ.get("CLAUDE_PROJECT_DIR", os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
-WORKSPACE = os.environ.get("VIDEO_WORKSPACE", r"D:\Davinci Vids")
+WORKSPACE = os.environ.get("VIDEO_WORKSPACE", os.path.join(REPO, "workspace"))
 MEDIA = (".mp4", ".mov", ".mkv", ".webm", ".m4a", ".mp3", ".wav")
 
 
@@ -20,8 +20,7 @@ def media_in(folder):
 
 
 lines = [f"Video workspace: {WORKSPACE}"]
-for label, folder in [("Inbox (to edit)", os.path.join(WORKSPACE, "00_Inbox")),
-                      ("Repo Video/ drop folder", os.path.join(REPO, "Video"))]:
+for label, folder in [("Inbox (to edit)", os.path.join(WORKSPACE, "00_Inbox"))]:
     files = media_in(folder)
     if files is None:
         continue
