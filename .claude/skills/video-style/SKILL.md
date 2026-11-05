@@ -1,14 +1,44 @@
 ---
 name: video-style
-description: The channel's house style for every edited video — framing (when to face-track vs lock the frame), camera moves (slow push/pull, quick zoom in/out, emphasis zooms), caption look and size, title/key cards, end card and branding, colours, and SFX levels. Use whenever building or changing the look of a short, full-context cut, cover or graphic (Remotion), or when the user says the style feels too busy / too much / wants it adjusted.
+description: The channel's house style for every edited video — the House look (full-face OG framing with huashu-motion captions, phrase slams and path diagrams, hook-first order, Shorts safe zone, huashu SFX + house music box on the outro), framing (when to face-track vs lock the frame), camera moves, end card and branding, colours, cover and SFX levels. Use whenever building or changing the look of a short, full-context cut, cover or graphic (Remotion), or when the user says the style feels too busy / too much / wants it adjusted.
 ---
 
 # Video house style
 
 The look the user approved for Malay Islamic talk shorts (Dr MAZA, Prof Dr Rozaimi). `talk-to-vertical-short` and
 `motion-graphics` build with it; change it **here** when the user adjusts the style, then update the template
-components (`talk-to-vertical-short/template/src/`) to match. Overall feel: calm and steady, with movement only where
-it means something.
+components (`talk-to-vertical-short/template/src/`, `talk-to-vertical-short/huashu-house/`) to match. Overall feel:
+calm and steady, with movement only where it means something.
+
+## House look — full face + huashu type (user, 2026-11-05: "from now on make this the house style")
+The default for **every** talk edit (shorts and full-context cuts). Reference: export 09 (Dr MAZA, "masuk syurga
+kerana dosa"); build steps and files: `talk-to-vertical-short/huashu-house/README.md`.
+- **Hook first**: open on his strongest quotable line (e.g. "Ada kata Imam Ibn Qayyim: ada manusia masuk syurga
+  kerana dosa…"), then the question / setup, then the rest. Frame 0 already carries the first slam (the poster).
+- **Full face, the whole video**: the OG framing below (Framing + Camera moves, rendered by Remotion as the
+  `TrackedPlate`), full frame 9:16. **No card / rounded-rectangle speaker window**, no split-screen, no stickers
+  ("no more that rectangle frame"). Lower source overlays (ads, account banners, QR codes) are blacked out below
+  y ~1300 only while they are up (`beats.masks`), never by switching layout.
+- **Shorts safe zone**: captions y 1120–1300; nothing to read below y 1400 (YouTube Shorts' channel name and
+  description cover it) or in the right 140 px (the buttons). The speaker line sits small at the top-left (y 86).
+- **Type on top, drawn by huashu-motion** (HTML + GSAP, `om render`):
+  - *Captions*: Inter 800, 64 px, uppercase, 12 px dark stroke, 1–3 word pages, the spoken word in gold `#E8C46A`.
+  - *Slams*: his key phrases (~1 per 5–6 s, one at a time), Anton caps 1–2 lines, ~140 px, over his chest
+    (bottom at y ~1016) on a dark band; gold for mercy / syurga / the answer, ember `#D2492F` for neraka / warnings.
+    Quote his words; no invented claims.
+  - *Paths*: when he explains a mechanism, 4 nodes lighting on his words (`DOSA → BERSALAH → TAUBAT → SYURGA` gold,
+    `PAHALA → TAKABUR → SOMBONG → NERAKA` ember).
+  - *Cuts*: a white "breath" (0.35 s) where content is skipped; jump cuts inside a thought stay hard.
+- **Sound**: his voice + huashu's own effects (`OM.sfx`: impact on the 3–4 biggest lines, thud on slams, tick on
+  path nodes, whoosh on skips). The house library `D:\sfx` **only for the outro branding** (Music Box on the logo).
+  No music bed. Nothing over Quran/hadith recitation.
+- **End card**: the house end card below (yellow message, sub, red bar, speaker, Sumber, EDITED BY + logo), 3.6 s.
+  huashu's "Made with huashu-motion" signature is off (`data-om-signature="off"`).
+- Loudness −14 LUFS, true peak ≤ −1.5 dBTP (a fast limiter before AAC: click transients overshoot).
+
+The sections below still define the framing, camera moves, end card, cover and SFX peaks that the house look uses.
+Their Remotion-only parts (KeyCards, hook title, the stickers + split-screen reel look, popups, the D:\sfx table for
+the body) are the **previous** style — use them only when the user asks for that look.
 
 ## Framing — face tracking is the exception (user, 2026-11-01)
 The user found constant face tracking overwhelming ("the frame moving on and on"). Each clip is one of two kinds,
@@ -38,7 +68,7 @@ Set per clip as `"move"`; consecutive clips must differ. No zoom kick on every c
 
 Overlay zoom (`zoomFloor`/`maxBottom`) for banners stays ≤1.2 and stacks under the move.
 
-## Captions
+## Captions (Remotion `Captions`, previous style — the House look uses the huashu captions above)
 Montserrat 900, **66 px** (user picked from 82/66/56/48 on 2026-11-01 — 82 covered his hands and chest), uppercase,
 11 px black stroke, top at y≈1180, max width 800, ~1 s pages, split at pauses >700 ms. Active word yellow `#FFD60A`,
 lifted 3 px (no scale — it eats spaces); active **keyword** = white on red `#E63946` pill (radius 14). Keywords
@@ -49,6 +79,8 @@ from `config.json` show yellow when not active.
 to black (hides source name bars / social icons — remove it if the source has no lower overlays).
 
 ## Colours — the reel looks too (user, 2026-11-03)
+House look type: white, syurga gold `#E8C46A`, neraka ember `#D2492F`, dark bands `#0b0c11`; the end card keeps its
+yellow `#FFD60A` / red `#E63946` / gold `#CCB375`. Remotion pieces (previous style):
 Only the house palette: red `#E63946` (pills, badges, accents; `#C1272F` for red text on a light panel), yellow
 `#FFD60A` (emphasis on dark), near-black `#151515`, white, and gold `#CCB375` for the end-card credit only. It lives
 in `looks/core.tsx` as `HOUSE`; use it, never new accent colours. No orange/cream palette and no starburst or
@@ -63,8 +95,8 @@ clicks the box, a drawn avatar dreams of the prize, the box opens on the let-dow
 wanted: orbit-reel (the "carousel"), the explainer panel (the "phone frame"), and behind-the-person's post panel. Over any look, keep the **house word captions** (`Captions`, `top` per look:
 ~1390 behind-the-person, ~1500 split-screen with `seam={false}`), not the look's own caption style.
 
-## House reel look — stickers + split-screen (user, 2026-11-03: "i love this style make it home")
-The default look for every **full-context cut** (and a short when it has named things to show), built over the
+## Previous reel look — stickers + split-screen (user, 2026-11-03; replaced by the House look on 2026-11-05)
+Only when the user asks for it. It was the default look for every **full-context cut** (and a short when it has named things to show), built over the
 approved cut at the same length. Reference: `workspace/02_Projects/maza-blindbox-long` → `src/Reel.tsx`
 (export 08); template `talk-to-vertical-short/template/src/Reel.timeline-example.tsx`.
 - **Sections alternate** by what he is doing: **stickers** where he names concrete things or tells a story (hook,
@@ -117,6 +149,8 @@ before the extend, hold the last frame (`Freeze`). Branding only here — the us
 Logo: `D:/branding/logo with text no bg.png` cropped to its alpha bbox → `public/brand/logo-lockup.png`, 400 px wide.
 
 ## SFX (library `D:\sfx`) — align the **peak**, not the file start
+House look: only the Music Box row applies (outro logo); the body uses huashu effects. The full table is for
+Remotion-only edits in the previous style.
 `from = targetFrame − peakFrames`. Peaks @30fps: Woosh 17f · woosh2 14f · woosh3 9f · fastwoosh 3f · drop 26f ·
 Riser 50f · old cam 6f · Hi-Tech Click 8f · Camera Click 4f · flick 3f · Mouse Click 2f · ding 4f · Music Box 12f.
 (woosh4 = duplicate of woosh2.) For a new file, measure the envelope peak with numpy first.

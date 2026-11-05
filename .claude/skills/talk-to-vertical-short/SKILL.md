@@ -41,6 +41,14 @@ Scripts: `.claude/skills/talk-to-vertical-short/scripts/` (in the claude-video-e
     before approval; `npx remotion render` of the full video is not.
 10. **Verify**: `npx tsc --noEmit`, render stills at hook/cards/closer/end (`npx remotion still ... --frame=N`), contact-sheet them and look. Then `npx remotion render <id> out/x.mp4 --codec=h264 --crf=18`; check 1fps contact sheet + `silencedetect`. Copy final (and cover) to a numbered folder in `workspace\03_Exports\` (`NN - <name> - Short (Vertical)/` with `NN - <name> - Short (Vertical).mp4` + `… - Cover.png` + `… - Post.txt` for YT Shorts/TikTok; NN = next free number — see `/publish`), and move the source + .srt from `00_Inbox\` into `01_Sources\NN - <original name>\` (same NN as the export, files prefixed `NN - `).
 
+## House look (default from 2026-11-05) — build with `huashu-house/`
+Steps 1–8 above make the cut (words, config, split_pauses, words_per_clip, check_cuts, track_faces, gen_data). The
+finished video is then the **House look** (`video-style`): the full-face `TrackedPlate` (`template/src/Plate.example.tsx`)
+under a huashu-motion composition (`huashu-house/film.html`: hook-first order, captions above the Shorts UI, phrase
+slams, path diagrams, masks over lower overlays, huashu effects, house end card + music box). Follow
+`huashu-house/README.md`. Steps 9–10 (Remotion components, Remotion render) are for the previous style only; the
+storyboard (9b) and `/publish` still apply.
+
 ## Style
 The look — framing (track vs lock), camera moves, captions, cards, end card, SFX levels, loudness, cover —
 lives in the **`video-style`** skill. Read it before step 6 and follow it; change the style there, not here.
@@ -62,8 +70,8 @@ Register it next to the short in `Root.tsx`; keep the short too and save as `<na
 10. Verify with `silencedetect=n=-35dB:d=1.0` and a 1fps contact sheet across every changed boundary.
 
 ## Reel looks (Remotion, `template/src/looks/`)
-**House reel (default for full-context cuts):** stickers + split-screen alternating by section, house captions on
-top — rules in `video-style` → "House reel look". Build it from `template/src/Reel.timeline-example.tsx` (copy to
+**Previous reel look (only when asked):** stickers + split-screen alternating by section, house captions on
+top — rules in `video-style` → "Previous reel look". Build it from `template/src/Reel.timeline-example.tsx` (copy to
 `src/Reel.tsx`, register `ReelComposition` in `Root.tsx`) with `Looks.timeline-example.tsx` for the split steps and
 `BikeWish.example.tsx` for a story scene; `public/sfx/pop.mp3` from `D:\sfx`; sticker pictures = the popup cut-outs
 (`public/popups/`, transparent PNGs). Setup steps 1–2 and 4–6 below apply (no cut-outs needed).
@@ -74,7 +82,9 @@ Other looks, used only when the user picks one — skills `split-screen`, `behin
 **layer over the approved cut** (same `CLIPS`, `timeline.ts`, `word()`), so it runs the full length — the upstream
 "one 3–8 s stretch per reel" model cut 08/09 to 42 s and dropped the hook (user: "the video are cut short").
 1. **After** the house cut is approved and `gen_data.py` has run: copy `template/src/looks/` → `src/looks/`,
-   `npx remotion add @remotion/fonts`, copy `.claude/kit/fonts/*` → `public/fonts/`.
+   `npx remotion add @remotion/fonts`, copy `.claude/kit/fonts/*` → `public/fonts/`. Anything that makes a picture or
+   drawing move (idle float, a drawn avatar, a story scene) uses `looks/alive.ts` (the `rossark-motion-skill` engine)
+   and follows `looks/MOTION.md`.
 2. **Wide framing** (split-screen + every cut-out look): the face-tracked crop is too tight for panels (his chin fell
    into Instagram's bottom zone). Read a source frame and set `WIDE` in `looks/core.tsx` (x = his centre − w/2, h
    above any desk, srcEnd = source duration): the source window scaled to 1080 wide, placed low, a feathered fill above.

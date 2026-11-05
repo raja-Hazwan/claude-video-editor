@@ -1,0 +1,452 @@
+{
+ "_": "Worked example (Dr MAZA, export 09). at = [part, word|null, nth, offset s] on assets/parts.json ids. Colours: W white, G gold, E ember. hsfx = huashu effect on the landing (default thud; impact for the 3-4 biggest). masks = [part, from s, to s|null]: blacks out the frame below y ~1300 while a lower source overlay (ad, account banner) is up. sfx/vol fields are ignored (house SFX are outro-only).",
+ "sections": [
+  {
+   "from": "qayyim",
+   "mode": "full"
+  }
+ ],
+ "slams": [
+  {
+   "at": [
+    "qayyim",
+    null,
+    0,
+    0
+   ],
+   "lines": [
+    "Kata",
+    "Ibn Qayyim"
+   ],
+   "colors": [
+    "W",
+    "G"
+   ],
+   "hsfx": "impact"
+  },
+  {
+   "at": [
+    "qayyim",
+    "syurga",
+    0,
+    0
+   ],
+   "lines": [
+    "Masuk syurga",
+    "kerana dosa"
+   ],
+   "colors": [
+    "W",
+    "G"
+   ],
+   "hsfx": "impact"
+  },
+  {
+   "at": [
+    "qayyim_2",
+    "neraka",
+    0,
+    0
+   ],
+   "lines": [
+    "Masuk neraka",
+    "kerana pahala"
+   ],
+   "colors": [
+    "W",
+    "E"
+   ],
+   "hold": 3.4
+  },
+  {
+   "at": [
+    "soalan",
+    null,
+    0,
+    0.3
+   ],
+   "lines": [
+    "Soalan"
+   ],
+   "tag": "DARIPADA JEMAAH",
+   "size": 120,
+   "hold": 3
+  },
+  {
+   "at": [
+    "soalan",
+    "buruk",
+    0,
+    0
+   ],
+   "lines": [
+    "Siapa lebih",
+    "buruk akhirnya?"
+   ],
+   "colors": [
+    "W",
+    "E"
+   ],
+   "hold": 3.2
+  },
+  {
+   "at": [
+    "rahmat",
+    "pengampun",
+    0,
+    0
+   ],
+   "lines": [
+    "Maha",
+    "Pengampun"
+   ],
+   "colors": [
+    "W",
+    "G"
+   ]
+  },
+  {
+   "at": [
+    "putusasa_2",
+    "putus",
+    0,
+    0
+   ],
+   "lines": [
+    "Jangan",
+    "putus asa"
+   ],
+   "colors": [
+    "W",
+    "G"
+   ],
+   "hold": 3.4
+  },
+  {
+   "at": [
+    "putusasa_4",
+    "tak ampun",
+    0,
+    0
+   ],
+   "lines": [
+    "“Tuhan",
+    "tak ampun”"
+   ],
+   "colors": [
+    "W",
+    "E"
+   ],
+   "hold": 1.8
+  },
+  {
+   "at": [
+    "putusasa_5",
+    "membinasakan",
+    0,
+    0
+   ],
+   "lines": [
+    "Membinasakan",
+    "kita"
+   ],
+   "colors": [
+    "E",
+    "W"
+   ],
+   "hold": 3
+  },
+  {
+   "at": [
+    "qayyim_4",
+    "macam",
+    0,
+    0
+   ],
+   "lines": [
+    "Macam mana?"
+   ],
+   "colors": [
+    "G"
+   ],
+   "hold": 1.6
+  },
+  {
+   "at": [
+    "novel",
+    "novel",
+    0,
+    0
+   ],
+   "lines": [
+    "Hidup",
+    "bukan novel"
+   ],
+   "hold": 2.2
+  },
+  {
+   "at": [
+    "novel",
+    "tuhan",
+    0,
+    0
+   ],
+   "lines": [
+    "Ditulis",
+    "oleh Tuhan"
+   ],
+   "colors": [
+    "W",
+    "G"
+   ],
+   "hold": 2.8
+  },
+  {
+   "at": [
+    "penjuru",
+    "penjuru",
+    0,
+    0
+   ],
+   "lines": [
+    "Satu",
+    "penjuru"
+   ],
+   "hold": 2.4
+  },
+  {
+   "at": [
+    "penjuru_2",
+    "episod",
+    0,
+    0
+   ],
+   "lines": [
+    "Episod",
+    "lain"
+   ],
+   "colors": [
+    "W",
+    "G"
+   ],
+   "hold": 2.4
+  },
+  {
+   "at": [
+    "penjuru_2",
+    "dosa",
+    0,
+    0
+   ],
+   "lines": [
+    "Dosa",
+    "yang besar?"
+   ],
+   "colors": [
+    "E",
+    "W"
+   ],
+   "hold": 2.4
+  },
+  {
+   "at": [
+    "penjuru_2",
+    "kasih",
+    0,
+    0
+   ],
+   "lines": [
+    "Kasih sayang",
+    "Tuhan"
+   ],
+   "colors": [
+    "G",
+    "W"
+   ],
+   "hold": 3.4
+  },
+  {
+   "at": [
+    "judge",
+    "judge",
+    0,
+    -0.15
+   ],
+   "lines": [
+    "Don't",
+    "judge"
+   ],
+   "colors": [
+    "W",
+    "G"
+   ],
+   "hold": 2.6,
+   "hsfx": "impact"
+  },
+  {
+   "at": [
+    "arak",
+    "arak",
+    0,
+    0
+   ],
+   "lines": [
+    "Arak, zina"
+   ],
+   "hold": 2.2
+  },
+  {
+   "at": [
+    "arak",
+    "wallahu",
+    0,
+    0
+   ],
+   "lines": [
+    "Wallahu",
+    "a'lam"
+   ],
+   "colors": [
+    "W",
+    "G"
+   ],
+   "hold": 2.4
+  },
+  {
+   "at": [
+    "arak_2",
+    "pengakhirannya",
+    0,
+    0
+   ],
+   "lines": [
+    "Tak tahu",
+    "pengakhirannya"
+   ],
+   "colors": [
+    "W",
+    "G"
+   ],
+   "hold": 3
+  },
+  {
+   "at": [
+    "closer",
+    "rahmat",
+    0,
+    0
+   ],
+   "lines": [
+    "Rahmat Allah",
+    "lebih luas"
+   ],
+   "colors": [
+    "W",
+    "G"
+   ],
+   "hold": 9,
+   "hsfx": "impact"
+  }
+ ],
+ "paths": [
+  {
+   "lines": [
+    "Dosa",
+    "Bersalah",
+    "Taubat",
+    "Syurga"
+   ],
+   "tag": "DOSA YANG MEMBAWA KE SYURGA",
+   "color": "G",
+   "cues": [
+    [
+     "qayyim_5",
+     "dosa",
+     0,
+     0
+    ],
+    [
+     "qayyim_6",
+     "bersalah",
+     0,
+     0
+    ],
+    [
+     "qayyim_7",
+     "bertaubat",
+     0,
+     0
+    ],
+    [
+     "qayyim_8",
+     "syurga",
+     0,
+     0
+    ]
+   ],
+   "last": "ding"
+  },
+  {
+   "lines": [
+    "Pahala",
+    "Takabur",
+    "Sombong",
+    "Neraka"
+   ],
+   "tag": "PAHALA YANG MEMBAWA KE NERAKA",
+   "color": "E",
+   "cues": [
+    [
+     "qayyim_9",
+     "pahala",
+     0,
+     0
+    ],
+    [
+     "qayyim_9",
+     "takabur",
+     0,
+     0
+    ],
+    [
+     "qayyim_10",
+     "kesombongan",
+     0,
+     0
+    ],
+    [
+     "qayyim_10",
+     "neraka",
+     0,
+     0
+    ]
+   ],
+   "last": "old-cam"
+  }
+ ],
+ "end": {
+  "message": "Rahmat Allah lebih luas",
+  "sub": "daripada apa yang kita sangka.",
+  "speaker": "S.S. Dato' Dr. MAZA",
+  "source": "PROmedia Tajdid",
+  "riserOn": [
+   "closer",
+   "sangka",
+   0,
+   0
+  ]
+ },
+ "masks": [
+  [
+   "soalan",
+   11.05,
+   null
+  ],
+  [
+   "arak",
+   0,
+   9.4
+  ]
+ ],
+ "name": "PROF. DATO' DR. MAZA"
+}

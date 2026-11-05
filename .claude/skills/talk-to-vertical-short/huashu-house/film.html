@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="ms" data-composition-variables='[
+  {"id":"plate","type":"string","label":"OG face-tracked plate (full frame)","default":"assets/plate.mp4","group":"Talk"},
+  {"id":"name","type":"string","label":"Speaker line (top-left; empty = beats.name)","default":"","group":"Text"},
+  {"id":"gold","type":"color","label":"Syurga gold","default":"#E8C46A","group":"Colour"},
+  {"id":"ember","type":"color","label":"Neraka ember","default":"#D2492F","group":"Colour"},
+  {"id":"ink","type":"color","label":"Ground","default":"#12141B","group":"Colour"},
+  {"id":"slamHold","type":"number","label":"Slam hold (s)","default":2.6,"min":0.8,"max":8,"step":0.1,"group":"Rhythm"},
+  {"id":"endHold","type":"number","label":"End card (s)","default":3.6,"min":2,"max":8,"step":0.1,"group":"Rhythm"}
+]'>
+<head>
+<meta charset="utf-8">
+<title>House style · full face + huashu type</title>
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/om.js"></script>
+<style id="om-fonts">
+@font-face { font-family: "Inter"; src: url("assets/fonts/Inter-var.woff") format("woff"); font-weight: 100 900; font-style: normal; }
+@font-face { font-family: "Anton"; src: url("assets/fonts/Anton-400.woff") format("woff"); font-weight: 400; font-style: normal; }
+@font-face { font-family: "Montserrat"; src: url("assets/fonts/Montserrat-SemiBold.otf") format("opentype"); font-weight: 600; font-style: normal; }
+@font-face { font-family: "Montserrat"; src: url("assets/fonts/Montserrat-ExtraBold.otf") format("opentype"); font-weight: 800; font-style: normal; }
+@font-face { font-family: "Montserrat"; src: url("assets/fonts/Montserrat-Black.otf") format("opentype"); font-weight: 900; font-style: normal; }
+</style>
+<style>
+  html, body { margin: 0; width: 1080px; height: 1920px; overflow: hidden; background: var(--ink); }
+  #film { position: relative; width: 1080px; height: 1920px; overflow: hidden; background: var(--ink); font-family: Inter, sans-serif; color: #fff; }
+  #ground { position: absolute; inset: 0; background: radial-gradient(110% 60% at 50% 30%, #262a36 0%, var(--ink) 68%); }
+  #lines { position: absolute; inset: 0; opacity: .5; background-image: repeating-linear-gradient(90deg, #ffffff05 0 1px, transparent 1px 120px); }
+
+  /* OG house framing, full frame (face-tracked / locked, rendered by the Remotion pipeline) */
+  #full { position: absolute; inset: 0; }
+  /* lower source overlays (sponsor ad, account banner) sit below frame y ~1404: black them out while they are up */
+  #mask { position: absolute; inset: 0; opacity: 0; background: linear-gradient(180deg, transparent 1290px, #000 1352px); }
+  #paths { position: absolute; left: 70px; top: 170px; width: 940px; height: 900px; }
+  #plate { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; }
+  #shadeFull { position: absolute; left: 0; right: 0; top: 0; height: 1920px; opacity: 0;
+    background: linear-gradient(180deg, transparent 34%, #0b0c11cc 52%, #0b0c11b3 62%, transparent 78%); }
+  #flashFull { position: absolute; inset: 0; background: #fff; opacity: 0; }
+
+
+  #slots { position: absolute; left: 118px; width: 844px; top: 170px; height: 846px; }
+  .slam { position: absolute; left: 0; right: 0; bottom: 0; opacity: 0; }
+  .slam .ln { display: block; overflow: hidden; padding: .06em 0 .08em; }
+  .slam .in { transform-origin: 0 80%; display: inline-block; font: 400 140px/1.02 Anton; text-transform: uppercase; letter-spacing: .005em; white-space: nowrap; text-shadow: 0 6px 30px #0008; }
+  .slam .tag { font: 800 28px Inter; letter-spacing: .3em; color: var(--gold); margin-bottom: 14px; }
+
+  .path { position: absolute; left: 44px; right: 44px; bottom: 60px; opacity: 0; }
+  .path .tag { font: 800 27px Inter; letter-spacing: .26em; margin-bottom: 22px; }
+  .path .row { display: flex; align-items: center; gap: 12px; }
+  .path .node { transform-origin: 100% 50%; font: 400 54px/1 Anton; letter-spacing: .01em; color: #ffffff40; white-space: nowrap; }
+  .path .link { flex: 1; min-width: 22px; height: 5px; border-radius: 3px; transform-origin: 0 50%; }
+
+  #caps { position: absolute; left: 90px; width: 840px; top: 1120px; height: 230px; }
+  .page { position: absolute; left: 0; right: 0; top: 0; text-align: center; opacity: 0;
+    font: 800 64px/1.13 Inter; text-transform: uppercase; letter-spacing: .005em; -webkit-text-stroke: 12px #0b0c11; paint-order: stroke fill; }
+  .page .w { display: inline-block; margin: 0 .12em; }
+
+  #nameline { position: absolute; left: 76px; top: 86px; display: flex; align-items: center; gap: 16px;
+    font: 700 28px Inter; letter-spacing: .2em; color: #ffffffcc; opacity: 0; text-shadow: 0 2px 10px #0008; }
+  #nameline i { width: 14px; height: 14px; border-radius: 50%; background: var(--gold); }
+
+  /* the house end card (video-style): blurred picture, yellow message, speaker, source, EDITED BY + logo */
+  #endcard { position: absolute; inset: 0; opacity: 0; background: rgba(0,0,0,.72); backdrop-filter: blur(14px); }
+  #endcard .col { position: absolute; left: 90px; width: 900px; top: 380px; display: flex; flex-direction: column; align-items: center; gap: 30px;
+    text-align: center; font-family: Montserrat, sans-serif; }
+  #endcard .msg { font: 900 104px/1.02 Montserrat; color: #FFD60A; text-transform: uppercase; -webkit-text-stroke: 14px #000; paint-order: stroke fill; }
+  #endcard .sub { font: 600 46px/1.25 Montserrat; color: #fff; }
+  #endcard .bar { width: 160px; height: 8px; border-radius: 4px; background: #E63946; }
+  #endcard .who { font: 800 44px Montserrat; color: #fff; }
+  #endcard .src { font: 600 32px Montserrat; color: #ffffffbf; }
+  #endcard .brand { display: flex; flex-direction: column; align-items: center; gap: 14px; margin-top: 50px; }
+  #endcard .brand b { font: 600 28px Montserrat; letter-spacing: 8px; color: #CCB375; text-transform: uppercase; }
+  #endcard .brand img { width: 400px; }
+</style>
+</head>
+<body>
+__CUES__
+__BEATS__
+<div id="film" data-composition-id="film" data-width="1080" data-height="1920" data-om-signature="off">
+  <div id="ground"></div><div id="lines"></div>
+  <div id="full" data-om-id="og-full">
+    <video id="plate" src="assets/plate.mp4" class="clip" data-om-id="plate" data-var-src="plate" data-start="0" data-track-index="1" muted playsinline></video>
+    <div id="mask"></div>
+    <div id="shadeFull"></div>
+    <div id="flashFull"></div>
+  </div>
+  <div id="paths"></div>
+  <div id="slots"></div>
+  <div id="nameline" data-om-id="nameline"><i></i><b></b></div>
+  <div id="caps" data-om-id="captions"></div>
+  <div id="endcard" data-om-id="endcard">
+    <div class="col">
+      <div class="msg" data-om-id="end-message"></div>
+      <div class="sub"></div>
+      <div class="bar"></div>
+      <div class="who"></div>
+      <div class="src"></div>
+      <div class="brand"><b>Edited by</b><img src="assets/brand/logo-lockup.png"></div>
+    </div>
+  </div>
+</div>
+<audio id="om-voice" src="assets/voice.wav" data-start="0" data-duration="__TALK__" data-track-index="9" data-volume="1"></audio>
+
+<script>
+  const V = OM.vars();
+  const $ = (s, r = document) => r.querySelector(s);
+  const COL = { W: '#ffffff', G: V.gold, E: V.ember };
+  const CUES = JSON.parse(document.getElementById('om-cues').textContent);
+  const B = JSON.parse(document.getElementById('beats').textContent);
+  const WORDS = CUES.words, PARTS = CUES.parts, TALK = CUES.duration;
+  const P = Object.fromEntries(PARTS.map((p) => [p.id, p]));
+  const norm = (s) => String(s).toLowerCase().replace(/[.,?!"“”]/g, '').trim();
+  /** [part, word|null, nth, offset] -> seconds */
+  function at([pid, word, nth = 0, off = 0]) {
+    if (word == null) return P[pid].start + off;
+    const m = WORDS.filter((w) => w.part === pid && norm(w.word) === norm(word))[nth];
+    if (!m) throw new Error(`no word "${word}" in ${pid}`);
+    return m.start + off;
+  }
+  $('#nameline b').textContent = String(V.name || '').trim() || B.name || '';
+  const tl = gsap.timeline({ paused: true, defaults: { ease: 'expo.out' } });
+  OM.music({ off: true });                 // his voice + huashu effects; only the outro logo gets the house music box (tools/mix_sfx.py)
+
+  // ---------------------------------------------------------------- full frame throughout (OG framing); skips get a white breath
+  const isJump = (id) => /_\d+$/.test(id);
+  PARTS.forEach((p, i) => {
+    if (i > 0 && !isJump(p.id)) {
+      tl.fromTo('#flashFull', { opacity: 0.6 }, { opacity: 0, duration: 0.35, ease: 'power2.out', immediateRender: false }, p.start);
+      OM.sfx('whoosh', p.start, { gain: 0.35 });
+    }
+  });
+  (B.masks || []).forEach(([pid, from, to]) => {
+    const a = P[pid].start + from, b = to == null ? P[pid].end : P[pid].start + to;
+    tl.fromTo('#mask', { opacity: 0 }, { opacity: 1, duration: 0.12, immediateRender: false }, Math.max(0, a - 0.15))
+      .to('#mask', { opacity: 0, duration: 0.12 }, b);
+  });
+
+  // ---------------------------------------------------------------- slams (frame level: same place over the card or the full frame)
+  const slots = $('#slots'), busy = [];
+  const slams = B.slams.map((s) => {
+    const el = document.createElement('div');
+    el.className = 'slam';
+    el.dataset.omId = 'slam-' + norm(s.lines.join('-')).replace(/[^a-z0-9]+/g, '-');
+    const longest = Math.max(...s.lines.map((l) => l.length));
+    const size = Math.min(s.size || 140, 844 / (longest * 0.47));
+    el.innerHTML = (s.tag ? `<div class="tag">${s.tag}</div>` : '') + s.lines.map((l, i) =>
+      `<span class="ln"><span class="in" style="font-size:${size}px;color:${COL[(s.colors || [])[i] || 'W']}">${l}</span></span>`).join('');
+    slots.appendChild(el);
+    return { el, t: at(s.at), hold: s.hold || V.slamHold, hsfx: s.hsfx || 'thud' };
+  }).sort((a, b) => a.t - b.t);
+
+  const pathsBox = $('#paths');
+  const paths = B.paths.map((p) => {
+    const el = document.createElement('div');
+    el.className = 'path';
+    el.dataset.omId = 'path-' + norm(p.tag).replace(/[^a-z0-9]+/g, '-');
+    const c = COL[p.color];
+    el.innerHTML = `<div class="tag" style="color:${c}">${p.tag}</div><div class="row">` +
+      p.lines.map((l, i) => (i ? `<div class="link" style="background:${c}"></div>` : '') + `<div class="node">${l}</div>`).join('') + '</div>';
+    pathsBox.appendChild(el);
+    return { el, color: c, cues: p.cues.map(at) };
+  });
+  const firstPath = paths[0].cues[0] - 0.25;
+
+  slams.forEach((x, i) => {
+    const next = slams[i + 1] ? slams[i + 1].t : Infinity;
+    const tin = Math.max(0, x.t - 0.12);
+    const tout = Math.min(x.t + x.hold, next - 0.2, x.t < firstPath && next > firstPath ? firstPath - 0.1 : Infinity, TALK - 0.05);
+    busy.push([tin, tout]);
+    if (tin === 0) x.el.style.opacity = 1;   // the poster: frame 0 already carries the first line
+    const ins = x.el.querySelectorAll('.in');
+    tl.set(x.el, { opacity: 1 }, tin)
+      .fromTo(ins, { yPercent: tin === 0 ? 0 : 105, scale: 1.12 }, { yPercent: 0, scale: 1, duration: tin === 0 ? 1.6 : 0.5, stagger: 0.07, ease: tin === 0 ? 'power2.out' : 'expo.out', immediateRender: tin === 0 }, tin)
+      .to(x.el, { opacity: 0, y: -16, duration: 0.24, ease: 'power2.in' }, tout - 0.24);
+    OM.sfx(x.hsfx, x.t, { gain: x.hsfx === 'impact' ? 0.32 : 0.45 });
+    if (x.el.querySelector('.tag')) tl.fromTo(x.el.querySelector('.tag'), { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: false }, tin + 0.1);
+  });
+
+  paths.forEach((p, k) => {
+    const tin = p.cues[0] - 0.35;
+    const tout = k === 0 ? paths[1].cues[0] - 0.45 : P.qayyim_10.end - 0.05;
+    busy.push([tin, tout]);
+    const nodes = p.el.querySelectorAll('.node'), links = p.el.querySelectorAll('.link');
+    tl.set(p.el, { opacity: 1 }, tin)
+      .fromTo(p.el.querySelector('.tag'), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, immediateRender: false }, tin)
+      .fromTo(nodes, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.05, immediateRender: false }, tin + 0.05)
+      .fromTo(links, { scaleX: 0 }, { scaleX: 0, duration: 0.01, immediateRender: false }, tin);
+    p.cues.forEach((c, i) => {
+      const last = i === nodes.length - 1;
+      if (i > 0) tl.fromTo(links[i - 1], { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: 'power2.inOut', immediateRender: false }, c - 0.35);
+      OM.sfx(last ? 'thud' : 'tick', c, { gain: last ? 0.5 : 0.4 });
+      tl.fromTo(nodes[i], { color: '#ffffff40', scale: 1 }, { color: last ? p.color : '#ffffff', scale: last ? 1.08 : 1, duration: 0.35, immediateRender: false }, c - 0.05);
+    });
+    tl.to(p.el, { opacity: 0, y: -16, duration: 0.28, ease: 'power2.in' }, tout - 0.28);
+  });
+
+  // shade under the slot (both layers; only the visible one shows)
+  busy.sort((a, b) => a[0] - b[0]);
+  const merged = [];
+  busy.forEach(([a, b]) => { const m = merged[merged.length - 1]; if (m && a <= m[1] + 0.35) m[1] = Math.max(m[1], b); else merged.push([a, b]); });
+  merged.forEach(([a, b]) => {
+    tl.fromTo('#shadeFull', { opacity: a === 0 ? 1 : 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out', immediateRender: a === 0 }, a);
+    tl.to('#shadeFull', { opacity: 0, duration: 0.35, ease: 'power2.in' }, b);
+  });
+
+  // ---------------------------------------------------------------- captions: 1-3 word pages, the spoken word in gold
+  const caps = $('#caps'), pages = [];
+  let cur = [];
+  WORDS.forEach((w, i) => {
+    const prev = WORDS[i - 1];
+    const len = [...cur, w].map((x) => x.word).join(' ').length;
+    if (cur.length && (cur.length >= 3 || len > 20 || w.part !== prev.part || w.start - prev.end > 0.6)) { pages.push(cur); cur = []; }
+    cur.push(w);
+    if (/[.,?!]$/.test(w.word)) { pages.push(cur); cur = []; }
+  });
+  if (cur.length) pages.push(cur);
+  pages.forEach((pg, i) => {
+    const el = document.createElement('div');
+    el.className = 'page';
+    el.innerHTML = pg.map((w) => `<span class="w">${w.word.replace(/[.,]$/, '')}</span>`).join(' ');
+    caps.appendChild(el);
+    const a = Math.max(0, pg[0].start - 0.06);
+    const nextStart = pages[i + 1] ? pages[i + 1][0].start - 0.06 : Infinity;
+    const b = Math.min(nextStart, pg[pg.length - 1].end + 0.5, TALK);
+    tl.fromTo(el, { opacity: a === 0 ? 1 : 0, y: a === 0 ? 0 : 10 }, { opacity: 1, y: 0, duration: 0.12, ease: 'power2.out', immediateRender: a === 0 }, a);
+    tl.set(el, { opacity: 0 }, b);
+    const ws = el.querySelectorAll('.w');
+    pg.forEach((w, k) => {
+      tl.set(ws[k], { color: V.gold }, Math.max(a, w.start - 0.03));
+      if (k < pg.length - 1) tl.set(ws[k], { color: '#ffffff' }, pg[k + 1].start - 0.03);
+    });
+  });
+
+  // ---------------------------------------------------------------- name line; the house end card
+  tl.fromTo('#nameline', { opacity: 0, y: -10 }, { opacity: 1, y: 0, duration: 0.6, immediateRender: false }, 0.4)
+    .to('#nameline', { opacity: 0, duration: 0.3 }, TALK - 0.2);
+  const E = B.end, ec = $('#endcard');
+  $('.msg', ec).textContent = E.message; $('.sub', ec).textContent = E.sub;
+  $('.who', ec).textContent = E.speaker; $('.src', ec).textContent = 'Sumber: ' + E.source;
+  const T0 = TALK;                           // the end card starts as his last word settles (picture holds the last frame)
+  tl.fromTo(ec, { opacity: 0 }, { opacity: 1, duration: 0.33, ease: 'power1.out', immediateRender: false }, T0)
+    .fromTo('#endcard .col', { scale: 0.85 }, { scale: 1, duration: 0.4, ease: 'back.out(1.8)', immediateRender: false }, T0)
+    .fromTo('#endcard .brand', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out', immediateRender: false }, T0 + 0.67)
+    .to('#caps', { opacity: 0, duration: 0.2 }, T0 - 0.1);
+
+  tl.addLabel('scene:hook', 0);
+  PARTS.filter((p, i) => i > 0 && !isJump(p.id)).forEach((p) => tl.addLabel(`scene:${p.id}`, p.start));
+  tl.addLabel('scene:end', T0);
+  tl.to({}, { duration: V.endHold }, TALK);
+  window.__timelines['film'] = tl;
+</script>
+</body>
+</html>

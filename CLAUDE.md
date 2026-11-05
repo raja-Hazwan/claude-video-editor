@@ -17,10 +17,21 @@ Pipeline: link → `/new-video` (download, transcribe, propose highlights, **wai
 
 ## Which tool
 - **The look** (framing: track vs lock, camera moves, captions, cards, end card, SFX levels, loudness): `video-style` skill — the single source of the house style; change it there.
-- **Talk → vertical short / full-context cut** (face-tracked 9:16, word captions, punch-ins, cards, SFX): Remotion, `talk-to-vertical-short` skill. It holds the house style and the cut rules the user has flagged — follow them exactly.
+- **Talk → vertical short / full-context cut**: the cut (highlights, words, check_cuts, face tracking) in Remotion via
+  `talk-to-vertical-short`; the finished look is the **House look** (`video-style`): the full-face tracked plate
+  with huashu-motion captions, phrase slams and paths on top, hook-first, captions above the Shorts UI, huashu SFX +
+  the house music box on the outro. Build it from `talk-to-vertical-short/huashu-house/README.md`.
 - **Graphic-first pieces** (quote cards, intros, slideshows, charts, overlays): Remotion, `motion-graphics` skill.
-- **House reel look** (default for full-context cuts): stickers + split-screen alternating, house captions on top —
-  `video-style` "House reel look", built from talk-to-vertical-short `template/src/Reel.timeline-example.tsx`.
+- **Standalone motion films** — a channel intro / trailer, a series opener, an animated explainer or infographic insert
+  that stands on its own and isn't tied to a talk's words: `huashu-motion` skill (user-level install, HTML + GSAP,
+  renders itself in Chrome). Its own project `02_Projects/<name>-motion/`, never inside a Remotion project; the result
+  comes in as a clip (`om render --transparent` → `.mov` with alpha for an overlay) or goes to `03_Exports` / Resolve.
+  House overrides in `motion-graphics` → "huashu-motion". (huashu also draws the type of the House look on talk edits.)
+- **Making pictures / drawings feel alive** (stickers, popups, the story-scene avatar, photographic looks, any
+  illustration): `rossark-motion-skill` method, ported to Remotion as `template/src/looks/alive.ts`; project rules in
+  `template/src/looks/MOTION.md` (they override the skill).
+- **Previous reel look** (stickers + split-screen, `video-style` "Previous reel look", from talk-to-vertical-short
+  `template/src/Reel.timeline-example.tsx`): only when the user asks for it.
 - **Alternative reel looks** over the approved cut, only when the user asks for one (all Remotion, `template/src/looks/`,
   setup in talk-to-vertical-short "Reel looks"): `split-screen`, `behind-the-person`, `explainer`, `storytelling`,
   `trial-reels`, `ranking-list`, and the photographic `shape-shift`, `picture-stack`, `scene-switch`, `visual-notes`,
