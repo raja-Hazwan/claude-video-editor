@@ -11,8 +11,7 @@ two or three idle loops. This file is its **Part 2 for this project — it overr
   curves, ported 1:1; time is `ms(frame)`. Plus `idle(t, i)` for a picture's float + sway + breathe.
   The React Native / SwiftUI templates in the skill don't run here — use `alive.ts`.
 - **Existing animated pieces to copy from:** `src/Popups.tsx` (picture popups), `src/looks/Stickers.tsx` (die-cut
-  stickers), `src/BikeWish.example.tsx` (story scene with a drawn avatar, cursor, box), `src/looks/Photographic.tsx`
-  (shape-shift, picture-stack, scene-switch, visual-notes, orbit-reel).
+  stickers), `src/BikeWish.example.tsx` (story scene with a drawn avatar, cursor, box).
 - **Art:** popup / sticker cut-outs in `public/popups/` (transparent PNGs, one flat layer each); drawn avatars and
   props are inline SVG in the component (coordinates in px of the 1080×1920 frame).
 
@@ -33,7 +32,7 @@ two or three idle loops. This file is its **Part 2 for this project — it overr
   the face falling on the let-down with `flow`, not a snap.
 - **Story scenes:** beats as data in ms (`{ click: [0, 400], dream: [400, 2200], open: [2200, 2900] }`) read with
   `seg`; the next beat overlaps the last; the scene holds on its final frame with only idle loops running.
-- **Photographic looks:** pictures drift / push with `EASE_IN_OUT`, parallax layers slower further back, nothing
+- **Moving pictures:** pictures drift / push with `EASE_IN_OUT`, parallax layers slower further back, nothing
   jumps between positions.
 - **Charts / numbers:** draw on once (bars from their base, 40–80 ms stagger ≈ 1–2 f), count up with `EASE_OUT`.
 

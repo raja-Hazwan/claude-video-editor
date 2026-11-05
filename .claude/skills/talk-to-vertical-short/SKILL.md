@@ -76,27 +76,26 @@ top — rules in `video-style` → "Previous reel look". Build it from `template
 `BikeWish.example.tsx` for a story scene; `public/sfx/pop.mp3` from `D:\sfx`; sticker pictures = the popup cut-outs
 (`public/popups/`, transparent PNGs). Setup steps 1–2 and 4–6 below apply (no cut-outs needed).
 
-Other looks, used only when the user picks one — skills `split-screen`, `behind-the-person`,
-`explainer`, `storytelling`, `trial-reels`, `ranking-list`, `shape-shift`, `picture-stack`, `scene-switch`,
-`visual-notes`, `orbit-reel` (ported from claude-editing-skills, which rendered with HyperFrames). Every look is a
+The other look, used only when the user picks it — skill `split-screen` (ported from claude-editing-skills, which
+rendered with HyperFrames; its ten other looks were pruned on 2026-11-05 as unused). A look is a
 **layer over the approved cut** (same `CLIPS`, `timeline.ts`, `word()`), so it runs the full length — the upstream
 "one 3–8 s stretch per reel" model cut 08/09 to 42 s and dropped the hook (user: "the video are cut short").
 1. **After** the house cut is approved and `gen_data.py` has run: copy `template/src/looks/` → `src/looks/`,
    `npx remotion add @remotion/fonts`, copy `.claude/kit/fonts/*` → `public/fonts/`. Anything that makes a picture or
    drawing move (idle float, a drawn avatar, a story scene) uses `looks/alive.ts` (the `rossark-motion-skill` engine)
    and follows `looks/MOTION.md`.
-2. **Wide framing** (split-screen + every cut-out look): the face-tracked crop is too tight for panels (his chin fell
+2. **Wide framing** (split-screen and stickers): the face-tracked crop is too tight for panels (his chin fell
    into Instagram's bottom zone). Read a source frame and set `WIDE` in `looks/core.tsx` (x = his centre − w/2, h
    above any desk, srcEnd = source duration): the source window scaled to 1080 wide, placed low, a feathered fill above.
-3. **Cut-outs** (behind-the-person, explainer, scene-switch, shape-shift, visual-notes, orbit-reel): once
+3. **Cut-outs** (only for a new look that puts graphics behind him; no current look needs them): once
    `bash .claude/kit/setup.sh --cutout`; then in the background
    `.claude/kit/.venv/Scripts/python.exe .claude/kit/cutout_clips.py <project> --crop X,W,H` (same numbers as `WIDE`;
-   ~0.1 s/frame, cached per clip) → `public/cutout/<clip>.webm`. Check alignment before building: a still of the
-   cut-out over red with the base ghosted on top (`CutoutCheck` in `Looks.timeline-example.tsx`) — no double edge.
+   ~0.1 s/frame, cached per clip) → `public/cutout/<clip>.webm`, drawn with `WideCut cutout` from `looks/core.tsx`.
+   Check alignment first: a still of the cut-out over red with the base ghosted on top — no double edge.
 4. **`src/Looks.tsx`** (example: `Looks.timeline-example.tsx`): steps/segments `from`/`to` = `START.<clip>` /
    `end(...)`, every `at` = `word(clip, "x")` — never hand frames. Mix looks by section with `<During from to>` (no
-   time shift). A stretch-only reel (trial-reels, a hook test) = its own composition with `<Sequence from={-from}>`
-   (`LooksTest.example.tsx`). Keep the house `EndCard` on the closer's extend.
+   time shift). A stretch-only reel (a hook test) = its own composition with `<Sequence from={-from}>`.
+   Keep the house `EndCard` on the closer's extend.
 5. **Banners**: `BottomFade` (y 1640→1715) is in every look and rides with the presenter box — check the account
    banner / name bars stay hidden in the frames.
 6. **Storyboard stop (9b)** as usual — stills at every step/segment start and key words; wait for approval; then

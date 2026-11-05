@@ -92,8 +92,10 @@ Reel looks the user likes: **split-screen**, and **stickers** (`looks/Stickers.t
 die-cut outline popping in over the wide framing, in the wall above his head, `pop.mp3` 0.4 on each) for the parts
 where he names things. For a story beat ("ingat dapat basikal, dapat bola je") a small sticker scene works: cursor
 clicks the box, a drawn avatar dreams of the prize, the box opens on the let-down (project `BikeWish.tsx`). Not
-wanted: orbit-reel (the "carousel"), the explainer panel (the "phone frame"), and behind-the-person's post panel. Over any look, keep the **house word captions** (`Captions`, `top` per look:
-~1390 behind-the-person, ~1500 split-screen with `seam={false}`), not the look's own caption style.
+wanted (pruned from the repo on 2026-11-05 with the other unused claude-editing-skills looks): orbit-reel (the
+"carousel"), the explainer panel (the "phone frame"), behind-the-person's post panel. Over any look, keep the **house
+word captions** (`Captions`, `top` per look: ~1390 stickers, ~1500 split-screen with `seam={false}`), not the look's
+own caption style.
 
 ## Previous reel look — stickers + split-screen (user, 2026-11-03; replaced by the House look on 2026-11-05)
 Only when the user asks for it. It was the default look for every **full-context cut** (and a short when it has named things to show), built over the
@@ -111,7 +113,7 @@ approved cut at the same length. Reference: `workspace/02_Projects/maza-blindbox
 - **One story scene** where the talk has a punchline example (blind box: `BikeWish.example.tsx` — cursor clicks the
   box, a drawn avatar dreams of the prize in a thought bubble, the box opens on the let-down, the face falls).
 - **House word captions** over everything, `top` per section (1390 stickers, 1500 split); none under the end card.
-- House end card, house loudness. Other looks (behind-the-person, storytelling …) only when the user asks.
+- House end card, house loudness.
 
 ## Cards & titles (top band, y 110+)
 - **Hook title**: red pill label (question / setup) + yellow two-line headline; ~6.7 s; drop SFX.

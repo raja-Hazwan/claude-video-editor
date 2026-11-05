@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-"""Speaker cut-outs for every clip of a Remotion project, for the cut-out looks (behind-the-person, explainer,
-scene-switch, shape-shift, visual-notes, orbit-reel).
+"""Speaker cut-outs for every clip of a Remotion project, for a look that puts graphics behind the
+speaker (`WideCut cutout` in looks/core.tsx).
 
     python .claude/kit/cutout_clips.py <project dir> [--crop X,W,H] [--model mobilenetv3|resnet50]
 

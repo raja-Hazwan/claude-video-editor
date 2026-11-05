@@ -1,5 +1,4 @@
-// Shared pieces for the reel looks (split-screen, behind-the-person, explainer, storytelling, trial-reels,
-// ranking-list and the photographic styles). Ported from claude-editing-skills (HyperFrames) to Remotion: every
+// Shared pieces for the reel looks (split-screen, stickers). Ported from claude-editing-skills (HyperFrames) to Remotion: every
 // look is a layer over the project's approved cut (CLIPS / timeline.ts), timed with word(clip, "x") frames.
 import { loadFont } from "@remotion/fonts";
 import { loadFont as loadMontserrat } from "@remotion/google-fonts/Montserrat";
@@ -186,7 +185,7 @@ export const WideCut: React.FC<{ cutout?: boolean; volume?: (clip: ClipData) => 
   <ClipSeries>{(clip) => (cutout ? <WideCutout clip={clip} /> : <WideBase clip={clip} volume={volume?.(clip)} />)}</ClipSeries>
 );
 
-/** a 1080x1920 layer drawn smaller: the presenter box of the photographic styles and the explainer panel */
+/** a 1080x1920 layer drawn smaller (a presenter box / panel) */
 export const Scaled: React.FC<{ left: number; top: number; width: number; children: React.ReactNode; style?: React.CSSProperties }> = ({
   left, top, width, children, style,
 }) => (
