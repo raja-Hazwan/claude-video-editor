@@ -14,9 +14,7 @@ CLAUDE.md                       project instructions: workspace layout, which to
     talk-to-vertical-short/     Remotion pipeline: face-tracked 9:16 crop, captions, cards, SFX, cut checker
     motion-graphics/            Remotion quote cards, intros, lower thirds, slideshows, charts, overlays
     video-style/                the house style (framing, moves, captions, cards, popups, SFX, loudness)
-    split-screen/ behind-the-person/ explainer/ storytelling/ trial-reels/ ranking-list/
-    shape-shift/ picture-stack/ scene-switch/ visual-notes/ orbit-reel/
-                                alternative reel looks (Remotion, template/src/looks), ported from claude-editing-skills
+    split-screen/               alternative reel look (Remotion, template/src/looks), ported from claude-editing-skills
     ffmpeg-toolkit/             probe / trim / crop / mix / loudness / verify recipes
     download-source/            yt-dlp download into the Inbox + transcription
     elevenlabs-audio/           generate SFX, voice-over and music beds with ElevenLabs

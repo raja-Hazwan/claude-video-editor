@@ -63,6 +63,10 @@ with these channel rules on top — they win where huashu's defaults differ:
 - **Signature**: a full film ends with a small "Made with huashu-motion" mark (last 1.2 s). Ask the user whether to
   keep it (`data-om-signature="off"` removes it); it must not sit under the house end card.
 - **Checks**: `om check` (0 errors) + `om qa`, then the house checks — contact sheet and ffmpeg-toolkit "Verify a render".
+- **Studio in English** (user, 2026-11-05): the `om studio` UI ships in Chinese with no language switch, so it is
+  patched by `python tools/huashu_studio_en.py` (re-runnable; `--check` lists any Chinese left). Run it before
+  `om studio` whenever huashu-motion was updated (a `git pull` in `~/tools/huashu-motion` brings the Chinese back).
+  Write `om done --note` replies in English too.
 
 ## Render and check
 `npx tsc --noEmit` → `npx remotion still <id> out/s.png --frame=N` at every change, Read them → `npx remotion render

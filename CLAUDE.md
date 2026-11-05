@@ -32,10 +32,9 @@ Pipeline: link → `/new-video` (download, transcribe, propose highlights, **wai
   `template/src/looks/MOTION.md` (they override the skill).
 - **Previous reel look** (stickers + split-screen, `video-style` "Previous reel look", from talk-to-vertical-short
   `template/src/Reel.timeline-example.tsx`): only when the user asks for it.
-- **Alternative reel looks** over the approved cut, only when the user asks for one (all Remotion, `template/src/looks/`,
-  setup in talk-to-vertical-short "Reel looks"): `split-screen`, `behind-the-person`, `explainer`, `storytelling`,
-  `trial-reels`, `ranking-list`, and the photographic `shape-shift`, `picture-stack`, `scene-switch`, `visual-notes`,
-  `orbit-reel`. Cut-outs, frame rulers and sheets: `.claude/kit/`. House rules still apply.
+- **Split-screen** (`split-screen` skill, Remotion `template/src/looks/`): the one alternative reel look kept from
+  claude-editing-skills (the other ten were pruned on 2026-11-05 as unused), only when the user asks for it.
+  Cut-outs, frame rulers and sheets: `.claude/kit/`. House rules still apply.
 - **Quick jobs** (probe, trim, crop, mix, loudness, verify): ffmpeg, `ffmpeg-toolkit` skill.
 - **Downloading**: yt-dlp via `download-source` skill.
 - **Missing SFX / voice-over / music**: ElevenLabs, `elevenlabs-audio` skill — check `D:\sfx` first; calls cost credits.
