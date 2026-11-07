@@ -157,9 +157,9 @@ __BEATS__
     el.innerHTML = `<div class="tag" style="color:${c}">${p.tag}</div><div class="row">` +
       p.lines.map((l, i) => (i ? `<div class="link" style="background:${c}"></div>` : '') + `<div class="node">${l}</div>`).join('') + '</div>';
     pathsBox.appendChild(el);
-    return { el, color: c, cues: p.cues.map(at) };
+    return { el, color: c, cues: p.cues.map(at), endPart: p.cues[p.cues.length - 1][0] };
   });
-  const firstPath = paths[0].cues[0] - 0.25;
+  const firstPath = paths.length ? paths[0].cues[0] - 0.25 : Infinity;
 
   slams.forEach((x, i) => {
     const next = slams[i + 1] ? slams[i + 1].t : Infinity;
@@ -177,7 +177,7 @@ __BEATS__
 
   paths.forEach((p, k) => {
     const tin = p.cues[0] - 0.35;
-    const tout = k === 0 ? paths[1].cues[0] - 0.45 : P.qayyim_10.end - 0.05;
+    const tout = paths[k + 1] ? paths[k + 1].cues[0] - 0.45 : P[p.endPart].end - 0.05;   // until the next path, else the end of the last cue's part
     busy.push([tin, tout]);
     const nodes = p.el.querySelectorAll('.node'), links = p.el.querySelectorAll('.link');
     tl.set(p.el, { opacity: 1 }, tin)
