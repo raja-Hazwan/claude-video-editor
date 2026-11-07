@@ -15,7 +15,9 @@ Publish the project `$ARGUMENTS` from `workspace\02_Projects`:
    `NN - <original name>/` holding `NN - <original name>.mp4` and `NN - <original name>.srt`.
 5. Write `NN - <same name> - Post.txt` into the export folder (UTF-8, Malay), built only from what he actually says
    and the on-screen cards — no claims he didn't make:
-   - **YOUTUBE SHORTS**: Title (≤100 chars, ends `| <Speaker> #shorts`) · Description (2–4 sentences: the question,
+   - **YOUTUBE SHORTS**: Title — short, `<Speaker> - <Topic>`: the speaker's short name first, then the main point
+     boiled down to 2–5 words (a symbol like `=` or a `?` is fine, no full sentences, no `| … #shorts` tail), e.g.
+     `Dr Maza - Taat Allah = Hidup Senang?`, `Prof Dr Rozaimi - Bercampur Mazhab, Boleh?` · Description (2–4 sentences: the question,
      his answer, the dalil if any) · credit `Sumber: <speaker full name> — <channel> (<youtu.be link>)` ·
      `Edited by The Returning Soul` · 5 hashtags starting `#shorts` (topic, fiqh area, speaker, `#ilmuislam`).
    - **TIKTOK / INSTAGRAM REELS**: Caption (1–2 lines, hook first) · the same credit · 6 hashtags ending `#fyp`.
