@@ -176,7 +176,9 @@ Final mix normalised to **-14 LUFS**, true peak ≤ -1.5 dBTP (two-pass `loudnor
 
 ## Cover (TikTok)
 Face in the upper half on the key line (eyes open, mid-word), red pill hook + yellow two-line quote (Montserrat 900,
-~132 px, 16 px stroke) + white sub + name tag, all inside y 1090–1650. No branding.
+~132 px, 16 px stroke) + name tag, all inside y 1090–1650. No branding.
+**No answer line** (user, 2026-11-21): the cover asks the question, it never gives the ruling / verdict away — no
+white sub like "MAJORITI ULAMA: TAK BOLEH". Pill = the topic, yellow = the question ("BOLEH SAMBUNG?"), then the name.
 
 ## Storyboard shows the style
 Every storyboard row lists **framing** (track / lock, and any LOCK->TRACK fallback) and **move**, so the user approves
